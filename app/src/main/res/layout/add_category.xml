@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="name"
+        android:inputType="text" />
+
+    <TextView
+        android:id="@+id/name_validation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#f00" />
+
+    <EditText
+        android:id="@+id/description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="description"
+        android:inputType="text" />
+
+    <TextView
+        android:id="@+id/description_validation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#f00" />
+</LinearLayout>
