@@ -5,7 +5,6 @@ import android.app.ProgressDialog
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import android.support.v7.app.AlertDialog
-import android.util.Log
 import android.widget.TextView
 import android.widget.Toast
 import com.jakewharton.rxbinding.view.clicks
@@ -13,65 +12,42 @@ import com.jakewharton.rxbinding.widget.textChanges
 import com.teamlab.kotlin.mvvm.R
 import com.teamlab.kotlin.mvvm.butterknife.bindView
 import com.teamlab.kotlin.mvvm.model.Status
-import com.teamlab.kotlin.mvvm.viewmodel.CategoryEditViewModel
+import com.teamlab.kotlin.mvvm.viewmodel.CategoryAddViewModel
 import rx.android.schedulers.AndroidSchedulers
 import rx.subscriptions.CompositeSubscription
 
-class CategoryEditDialogFragment : DialogFragment {
+class CategoryAddDialogFragment : DialogFragment() {
 
-    private val KEY_ID = "id"
     private val mainThread = AndroidSchedulers.mainThread()
 
+    private val id: TextView by bindView(R.id.id)
+    private val idValidation: TextView by bindView(R.id.id_validation)
     private val name: TextView by bindView(R.id.name)
     private val nameValidation: TextView by bindView(R.id.name_validation)
     private val description: TextView by bindView(R.id.description)
     private val descriptionValidation: TextView by bindView(R.id.description_validation)
 
-    private lateinit var vm: CategoryEditViewModel
+    private val vm = CategoryAddViewModel()
     private lateinit var subscription: CompositeSubscription
 
-    constructor() : super()
-
-    constructor(id: Long) : this() {
-        arguments = Bundle().apply {
-            putLong("id", id)
-        }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        if (!arguments.containsKey(KEY_ID)) {
-            throw RuntimeException("Argument $KEY_ID is not exists.")
-        }
-        val id = arguments.getLong("id")
-        vm = CategoryEditViewModel(id)
-    }
-
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog? {
-        Log.v("X", "onCreateDialog")
         return AlertDialog.Builder(activity)
                 .setTitle("Add Category")
-                .setView(R.layout.category_edit)
-                .setPositiveButton("Update", null)
-                .setNeutralButton("Delete", null)
+                .setView(R.layout.category_add)
+                .setPositiveButton("Add", null)
                 .setNegativeButton("Cancel", null)
                 .create()
     }
 
-    override fun onResume() {
-        Log.v("X", "onResume")
-        super.onResume()
-    }
-
     override fun onStart() {
-        Log.v("X", "onStart")
         super.onStart()
         subscription = CompositeSubscription()
         // setup views
         val progress = ProgressDialog(activity)
-        val dialog = (dialog as AlertDialog)
-        val update = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
-        val delete = dialog.getButton(AlertDialog.BUTTON_NEUTRAL)
+        id.text = vm.id.value
+        name.text = vm.name.value
+        description.text = vm.description.value
+        val add = (dialog as AlertDialog).getButton(AlertDialog.BUTTON_POSITIVE)
 
         // bind view model
         subscription.add(vm.status.observable
@@ -98,33 +74,33 @@ class CategoryEditDialogFragment : DialogFragment {
                         Toast.makeText(activity, it.message, Toast.LENGTH_LONG).show()
                     }
                 })
-        subscription.add(vm.name.observable
+        subscription.add(vm.idValidation.observable
                 .observeOn(mainThread)
                 .subscribe {
-                    name.text = it
+                    idValidation.text = it
                 })
         subscription.add(vm.nameValidation.observable
                 .observeOn(mainThread)
                 .subscribe {
                     nameValidation.text = it
                 })
-        subscription.add(vm.description.observable
-                .observeOn(mainThread)
-                .subscribe {
-                    description.text = it
-                })
         subscription.add(vm.descriptionValidation.observable
                 .observeOn(mainThread)
                 .subscribe {
                     descriptionValidation.text = it
                 })
-        subscription.add(vm.updateEnabled.observable
+        subscription.add(vm.addEnabled.observable
                 .observeOn(mainThread)
                 .subscribe {
-                    update.isEnabled = it
+                    add.isEnabled = it
                 })
 
         // attach events
+        subscription.add(id.textChanges()
+                .skip(1) // 循環参照防ぐ
+                .subscribe {
+                    vm.id.value = "$it"
+                })
         subscription.add(name.textChanges()
                 .skip(1) // 循環参照防ぐ
                 .subscribe {
@@ -135,13 +111,9 @@ class CategoryEditDialogFragment : DialogFragment {
                 .subscribe {
                     vm.description.value = "$it"
                 })
-        subscription.add(update.clicks()
+        subscription.add(add.clicks()
                 .subscribe {
-                    vm.update()
-                })
-        subscription.add(delete.clicks()
-                .subscribe {
-                    vm.delete()
+                    vm.add()
                 })
     }
 

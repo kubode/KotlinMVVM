@@ -6,7 +6,7 @@ import com.teamlab.kotlin.mvvm.MutableObservableProperty
 import rx.Observable
 import java.util.concurrent.TimeUnit
 
-class Category(id: Long) : Model<Long> {
+class Category(id: Long) : Model<Long>() {
 
     override val id = id
     val name = MutableObservableProperty("")
@@ -27,7 +27,7 @@ class Category(id: Long) : Model<Long> {
                     // Check duplicated name
                     val category = it
                     Categories.Manager.cache.getAll().forEach {
-                        if (it.list.value.find { it != category && it.name == category.name } != null) {
+                        if (it.list.value.find { it != category && it.name.value == category.name.value } != null) {
                             throw RuntimeException("$category is already exists.")
                         }
                     }
@@ -62,7 +62,7 @@ class Category(id: Long) : Model<Long> {
     }
 
     object Manager {
-        private val cache = Cache<Category, Long>()
+        val cache = Cache<Category, Long>()
 
         fun get(id: Long): Category {
             return cache.get(id) ?: Category(id).apply { cache.put(this) }

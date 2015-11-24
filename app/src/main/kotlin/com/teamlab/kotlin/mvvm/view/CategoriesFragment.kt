@@ -52,6 +52,8 @@ class CategoriesFragment : Fragment() {
         toolbar.setOnMenuItemClickListener {
             when (it?.itemId) {
                 R.id.action_add -> {
+                    CategoryAddDialogFragment()
+                            .show(childFragmentManager, null)
                     true
                 }
                 else -> {
@@ -101,7 +103,7 @@ class CategoriesFragment : Fragment() {
                 })
         subscription.add(listView.itemClicks()
                 .subscribe {
-                    CategoryEditDialogFragment(adapter.getItemId(it))
+                    CategoryUpdateDialogFragment(adapter.getItemId(it))
                             .show(childFragmentManager, null)
                 })
     }

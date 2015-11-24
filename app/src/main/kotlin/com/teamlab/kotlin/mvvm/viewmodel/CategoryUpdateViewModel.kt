@@ -6,7 +6,7 @@ import com.teamlab.kotlin.mvvm.model.Category
 import com.teamlab.kotlin.mvvm.model.Status
 import rx.Observable
 
-class CategoryEditViewModel(id: Long) {
+class CategoryUpdateViewModel(id: Long) {
     val category = Category.Manager.get(id).apply { status.value = Status.NORMAL }
     val status = ObservableChainProperty(category.status.observable)
     val error = ObservableChainProperty(category.error.observable)

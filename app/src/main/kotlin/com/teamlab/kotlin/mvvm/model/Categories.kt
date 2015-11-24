@@ -6,7 +6,7 @@ import com.teamlab.kotlin.mvvm.MutableObservableProperty
 import rx.Observable
 import java.util.concurrent.TimeUnit
 
-class Categories(query: String) : Model<String> {
+class Categories(query: String) : Model<String>() {
 
     override val id = query
     val list = MutableObservableProperty(emptyList<Category>())
@@ -40,6 +40,21 @@ class Categories(query: String) : Model<String> {
         val cache = Cache<Categories, String>()
         fun get(query: String): Categories {
             return cache.get(query) ?: Categories(query).apply { cache.put(this) }
+        }
+
+        fun add(category: Category): Observable<Category> {
+            return Observable.just(category)
+                    .delay(1, TimeUnit.SECONDS)
+                    .doOnNext {
+                        // Check duplicated id & name
+                        cache.getAll().forEach {
+                            if (category in it.list.value || it.list.value.find { it.name.value == category.name.value } != null) {
+                                throw RuntimeException("$category is already exists.")
+                            }
+                            it.list.value += category // add
+                        }
+                        Category.Manager.cache.put(category)
+                    }
         }
     }
 }
