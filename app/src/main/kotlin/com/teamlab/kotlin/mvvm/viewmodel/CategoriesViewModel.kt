@@ -1,30 +1,20 @@
 package com.teamlab.kotlin.mvvm.viewmodel
 
-import com.teamlab.kotlin.mvvm.MutableObservableProperty
 import com.teamlab.kotlin.mvvm.ObservableChainProperty
-import com.teamlab.kotlin.mvvm.model.Category
+import com.teamlab.kotlin.mvvm.model.Categories
 
-class CategoriesViewModel {
-    val status = MutableObservableProperty(Status.LOADING)
-    val error = MutableObservableProperty<Throwable?>(null)
-    val categories = ObservableChainProperty(Category.Manager.categories.observable)
+class CategoriesViewModel(query: String) {
 
-    fun loadIfNotInitialized() {
-        if (status.value == Status.INITIALIZED) {
-            return
-        }
-        status.value = Status.LOADING
-        error.value = null
-        Category.Manager.queryAll()
-                .subscribe({
-                    status.value = Status.INITIALIZED
-                }, {
-                    status.value = Status.ERROR
-                    error.value = it
-                })
+    val categories = Categories.Manager.get(query)
+    val list = ObservableChainProperty(categories.list.observable)
+    val status = ObservableChainProperty(categories.status.observable)
+    val error = ObservableChainProperty(categories.error.observable)
+
+    init {
+        categories.requestIfNotCompleted()
     }
 
-    enum class Status {
-        LOADING, ERROR, INITIALIZED
+    fun reload() {
+        categories.requestIfNotCompleted()
     }
 }

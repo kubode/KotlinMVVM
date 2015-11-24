@@ -1,0 +1,45 @@
+package com.teamlab.kotlin.mvvm.model
+
+import com.teamlab.kotlin.mvvm.Cache
+import com.teamlab.kotlin.mvvm.Model
+import com.teamlab.kotlin.mvvm.MutableObservableProperty
+import rx.Observable
+import java.util.concurrent.TimeUnit
+
+class Categories(query: String) : Model<String> {
+
+    override val id = query
+    val list = MutableObservableProperty(emptyList<Category>())
+    val status = MutableObservableProperty(Status.NORMAL)
+    val error = MutableObservableProperty<Throwable?>(null)
+
+    fun requestIfNotCompleted() {
+        if (status.value == Status.COMPLETED) {
+            return
+        }
+        status.value = Status.REQUESTING
+        error.value = null
+        Observable.range(0, 5)
+                .map { Category.Manager.get(it.toLong()) }
+                .doOnNext {
+                    it.name.value = "Category ${it.id}"
+                    it.description.value = "Description ${it.id}"
+                }
+                .toList()
+                .delay(1, TimeUnit.SECONDS)
+                .subscribe({
+                    list.value += it
+                    status.value = Status.COMPLETED
+                }, {
+                    status.value = Status.ERROR
+                    error.value = it
+                })
+    }
+
+    object Manager {
+        val cache = Cache<Categories, String>()
+        fun get(query: String): Categories {
+            return cache.get(query) ?: Categories(query).apply { cache.put(this) }
+        }
+    }
+}

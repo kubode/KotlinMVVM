@@ -10,6 +10,10 @@ interface ObservableProperty<T> {
 
 class ReadOnlyObservableProperty<T>(val value: T) : ObservableProperty<T> {
     override val observable = Observable.just(value)
+
+    override fun toString(): String {
+        return "$value"
+    }
 }
 
 class MutableObservableProperty<T>(initialValue: T) : ObservableProperty<T> {
@@ -20,6 +24,10 @@ class MutableObservableProperty<T>(initialValue: T) : ObservableProperty<T> {
         }
     }
     override val observable: Observable<T> = subject
+
+    override fun toString(): String {
+        return "$value"
+    }
 }
 
 class ObservableChainProperty<T>(override val observable: Observable<T>) : ObservableProperty<T>

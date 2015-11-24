@@ -1,64 +1,71 @@
 package com.teamlab.kotlin.mvvm.model
 
+import com.teamlab.kotlin.mvvm.Cache
+import com.teamlab.kotlin.mvvm.Model
 import com.teamlab.kotlin.mvvm.MutableObservableProperty
-import com.teamlab.kotlin.mvvm.ReadOnlyObservableProperty
 import rx.Observable
 import java.util.concurrent.TimeUnit
 
-class Category(name: String, description: String) {
-    val name = ReadOnlyObservableProperty(name)
-    val description = MutableObservableProperty(description)
-    val items = MutableObservableProperty(emptyList<Item>())
+class Category(id: Long) : Model<Long> {
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other?.javaClass != javaClass) return false
-
-        other as Category
-
-        if (name.value != other.name.value) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        return name.value.hashCode()
-    }
+    override val id = id
+    val name = MutableObservableProperty("")
+    val description = MutableObservableProperty("")
+    val status = MutableObservableProperty(Status.NORMAL)
+    val error = MutableObservableProperty<Throwable?>(null)
 
     override fun toString(): String {
-        return "name: ${name.value}, description: ${description.value}, items: ${items.value}"
+        return "id: $id, name: $name, description: $description, status: $status, error: $error"
+    }
+
+    fun update(name: String, description: String) {
+        status.value = Status.REQUESTING
+        error.value = null
+        Observable.just(this)
+                .delay(1, TimeUnit.SECONDS)
+                .subscribe({
+                    // Check duplicated name
+                    val category = it
+                    Categories.Manager.cache.getAll().forEach {
+                        if (it.list.value.find { it != category && it.name == category.name } != null) {
+                            throw RuntimeException("$category is already exists.")
+                        }
+                    }
+                    it.status.value = Status.COMPLETED
+                    it.name.value = name
+                    it.description.value = description
+                }, {
+                    status.value = Status.ERROR
+                    error.value = it
+                })
+    }
+
+    fun delete() {
+        status.value = Status.REQUESTING
+        error.value = null
+        Observable.just(this)
+                .delay(1, TimeUnit.SECONDS)
+                .subscribe({
+                    // Remove from Categories
+                    val category = it
+                    Categories.Manager.cache.getAll().forEach {
+                        val categories = it.list
+                        if (category in categories.value) {
+                            categories.value -= category
+                        }
+                    }
+                    status.value = Status.COMPLETED
+                }, {
+                    status.value = Status.ERROR
+                    error.value = it
+                })
     }
 
     object Manager {
-        val categories = MutableObservableProperty(emptySet<Category>())
+        private val cache = Cache<Category, Long>()
 
-        fun add(category: Category): Observable<Category> {
-            return Observable.just(category)
-                    .delay(1, TimeUnit.SECONDS)
-                    .doOnNext {
-                        if (categories.value.contains(category)) {
-                            throw RuntimeException("$category already exists.")
-                        }
-                        categories.value = categories.value + category
-                    }
-        }
-
-        fun remove(category: Category): Observable<Category> {
-            return Observable.just(category)
-                    .delay(1, TimeUnit.SECONDS)
-                    .doOnNext {
-                        if (!categories.value.contains(category)) {
-                            throw RuntimeException("$category is not exists.")
-                        }
-                        categories.value = categories.value - category
-                    }
-        }
-
-        fun queryAll(): Observable<Set<Category>> {
-            return Observable.just(Array(3, { Category("Name $it", "Description $it") }))
-                    .map { it.toSet() }
-                    .delay(1, TimeUnit.SECONDS)
-                    .doOnNext { categories.value = it }
+        fun get(id: Long): Category {
+            return cache.get(id) ?: Category(id).apply { cache.put(this) }
         }
     }
 }
