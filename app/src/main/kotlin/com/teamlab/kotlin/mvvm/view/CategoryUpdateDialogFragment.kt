@@ -110,12 +110,10 @@ class CategoryUpdateDialogFragment : DialogFragment {
 
         // attach events
         subscription.add(name.textChanges()
-                .skip(1) // 循環参照防ぐ
                 .subscribe {
                     vm.name.value = "$it"
                 })
         subscription.add(description.textChanges()
-                .skip(1) // 循環参照防ぐ
                 .subscribe {
                     vm.description.value = "$it"
                 })
