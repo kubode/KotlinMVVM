@@ -24,16 +24,18 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true" />
 
-        <TextView
-            android:id="@+id/error"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true" />
-
         <Button
             android:id="@+id/retry"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/error" />
+            android:layout_centerInParent="true"
+            android:text="Retry" />
+
+        <TextView
+            android:id="@+id/error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/retry"
+            android:layout_centerHorizontal="true" />
     </RelativeLayout>
 </LinearLayout>

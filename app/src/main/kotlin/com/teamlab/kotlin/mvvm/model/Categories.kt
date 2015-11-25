@@ -17,6 +17,7 @@ class Categories(query: String) : Model<String>() {
         if (status.value == Status.COMPLETED) {
             return
         }
+        val failForDebug = status.value != Status.ERROR // DEBUG
         status.value = Status.REQUESTING
         error.value = null
         Observable.range(0, 5)
@@ -27,6 +28,11 @@ class Categories(query: String) : Model<String>() {
                 }
                 .toList()
                 .delay(1, TimeUnit.SECONDS)
+                .doOnNext {
+                    if (failForDebug) {
+                        throw RuntimeException("Failed.")
+                    }
+                }
                 .subscribe({
                     list.value += it
                     status.value = Status.COMPLETED
