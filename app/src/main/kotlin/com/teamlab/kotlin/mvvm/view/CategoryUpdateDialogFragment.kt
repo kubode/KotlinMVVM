@@ -60,7 +60,7 @@ class CategoryUpdateDialogFragment : DialogFragment {
         super.onStart()
         subscription = CompositeSubscription()
         // setup views
-        val progress = ProgressDialog(activity)
+        val progress = ProgressDialog(activity).apply { isCancelable = false }
         name.text = vm.name.value
         description.text = vm.description.value
         val dialog = (dialog as AlertDialog)

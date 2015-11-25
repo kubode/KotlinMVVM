@@ -43,7 +43,7 @@ class CategoryAddDialogFragment : DialogFragment() {
         super.onStart()
         subscription = CompositeSubscription()
         // setup views
-        val progress = ProgressDialog(activity)
+        val progress = ProgressDialog(activity).apply { isCancelable = false }
         id.text = vm.id.value
         name.text = vm.name.value
         description.text = vm.description.value
