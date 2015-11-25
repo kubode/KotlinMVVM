@@ -8,14 +8,6 @@ interface ObservableProperty<T> {
     val observable: Observable<T>
 }
 
-class ReadOnlyObservableProperty<T>(val value: T) : ObservableProperty<T> {
-    override val observable = Observable.just(value)
-
-    override fun toString(): String {
-        return "$value"
-    }
-}
-
 class MutableObservableProperty<T>(initialValue: T) : ObservableProperty<T> {
     private val subject = BehaviourSubject(initialValue)
     var value: T by Delegates.observable(initialValue) { property, old, new ->
