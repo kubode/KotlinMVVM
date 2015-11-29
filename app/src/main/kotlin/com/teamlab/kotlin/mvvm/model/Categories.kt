@@ -11,13 +11,13 @@ class Categories(query: String) : Model<String>() {
 
     override val id = query
 
-    val listObservable = BehaviourSubject(emptyList<Category>())
-    val statusObservable = BehaviourSubject(Status.NORMAL)
-    val errorObservable = BehaviourSubject<Throwable?>(null)
+    val listObservable = BehaviourSubject<List<Category>>()
+    val statusObservable = BehaviourSubject<Status>()
+    val errorObservable = BehaviourSubject<Throwable?>()
 
-    var list: List<Category> by observable(listObservable)
-    var status: Status by observable(statusObservable)
-    var error: Throwable? by observable(errorObservable)
+    var list by observable(emptyList(), listObservable)
+    var status by observable(Status.NORMAL, statusObservable)
+    var error by observable(null, errorObservable)
 
     fun requestIfNotCompleted() {
         if (status == Status.COMPLETED) {
