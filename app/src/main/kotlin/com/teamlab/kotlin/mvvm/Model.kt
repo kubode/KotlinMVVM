@@ -1,9 +1,7 @@
 package com.teamlab.kotlin.mvvm
 
-abstract class Model<K> {
-    abstract val id: K
-
-    override fun equals(other: Any?): Boolean {
+abstract class Model<K>(val id: K) {
+    final override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other?.javaClass != javaClass) return false
 
@@ -14,7 +12,6 @@ abstract class Model<K> {
         return true
     }
 
-    override fun hashCode(): Int {
-        return id?.hashCode() ?: 0
-    }
+    final override fun hashCode() = id?.hashCode() ?: 0
+    override fun toString() = "${javaClass.simpleName}($id)"
 }

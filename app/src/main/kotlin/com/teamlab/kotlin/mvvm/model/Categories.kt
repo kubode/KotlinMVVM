@@ -6,9 +6,7 @@ import com.teamlab.kotlin.mvvm.MutableObservableProperty
 import rx.Observable
 import java.util.concurrent.TimeUnit
 
-class Categories(query: String) : Model<String>() {
-
-    override val id = query
+class Categories(query: String) : Model<String>(query) {
     val list = MutableObservableProperty(emptyList<Category>())
     val status = MutableObservableProperty(Status.NORMAL)
     val error = MutableObservableProperty<Throwable?>(null)

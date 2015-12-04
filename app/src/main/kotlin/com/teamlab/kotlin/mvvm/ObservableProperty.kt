@@ -1,7 +1,7 @@
 package com.teamlab.kotlin.mvvm
 
 import rx.Observable
-import rx.lang.kotlin.BehaviourSubject
+import rx.subjects.BehaviorSubject
 import kotlin.properties.Delegates
 
 interface ObservableProperty<T> {
@@ -9,17 +9,10 @@ interface ObservableProperty<T> {
 }
 
 class MutableObservableProperty<T>(initialValue: T) : ObservableProperty<T> {
-    private val subject = BehaviourSubject(initialValue)
-    var value: T by Delegates.observable(initialValue) { property, old, new ->
-        if (old != new) {
-            subject.onNext(new)
-        }
-    }
-    override val observable: Observable<T> = subject
-
-    override fun toString(): String {
-        return "$value"
-    }
+    private val behaviorSubject = BehaviorSubject.create(initialValue)
+    override val observable: Observable<T> = behaviorSubject
+    var value by Delegates.observable(initialValue) { property, old, new -> if (old != new) behaviorSubject.onNext(new) }
+    override fun toString() = "$value"
 }
 
 class ObservableChainProperty<T>(override val observable: Observable<T>) : ObservableProperty<T>

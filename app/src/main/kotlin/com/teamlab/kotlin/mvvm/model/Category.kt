@@ -6,9 +6,7 @@ import com.teamlab.kotlin.mvvm.MutableObservableProperty
 import rx.Observable
 import java.util.concurrent.TimeUnit
 
-class Category(id: Long) : Model<Long>() {
-
-    override val id = id
+class Category(id: Long) : Model<Long>(id) {
     val name = MutableObservableProperty("")
     val description = MutableObservableProperty("")
     val status = MutableObservableProperty(Status.NORMAL)
