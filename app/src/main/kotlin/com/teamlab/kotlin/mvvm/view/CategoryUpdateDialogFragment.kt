@@ -61,14 +61,14 @@ class CategoryUpdateDialogFragment : DialogFragment {
         subscription = CompositeSubscription()
         // setup views
         val progress = ProgressDialog(activity).apply { isCancelable = false }
-        name.text = vm.name
-        description.text = vm.description
+        name.text = vm.name.value
+        description.text = vm.description.value
         val dialog = (dialog as AlertDialog)
         val update = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
         val delete = dialog.getButton(AlertDialog.BUTTON_NEUTRAL)
 
         // bind view model
-        subscription.add(vm.statusObservable
+        subscription.add(vm.status.observable
                 .doOnUnsubscribe { progress.dismiss() }
                 .observeOn(mainThread)
                 .subscribe {
@@ -85,24 +85,24 @@ class CategoryUpdateDialogFragment : DialogFragment {
                         }
                     }
                 })
-        subscription.add(vm.errorObservable
+        subscription.add(vm.error.observable
                 .observeOn(mainThread)
                 .subscribe {
                     it?.let {
                         Toast.makeText(activity, it.message, Toast.LENGTH_LONG).show()
                     }
                 })
-        subscription.add(vm.nameValidationObservable
+        subscription.add(vm.nameValidation.observable
                 .observeOn(mainThread)
                 .subscribe {
                     nameValidation.text = it
                 })
-        subscription.add(vm.descriptionValidationObservable
+        subscription.add(vm.descriptionValidation.observable
                 .observeOn(mainThread)
                 .subscribe {
                     descriptionValidation.text = it
                 })
-        subscription.add(vm.updateEnabledObservable
+        subscription.add(vm.updateEnabled.observable
                 .observeOn(mainThread)
                 .subscribe {
                     update.isEnabled = it
@@ -111,11 +111,11 @@ class CategoryUpdateDialogFragment : DialogFragment {
         // attach events
         subscription.add(name.textChanges()
                 .subscribe {
-                    vm.name = "$it"
+                    vm.name.value = "$it"
                 })
         subscription.add(description.textChanges()
                 .subscribe {
-                    vm.description= "$it"
+                    vm.description.value = "$it"
                 })
         subscription.add(update.clicks()
                 .subscribe {

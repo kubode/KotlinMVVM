@@ -1,10 +1,5 @@
 package com.teamlab.kotlin.mvvm
 
-import rx.subjects.BehaviorSubject
-import kotlin.properties.ObservableProperty
-import kotlin.properties.ReadWriteProperty
-import kotlin.reflect.KProperty
-
 abstract class Model<K> {
     abstract val id: K
 
@@ -21,15 +16,5 @@ abstract class Model<K> {
 
     override fun hashCode(): Int {
         return id?.hashCode() ?: 0
-    }
-}
-
-fun <T> observable(behaviorSubject: BehaviorSubject<T>): ReadWriteProperty<Any?, T> {
-    return object : ObservableProperty<T>(behaviorSubject.value) {
-        override fun afterChange(property: KProperty<*>, oldValue: T, newValue: T) {
-            if (oldValue != newValue) {
-                behaviorSubject.onNext(newValue)
-            }
-        }
     }
 }

@@ -44,13 +44,13 @@ class CategoryAddDialogFragment : DialogFragment() {
         subscription = CompositeSubscription()
         // setup views
         val progress = ProgressDialog(activity).apply { isCancelable = false }
-        id.text = vm.id
-        name.text = vm.name
-        description.text = vm.description
+        id.text = vm.id.value
+        name.text = vm.name.value
+        description.text = vm.description.value
         val add = (dialog as AlertDialog).getButton(AlertDialog.BUTTON_POSITIVE)
 
         // bind view model
-        subscription.add(vm.statusObservable
+        subscription.add(vm.status.observable
                 .doOnUnsubscribe { progress.dismiss() }
                 .observeOn(mainThread)
                 .subscribe {
@@ -67,29 +67,29 @@ class CategoryAddDialogFragment : DialogFragment() {
                         }
                     }
                 })
-        subscription.add(vm.errorObservable
+        subscription.add(vm.error.observable
                 .observeOn(mainThread)
                 .subscribe {
                     it?.let {
                         Toast.makeText(activity, it.message, Toast.LENGTH_LONG).show()
                     }
                 })
-        subscription.add(vm.idValidationObservable
+        subscription.add(vm.idValidation.observable
                 .observeOn(mainThread)
                 .subscribe {
                     idValidation.text = it
                 })
-        subscription.add(vm.nameValidationObservable
+        subscription.add(vm.nameValidation.observable
                 .observeOn(mainThread)
                 .subscribe {
                     nameValidation.text = it
                 })
-        subscription.add(vm.descriptionValidationObservable
+        subscription.add(vm.descriptionValidation.observable
                 .observeOn(mainThread)
                 .subscribe {
                     descriptionValidation.text = it
                 })
-        subscription.add(vm.addEnabledObservable
+        subscription.add(vm.addEnabled.observable
                 .observeOn(mainThread)
                 .subscribe {
                     add.isEnabled = it
@@ -98,15 +98,15 @@ class CategoryAddDialogFragment : DialogFragment() {
         // attach events
         subscription.add(id.textChanges()
                 .subscribe {
-                    vm.id = "$it"
+                    vm.id.value = "$it"
                 })
         subscription.add(name.textChanges()
                 .subscribe {
-                    vm.name = "$it"
+                    vm.name.value = "$it"
                 })
         subscription.add(description.textChanges()
                 .subscribe {
-                    vm.description = "$it"
+                    vm.description.value = "$it"
                 })
         subscription.add(add.clicks()
                 .subscribe {

@@ -2,35 +2,29 @@ package com.teamlab.kotlin.mvvm.model
 
 import com.teamlab.kotlin.mvvm.Cache
 import com.teamlab.kotlin.mvvm.Model
-import com.teamlab.kotlin.mvvm.observable
+import com.teamlab.kotlin.mvvm.MutableObservableProperty
 import rx.Observable
-import rx.lang.kotlin.BehaviourSubject
 import java.util.concurrent.TimeUnit
 
 class Categories(query: String) : Model<String>() {
 
     override val id = query
-
-    val listObservable = BehaviourSubject(emptyList<Category>())
-    val statusObservable = BehaviourSubject(Status.NORMAL)
-    val errorObservable = BehaviourSubject<Throwable?>(null)
-
-    var list: List<Category> by observable(listObservable)
-    var status: Status by observable(statusObservable)
-    var error: Throwable? by observable(errorObservable)
+    val list = MutableObservableProperty(emptyList<Category>())
+    val status = MutableObservableProperty(Status.NORMAL)
+    val error = MutableObservableProperty<Throwable?>(null)
 
     fun requestIfNotCompleted() {
-        if (status == Status.COMPLETED) {
+        if (status.value == Status.COMPLETED) {
             return
         }
-        val failForDebug = status != Status.ERROR // DEBUG
-        status = Status.REQUESTING
-        error = null
+        val failForDebug = status.value != Status.ERROR // DEBUG
+        status.value = Status.REQUESTING
+        error.value = null
         Observable.range(0, 5)
                 .map { Category.Manager.get(it.toLong()) }
                 .doOnNext {
-                    it.name = "Category ${it.id}"
-                    it.description = "Description ${it.id}"
+                    it.name.value = "Category ${it.id}"
+                    it.description.value = "Description ${it.id}"
                 }
                 .toList()
                 .delay(1, TimeUnit.SECONDS)
@@ -40,11 +34,11 @@ class Categories(query: String) : Model<String>() {
                     }
                 }
                 .subscribe({
-                    status = Status.COMPLETED
-                    list += it
+                    list.value += it
+                    status.value = Status.COMPLETED
                 }, {
-                    status = Status.ERROR
-                    error = it
+                    status.value = Status.ERROR
+                    error.value = it
                 })
     }
 
@@ -60,10 +54,10 @@ class Categories(query: String) : Model<String>() {
                     .doOnNext {
                         // Check duplicated id & name
                         cache.getAll().forEach {
-                            if (category in it.list || it.list.find { it.name == category.name } != null) {
+                            if (category in it.list.value || it.list.value.find { it.name.value == category.name.value } != null) {
                                 throw RuntimeException("$category is already exists.")
                             }
-                            it.list += category // add
+                            it.list.value += category // add
                         }
                         Category.Manager.cache.put(category)
                     }

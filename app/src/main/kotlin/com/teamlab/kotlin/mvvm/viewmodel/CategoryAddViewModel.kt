@@ -1,26 +1,17 @@
 package com.teamlab.kotlin.mvvm.viewmodel
 
+import com.teamlab.kotlin.mvvm.MutableObservableProperty
+import com.teamlab.kotlin.mvvm.ObservableChainProperty
 import com.teamlab.kotlin.mvvm.model.Categories
 import com.teamlab.kotlin.mvvm.model.Category
 import com.teamlab.kotlin.mvvm.model.Status
-import com.teamlab.kotlin.mvvm.observable
 import rx.Observable
-import rx.lang.kotlin.BehaviourSubject
 
 class CategoryAddViewModel {
-    val idObservable = BehaviourSubject("")
-    val nameObservable = BehaviourSubject("")
-    val descriptionObservable = BehaviourSubject("")
-    val statusObservable = BehaviourSubject(Status.NORMAL)
-    val errorObservable = BehaviourSubject<Throwable?>(null)
-
-    var id: String by observable(idObservable)
-    var name: String by observable(nameObservable)
-    var description: String by observable(descriptionObservable)
-    var status: Status by observable(statusObservable)
-    var error: Throwable? by observable(errorObservable)
-
-    var idValidationObservable = idObservable
+    val status = MutableObservableProperty(Status.NORMAL)
+    val error = MutableObservableProperty<Throwable?>(null)
+    val id = MutableObservableProperty("")
+    val idValidation = ObservableChainProperty(id.observable
             .map {
                 try {
                     it.toLong()
@@ -28,39 +19,42 @@ class CategoryAddViewModel {
                 } catch(e: NumberFormatException) {
                     "cant parse to long"
                 }
-            }
-    val nameValidationObservable = nameObservable
+            })
+
+    val name = MutableObservableProperty("")
+    val nameValidation = ObservableChainProperty(name.observable
             .map {
                 if (it.isEmpty()) {
                     "name is required."
                 } else {
                     null
                 }
-            }
-    val descriptionValidationObservable = descriptionObservable
+            })
+    val description = MutableObservableProperty("")
+    val descriptionValidation = ObservableChainProperty(description.observable
             .map {
                 if (it.isEmpty()) {
                     "description is required."
                 } else {
                     null
                 }
-            }
-    val addEnabledObservable = Observable
-            .combineLatest(idValidationObservable, nameValidationObservable, descriptionValidationObservable,
-                    { v1, v2, v3 -> (v1 == null && v2 == null && v3 == null) })
+            })
+    val addEnabled = ObservableChainProperty(Observable
+            .combineLatest(idValidation.observable, nameValidation.observable, descriptionValidation.observable,
+                    { v1, v2, v3 -> (v1 == null && v2 == null && v3 == null) }))
 
     fun add() {
-        val category = Category(id.toLong())
-        category.name = name
-        category.description = description
-        category.statusObservable.subscribe { status = it }
-        category.errorObservable.subscribe { error = it }
-        status = Status.REQUESTING
+        val category = Category(id.value.toLong())
+        category.name.value = name.value
+        category.description.value = description.value
+        category.status.observable.subscribe { status.value = it }
+        category.error.observable.subscribe { error.value = it }
+        status.value = Status.REQUESTING
         Categories.Manager.add(category).subscribe({
-            status = Status.COMPLETED
+            status.value = Status.COMPLETED
         }, {
-            status = Status.ERROR
-            error = it
+            status.value = Status.ERROR
+            error.value = it
         })
     }
 }
