@@ -11,15 +11,15 @@ class Category(id: Long) : Model<Long>() {
 
     override val id = id
 
-    val nameObservable = BehaviourSubject<String>()
-    val descriptionObservable = BehaviourSubject<String>()
-    val statusObservable = BehaviourSubject<Status>()
-    val errorObservable = BehaviourSubject<Throwable?>()
+    val nameObservable = BehaviourSubject("")
+    val descriptionObservable = BehaviourSubject("")
+    val statusObservable = BehaviourSubject(Status.NORMAL)
+    val errorObservable = BehaviourSubject<Throwable?>(null)
 
-    var name by observable("", nameObservable)
-    var description by observable("", descriptionObservable)
-    var status by observable(Status.NORMAL, statusObservable)
-    var error by observable(null, errorObservable)
+    var name: String by observable(nameObservable)
+    var description: String by observable(descriptionObservable)
+    var status: Status by observable(statusObservable)
+    var error: Throwable? by observable(errorObservable)
 
     override fun toString(): String {
         return "id: $id, name: $name, description: $description, status: $status, error: $error"

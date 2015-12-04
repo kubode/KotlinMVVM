@@ -24,9 +24,8 @@ abstract class Model<K> {
     }
 }
 
-fun <T> observable(initialValue: T, behaviorSubject: BehaviorSubject<T>): ReadWriteProperty<Any, T> {
-    behaviorSubject.onNext(initialValue)
-    return object : ObservableProperty<T>(initialValue) {
+fun <T> observable(behaviorSubject: BehaviorSubject<T>): ReadWriteProperty<Any?, T> {
+    return object : ObservableProperty<T>(behaviorSubject.value) {
         override fun afterChange(property: KProperty<*>, oldValue: T, newValue: T) {
             if (oldValue != newValue) {
                 behaviorSubject.onNext(newValue)

@@ -9,13 +9,13 @@ import rx.lang.kotlin.BehaviourSubject
 class CategoryUpdateViewModel(id: Long) {
     private val category = Category.Manager.get(id).apply { status = Status.NORMAL }
 
-    val nameObservable = BehaviourSubject<String>()
-    val descriptionObservable = BehaviourSubject<String>()
+    val nameObservable = BehaviourSubject(category.name)
+    val descriptionObservable = BehaviourSubject(category.description)
     var statusObservable = category.statusObservable
     var errorObservable = category.errorObservable
 
-    var name by observable(category.name, nameObservable)
-    var description by observable(category.description, descriptionObservable)
+    var name: String by observable(nameObservable)
+    var description: String by observable(descriptionObservable)
 
     val nameValidationObservable = nameObservable
             .map {
