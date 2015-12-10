@@ -63,7 +63,7 @@ class CategoriesFragment : Fragment() {
         }
 
         // bind view model
-        subscription.add(vm.status.observable
+        subscription.add(vm.status.behaviorSubject
                 .observeOn(mainThread)
                 .subscribe {
                     when (it!!) {
@@ -84,12 +84,12 @@ class CategoriesFragment : Fragment() {
                         }
                     }
                 })
-        subscription.add(vm.error.observable
+        subscription.add(vm.error.behaviorSubject
                 .observeOn(mainThread)
                 .subscribe {
                     error.text = it?.message
                 })
-        subscription.add(vm.list.observable
+        subscription.add(vm.list.behaviorSubject
                 .observeOn(mainThread)
                 .subscribe {
                     adapter.clear()

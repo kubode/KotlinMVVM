@@ -2,15 +2,15 @@ package com.teamlab.kotlin.mvvm.model
 
 import com.teamlab.kotlin.mvvm.Cache
 import com.teamlab.kotlin.mvvm.Model
-import com.teamlab.kotlin.mvvm.MutableObservableProperty
+import com.teamlab.kotlin.mvvm.ValueMutableRxProperty
 import rx.Observable
 import java.util.concurrent.TimeUnit
 
 class Category(id: Long) : Model<Long>(id) {
-    val name = MutableObservableProperty("")
-    val description = MutableObservableProperty("")
-    val status = MutableObservableProperty(Status.NORMAL)
-    val error = MutableObservableProperty<Throwable?>(null)
+    val name = ValueMutableRxProperty("")
+    val description = ValueMutableRxProperty("")
+    val status = ValueMutableRxProperty(Status.NORMAL)
+    val error = ValueMutableRxProperty(null as Throwable?)
 
     override fun toString(): String {
         return "id: $id, name: $name, description: $description, status: $status, error: $error"

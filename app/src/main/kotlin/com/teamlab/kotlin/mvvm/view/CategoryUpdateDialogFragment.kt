@@ -68,7 +68,7 @@ class CategoryUpdateDialogFragment : DialogFragment {
         val delete = dialog.getButton(AlertDialog.BUTTON_NEUTRAL)
 
         // bind view model
-        subscription.add(vm.status.observable
+        subscription.add(vm.status.behaviorSubject
                 .doOnUnsubscribe { progress.dismiss() }
                 .observeOn(mainThread)
                 .subscribe {
@@ -85,24 +85,24 @@ class CategoryUpdateDialogFragment : DialogFragment {
                         }
                     }
                 })
-        subscription.add(vm.error.observable
+        subscription.add(vm.error.behaviorSubject
                 .observeOn(mainThread)
                 .subscribe {
                     it?.let {
                         Toast.makeText(activity, it.message, Toast.LENGTH_LONG).show()
                     }
                 })
-        subscription.add(vm.nameValidation.observable
+        subscription.add(vm.nameValidation.behaviorSubject
                 .observeOn(mainThread)
                 .subscribe {
                     nameValidation.text = it
                 })
-        subscription.add(vm.descriptionValidation.observable
+        subscription.add(vm.descriptionValidation.behaviorSubject
                 .observeOn(mainThread)
                 .subscribe {
                     descriptionValidation.text = it
                 })
-        subscription.add(vm.updateEnabled.observable
+        subscription.add(vm.updateEnabled.behaviorSubject
                 .observeOn(mainThread)
                 .subscribe {
                     update.isEnabled = it

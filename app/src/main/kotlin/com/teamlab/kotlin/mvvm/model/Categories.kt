@@ -2,14 +2,14 @@ package com.teamlab.kotlin.mvvm.model
 
 import com.teamlab.kotlin.mvvm.Cache
 import com.teamlab.kotlin.mvvm.Model
-import com.teamlab.kotlin.mvvm.MutableObservableProperty
+import com.teamlab.kotlin.mvvm.ValueMutableRxProperty
 import rx.Observable
 import java.util.concurrent.TimeUnit
 
 class Categories(query: String) : Model<String>(query) {
-    val list = MutableObservableProperty(emptyList<Category>())
-    val status = MutableObservableProperty(Status.NORMAL)
-    val error = MutableObservableProperty<Throwable?>(null)
+    val list = ValueMutableRxProperty(emptyList<Category>())
+    val status = ValueMutableRxProperty(Status.NORMAL)
+    val error = ValueMutableRxProperty(null as Throwable?)
 
     fun requestIfNotCompleted() {
         if (status.value == Status.COMPLETED) {
