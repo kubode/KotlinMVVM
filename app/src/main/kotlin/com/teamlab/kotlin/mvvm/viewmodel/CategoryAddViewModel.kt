@@ -1,5 +1,6 @@
 package com.teamlab.kotlin.mvvm.viewmodel
 
+import android.os.Bundle
 import com.teamlab.kotlin.mvvm.ChainImmutableRxProperty
 import com.teamlab.kotlin.mvvm.ValueMutableRxProperty
 import com.teamlab.kotlin.mvvm.model.Categories
@@ -42,6 +43,19 @@ class CategoryAddViewModel {
     val addEnabled = ChainImmutableRxProperty(Observable
             .combineLatest(idValidation.behaviorSubject, nameValidation.behaviorSubject, descriptionValidation.behaviorSubject,
                     { v1, v2, v3 -> (v1 == null && v2 == null && v3 == null) }))
+
+    constructor(savedInstanceState: Bundle?) {
+        savedInstanceState ?: return
+        id.value = savedInstanceState.getString("id")
+        name.value = savedInstanceState.getString("name")
+        description.value = savedInstanceState.getString("description")
+    }
+
+    fun onSaveInstanceState(outState: Bundle) {
+        outState.putString("id", id.value)
+        outState.putString("name", name.value)
+        outState.putString("description", description.value)
+    }
 
     fun add() {
         val category = Category(id.value.toLong())

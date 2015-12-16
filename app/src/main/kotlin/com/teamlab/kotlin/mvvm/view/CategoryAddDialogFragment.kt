@@ -27,8 +27,13 @@ class CategoryAddDialogFragment : DialogFragment() {
     private val description: TextView by bindView(R.id.description)
     private val descriptionValidation: TextView by bindView(R.id.description_validation)
 
-    private val vm = CategoryAddViewModel()
+    private lateinit var vm: CategoryAddViewModel
     private lateinit var subscription: CompositeSubscription
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        vm = CategoryAddViewModel(savedInstanceState)
+    }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog? {
         return AlertDialog.Builder(activity)
@@ -117,5 +122,10 @@ class CategoryAddDialogFragment : DialogFragment() {
     override fun onStop() {
         subscription.unsubscribe()
         super.onStop()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        vm.onSaveInstanceState(outState)
     }
 }
