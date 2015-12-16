@@ -40,9 +40,11 @@ class CategoryAddViewModel {
                     null
                 }
             })
-    val addEnabled = ChainImmutableRxProperty(Observable
-            .combineLatest(idValidation.behaviorSubject, nameValidation.behaviorSubject, descriptionValidation.behaviorSubject,
-                    { v1, v2, v3 -> (v1 == null && v2 == null && v3 == null) }))
+    val addEnabled = ChainImmutableRxProperty(Observable.combineLatest(
+            idValidation.behaviorSubject,
+            nameValidation.behaviorSubject,
+            descriptionValidation.behaviorSubject,
+            { v1, v2, v3 -> (v1 == null && v2 == null && v3 == null) }))
 
     constructor(savedInstanceState: Bundle?) {
         savedInstanceState ?: return
