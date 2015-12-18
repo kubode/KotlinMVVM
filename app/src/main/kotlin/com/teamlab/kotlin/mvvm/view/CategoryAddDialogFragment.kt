@@ -3,36 +3,35 @@ package com.teamlab.kotlin.mvvm.view
 import android.app.Dialog
 import android.app.ProgressDialog
 import android.os.Bundle
-import android.support.v4.app.DialogFragment
 import android.support.v7.app.AlertDialog
+import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import com.jakewharton.rxbinding.view.clicks
-import com.jakewharton.rxbinding.widget.textChanges
+import com.teamlab.kotlin.mvvm.MvvmDialogFragment
 import com.teamlab.kotlin.mvvm.R
+import com.teamlab.kotlin.mvvm.bindEditText
+import com.teamlab.kotlin.mvvm.bindRxProperty
 import com.teamlab.kotlin.mvvm.butterknife.bindView
 import com.teamlab.kotlin.mvvm.model.Status
 import com.teamlab.kotlin.mvvm.viewmodel.CategoryAddViewModel
-import rx.android.schedulers.AndroidSchedulers
+import rx.Subscription
 import rx.subscriptions.CompositeSubscription
 
-class CategoryAddDialogFragment : DialogFragment() {
+class CategoryAddDialogFragment : MvvmDialogFragment() {
 
-    private val mainThread = AndroidSchedulers.mainThread()
-
-    private val id: TextView by bindView(R.id.id)
+    private val id: EditText by bindView(R.id.id)
     private val idValidation: TextView by bindView(R.id.id_validation)
-    private val name: TextView by bindView(R.id.name)
+    private val name: EditText by bindView(R.id.name)
     private val nameValidation: TextView by bindView(R.id.name_validation)
-    private val description: TextView by bindView(R.id.description)
+    private val description: EditText by bindView(R.id.description)
     private val descriptionValidation: TextView by bindView(R.id.description_validation)
 
-    private lateinit var vm: CategoryAddViewModel
-    private lateinit var subscription: CompositeSubscription
+    override protected lateinit var vm: CategoryAddViewModel
+    private lateinit var subscription: Subscription
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        vm = CategoryAddViewModel(savedInstanceState)
+    override fun onCreateViewModel() {
+        vm = CategoryAddViewModel()
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog? {
@@ -49,83 +48,30 @@ class CategoryAddDialogFragment : DialogFragment() {
         subscription = CompositeSubscription()
         // setup views
         val progress = ProgressDialog(activity).apply { isCancelable = false }
-        id.text = vm.id.value
-        name.text = vm.name.value
-        description.text = vm.description.value
         val add = (dialog as AlertDialog).getButton(AlertDialog.BUTTON_POSITIVE)
 
-        // bind view model
-        subscription.add(vm.status.behaviorSubject
-                .doOnUnsubscribe { progress.dismiss() }
-                .observeOn(mainThread)
-                .subscribe {
-                    when (it!!) {
-                        Status.NORMAL, Status.ERROR -> {
-                            progress.dismiss()
-                        }
-                        Status.REQUESTING -> {
-                            progress.show()
-                        }
-                        Status.COMPLETED -> {
-                            progress.dismiss()
-                            dismiss()
-                        }
-                    }
-                })
-        subscription.add(vm.error.behaviorSubject
-                .observeOn(mainThread)
-                .subscribe {
+        subscription = CompositeSubscription(
+                // bind view model
+                progress.bindRxProperty(vm.progressVisible) { if (it) show() else dismiss() },
+                bindRxProperty(vm.status) { if (it == Status.COMPLETED) dismiss() },
+                bindRxProperty(vm.error) {
                     it?.let {
                         Toast.makeText(activity, it.message, Toast.LENGTH_LONG).show()
                     }
-                })
-        subscription.add(vm.idValidation.behaviorSubject
-                .observeOn(mainThread)
-                .subscribe {
-                    idValidation.text = it
-                })
-        subscription.add(vm.nameValidation.behaviorSubject
-                .observeOn(mainThread)
-                .subscribe {
-                    nameValidation.text = it
-                })
-        subscription.add(vm.descriptionValidation.behaviorSubject
-                .observeOn(mainThread)
-                .subscribe {
-                    descriptionValidation.text = it
-                })
-        subscription.add(vm.addEnabled.behaviorSubject
-                .observeOn(mainThread)
-                .subscribe {
-                    add.isEnabled = it
-                })
-
-        // attach events
-        subscription.add(id.textChanges()
-                .subscribe {
-                    vm.id.value = "$it"
-                })
-        subscription.add(name.textChanges()
-                .subscribe {
-                    vm.name.value = "$it"
-                })
-        subscription.add(description.textChanges()
-                .subscribe {
-                    vm.description.value = "$it"
-                })
-        subscription.add(add.clicks()
-                .subscribe {
-                    vm.add()
-                })
+                },
+                idValidation.bindRxProperty(vm.idValidation, { text = it }),
+                nameValidation.bindRxProperty(vm.nameValidation, { text = it }),
+                descriptionValidation.bindRxProperty(vm.descriptionValidation, { text = it }),
+                add.bindRxProperty(vm.addEnabled, { isEnabled = it }),
+                // attach events
+                vm.id.bindEditText(id),
+                vm.name.bindEditText(name),
+                vm.description.bindEditText(description),
+                add.clicks().subscribe { vm.add() })
     }
 
     override fun onStop() {
         subscription.unsubscribe()
         super.onStop()
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        vm.onSaveInstanceState(outState)
     }
 }

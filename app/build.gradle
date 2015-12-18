@@ -53,4 +53,5 @@ dependencies {
     compile 'io.reactivex:rxandroid:1.0.1'
     compile 'io.reactivex:rxkotlin:0.24.100'
     compile 'com.jakewharton.rxbinding:rxbinding-kotlin:0.3.0'
+    compile 'com.jakewharton.rxbinding:rxbinding-appcompat-v7-kotlin:0.3.0'
 }
