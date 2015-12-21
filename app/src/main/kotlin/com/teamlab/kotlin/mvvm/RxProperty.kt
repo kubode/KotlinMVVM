@@ -21,7 +21,7 @@ open class ReadOnlyRxProperty<T>(initialValue: T) {
 }
 
 class RxProperty<T>(initialValue: T) : ReadOnlyRxProperty<T>(initialValue) {
-    override var value: T
+    final override var value: T
         get() = super.value
         public set(value) {
             super.value = value
