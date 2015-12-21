@@ -1,5 +1,6 @@
 package com.teamlab.kotlin.mvvm.butterknife
 
+import android.app.Activity
 import android.app.Dialog
 import android.support.v4.app.DialogFragment
 import android.support.v4.app.Fragment
@@ -9,38 +10,32 @@ import java.util.*
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
-public fun <V : View> Fragment.bindView(id: Int): ReadOnlyProperty<Fragment, V> {
-    return FragmentViewProperty(id)
-}
+private val viewRootCache: WeakHashMap<Any, MutableMap<Int, WeakReference<View>>> = WeakHashMap()
 
-public fun <V : View> DialogFragment.bindView(id: Int): ReadOnlyProperty<DialogFragment, V> {
-    return DialogFragmentViewProperty(id)
-}
-
-private val fragmentViewCache: WeakHashMap<View, MutableMap<Int, WeakReference<View>>> = WeakHashMap()
-private val Fragment.viewCache: MutableMap<Int, WeakReference<View>>
-    get() = view?.let {
-        fragmentViewCache.getOrPut(it, { HashMap() })
-    } ?: throw IllegalStateException("Fragment#getView() is null")
-
-private class FragmentViewProperty<V : View>(private val id: Int) : ReadOnlyProperty<Fragment, V> {
-    override fun getValue(thisRef: Fragment, property: KProperty<*>): V {
+private class ViewCacheProperty<T, R : Any?, V : View>(private val rootGetter: T.() -> R,
+                                                       private val viewFinder: R.(Int) -> View?,
+                                                       private val id: Int) : ReadOnlyProperty<T, V> {
+    override fun getValue(thisRef: T, property: KProperty<*>): V {
+        val root = thisRef.rootGetter()
+                ?: throw NullPointerException("$thisRef's root is null.")
         @Suppress("UNCHECKED_CAST")
-        return thisRef.viewCache.getOrPut(id, { WeakReference(thisRef.view.findViewById(id)) })
-                .get() as V? ?: throw NullPointerException("View ID $id for '${property.name}' not found.")
+        return viewRootCache.getOrPut(root, { HashMap() })
+                .getOrPut(id, {
+                    WeakReference(root.viewFinder(id)
+                            ?: throw NullPointerException("${property.name}(id: $id) is not found."))
+                })
+                .get() as V
     }
 }
 
-private val dialogFragmentDialogCache: WeakHashMap<Dialog, MutableMap<Int, WeakReference<View>>> = WeakHashMap()
-private val DialogFragment.dialogCache: MutableMap<Int, WeakReference<View>>
-    get() = dialog?.let {
-        dialogFragmentDialogCache.getOrPut(it, { HashMap() })
-    } ?: throw IllegalStateException("DialogFragment#getDialog() is null")
+@Suppress("UNCHECKED_CAST")
+fun <V : View> Activity.bindView(id: Int) = lazy { findViewById(id) as V }
 
-private class DialogFragmentViewProperty<V : View>(private val id: Int) : ReadOnlyProperty<DialogFragment, V> {
-    override fun getValue(thisRef: DialogFragment, property: KProperty<*>): V {
-        @Suppress("UNCHECKED_CAST")
-        return thisRef.dialogCache.getOrPut(id, { WeakReference(thisRef.dialog.findViewById(id)) })
-                .get() as V? ?: throw NullPointerException("View ID $id for '${property.name}' not found.")
-    }
-}
+@Suppress("UNCHECKED_CAST")
+fun <V : View> View.bindView(id: Int) = lazy { findViewById(id) as V }
+
+fun <V : View> Fragment.bindView(id: Int): ReadOnlyProperty<Fragment, V>
+        = ViewCacheProperty<Fragment, View, V>({ view }, { findViewById(it) }, id)
+
+fun <V : View> DialogFragment.bindView(id: Int): ReadOnlyProperty<DialogFragment, V>
+        = ViewCacheProperty<Fragment, Dialog, V>({ dialog }, { findViewById(it) }, id)
