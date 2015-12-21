@@ -59,10 +59,10 @@ class CategoryAddDialogFragment : MvvmDialogFragment() {
                         Toast.makeText(activity, it.message, Toast.LENGTH_LONG).show()
                     }
                 },
-                idValidation.bindRxProperty(vm.idValidation, { text = it }),
-                nameValidation.bindRxProperty(vm.nameValidation, { text = it }),
-                descriptionValidation.bindRxProperty(vm.descriptionValidation, { text = it }),
-                add.bindRxProperty(vm.addEnabled, { isEnabled = it }),
+                idValidation.bindRxProperty(vm.idValidation) { text = it },
+                nameValidation.bindRxProperty(vm.nameValidation) { text = it },
+                descriptionValidation.bindRxProperty(vm.descriptionValidation) { text = it },
+                add.bindRxProperty(vm.addEnabled) { isEnabled = it },
                 // attach events
                 id.bindTextChanges(vm.id),
                 name.bindTextChanges(vm.name),
