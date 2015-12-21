@@ -24,7 +24,8 @@ fun <V, T> V.bindRxProperty(property: ReadOnlyRxProperty<T>, initializer: V.(T) 
     return subscription
 }
 
-fun RxProperty<CharSequence>.bindEditText(editText: EditText): Subscription {
-    editText.setText(value)
-    return editText.textChanges().subscribe { value = it }
+fun EditText.bindTextChanges(property: RxProperty<CharSequence>): Subscription {
+    val subscription = textChanges().subscribe { property.value = it }
+    setText(property.value)
+    return subscription
 }

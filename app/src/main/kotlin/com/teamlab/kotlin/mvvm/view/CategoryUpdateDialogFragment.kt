@@ -10,8 +10,8 @@ import android.widget.Toast
 import com.jakewharton.rxbinding.view.clicks
 import com.teamlab.kotlin.mvvm.MvvmDialogFragment
 import com.teamlab.kotlin.mvvm.R
-import com.teamlab.kotlin.mvvm.bindEditText
 import com.teamlab.kotlin.mvvm.bindRxProperty
+import com.teamlab.kotlin.mvvm.bindTextChanges
 import com.teamlab.kotlin.mvvm.butterknife.bindView
 import com.teamlab.kotlin.mvvm.model.Status
 import com.teamlab.kotlin.mvvm.viewmodel.CategoryUpdateViewModel
@@ -78,8 +78,8 @@ class CategoryUpdateDialogFragment : MvvmDialogFragment {
                 descriptionValidation.bindRxProperty(vm.descriptionValidation) { text = it },
                 update.bindRxProperty(vm.updateEnabled) { isEnabled = it },
                 // attach events
-                vm.name.bindEditText(name),
-                vm.description.bindEditText(description),
+                name.bindTextChanges(vm.name),
+                description.bindTextChanges(vm.description),
                 update.clicks().subscribe { vm.update() },
                 delete.clicks().subscribe { vm.delete() })
     }
