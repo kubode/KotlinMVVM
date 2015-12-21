@@ -13,15 +13,13 @@ abstract class ViewModel {
         onRestoreInstanceState(savedInstanceState)
     }
 
-    open protected fun onRestoreInstanceState(savedInstanceState: Bundle) {
-    }
+    open protected fun onRestoreInstanceState(savedInstanceState: Bundle) = Unit
 
     fun saveInstanceState(outState: Bundle) {
         onSaveInstanceState(outState)
     }
 
-    open protected fun onSaveInstanceState(outState: Bundle) {
-    }
+    open protected fun onSaveInstanceState(outState: Bundle) = Unit
 
     protected fun <T> bind(property: ReadOnlyRxProperty<T>, observable: Observable<out T>) {
         subscription.add(property.bind(observable))
@@ -32,6 +30,5 @@ abstract class ViewModel {
         onDestroy()
     }
 
-    open protected fun onDestroy() {
-    }
+    open protected fun onDestroy() = Unit
 }
