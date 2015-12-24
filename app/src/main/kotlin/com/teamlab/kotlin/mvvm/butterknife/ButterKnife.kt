@@ -1,7 +1,6 @@
 package com.teamlab.kotlin.mvvm.butterknife
 
 import android.app.Activity
-import android.app.Dialog
 import android.support.v4.app.DialogFragment
 import android.support.v4.app.Fragment
 import android.view.View
@@ -12,9 +11,9 @@ import kotlin.reflect.KProperty
 
 private val viewRootCache: WeakHashMap<Any, MutableMap<Int, WeakReference<View>>> = WeakHashMap()
 
-private class ViewCacheProperty<R : Any?, V : View>(private val rootGetter: () -> R,
-                                                    private val viewFinder: R.(Int) -> View?,
-                                                    private val id: Int) : ReadOnlyProperty<Any, V> {
+private class ViewCacheProperty<R : Any, V : View>(private val rootGetter: () -> R?,
+                                                   private val viewFinder: R.(Int) -> View?,
+                                                   private val id: Int) : ReadOnlyProperty<Any, V> {
     override fun getValue(thisRef: Any, property: KProperty<*>): V {
         val root = rootGetter()
                 ?: throw NullPointerException("$thisRef's root is null.")
@@ -35,7 +34,7 @@ fun <V : View> Activity.bindView(id: Int) = lazy { findViewById(id) as V }
 fun <V : View> View.bindView(id: Int) = lazy { findViewById(id) as V }
 
 fun <V : View> Fragment.bindView(id: Int): ReadOnlyProperty<Fragment, V>
-        = ViewCacheProperty<View, V>({ view }, { findViewById(it) }, id)
+        = ViewCacheProperty({ view }, { findViewById(it) }, id)
 
 fun <V : View> DialogFragment.bindView(id: Int): ReadOnlyProperty<DialogFragment, V>
-        = ViewCacheProperty<Dialog, V>({ dialog }, { findViewById(it) }, id)
+        = ViewCacheProperty({ dialog }, { findViewById(it) }, id)
