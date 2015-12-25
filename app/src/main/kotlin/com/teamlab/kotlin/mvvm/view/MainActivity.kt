@@ -12,7 +12,7 @@ class MainActivity : AppCompatActivity() {
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                    .add(R.id.container, CategoriesFragment())
+                    .add(R.id.container, OAuthFragment())
                     .commit()
         }
     }

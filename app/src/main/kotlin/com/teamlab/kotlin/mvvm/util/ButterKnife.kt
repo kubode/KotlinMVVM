@@ -1,4 +1,4 @@
-package com.teamlab.kotlin.mvvm.butterknife
+package com.teamlab.kotlin.mvvm.util
 
 import android.app.Activity
 import android.support.v4.app.DialogFragment

@@ -55,4 +55,6 @@ dependencies {
     compile 'io.reactivex:rxkotlin:0.24.100'
     compile 'com.jakewharton.rxbinding:rxbinding-kotlin:0.3.0'
     compile 'com.jakewharton.rxbinding:rxbinding-appcompat-v7-kotlin:0.3.0'
+    // Twitter4J
+    compile 'org.twitter4j:twitter4j-core:4.0.4'
 }

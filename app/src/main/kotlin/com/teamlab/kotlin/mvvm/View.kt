@@ -8,11 +8,11 @@ abstract class MvvmFragment : Fragment() {
 
     protected abstract val vm: ViewModel
 
-    protected abstract fun onCreateViewModel()
+    protected abstract fun onInitializeViewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        onCreateViewModel()
+        onInitializeViewModel()
         vm.restoreInstanceState(savedInstanceState)
     }
 
