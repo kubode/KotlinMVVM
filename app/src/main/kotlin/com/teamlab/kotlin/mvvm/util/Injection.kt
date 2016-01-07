@@ -1,11 +1,6 @@
 package com.teamlab.kotlin.mvvm.util
 
-import android.app.Activity
-import android.app.Application
-import android.app.Service
 import android.content.Context
-import android.support.v4.app.Fragment
-import android.view.View
 import java.util.*
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KClass
@@ -158,29 +153,14 @@ public fun Context.findObjectGraph(): ObjectGraph {
     throw  RuntimeException("${ObjectGraph::class.java.simpleName} is not found in $this.")
 }
 
-private val Application.objectGraph: ObjectGraph by Lazy { it.findObjectGraph() }
-private val Activity.objectGraph: ObjectGraph by Lazy { it.application.findObjectGraph() }
-private val Fragment.objectGraph: ObjectGraph by Lazy { it.activity.findObjectGraph() }
-private val View.objectGraph: ObjectGraph by Lazy { it.context.findObjectGraph() }
-private val Service.objectGraph: ObjectGraph by Lazy { it.applicationContext.findObjectGraph() }
+interface Injectable {
+    val context: Context
+}
 
-public fun <V : Any> Application.inject(clazz: KClass<V>, name: String? = null)
-        = lazy { objectGraph.get(clazz, name) }
-
-public fun <V : Any> Activity.inject(clazz: KClass<V>, name: String? = null)
-        = lazy { objectGraph.get(clazz, name) }
-
-public fun <V : Any> Fragment.inject(clazz: KClass<V>, name: String? = null)
-        = lazy { objectGraph.get(clazz, name) }
-
-public fun <V : Any> View.inject(clazz: KClass<V>, name: String? = null)
-        = lazy { objectGraph.get(clazz, name) }
-
-public fun <V : Any> Service.inject(clazz: KClass<V>, name: String? = null)
-        = lazy { objectGraph.get(clazz, name) }
+fun <V : Any> Injectable.inject(clazz: KClass<V>, name: String? = null) = lazy { context.findObjectGraph().get(clazz, name) }
 
 // Like kotlin lazy delegate but the initializer gets the target and metadata passed to it
-internal class Lazy<T, V>(private val initializer: (T) -> V) : ReadOnlyProperty<T, V> {
+internal class Lazy<T, V>(private val initializer: T.() -> V) : ReadOnlyProperty<T, V> {
     private object EMPTY
 
     @Suppress("UNCHECKED_CAST")
@@ -188,7 +168,7 @@ internal class Lazy<T, V>(private val initializer: (T) -> V) : ReadOnlyProperty<
 
     override fun getValue(thisRef: T, property: KProperty<*>): V {
         if (value == EMPTY) {
-            value = initializer(thisRef)
+            value = thisRef.initializer()
         }
         return value
     }
