@@ -41,6 +41,7 @@ class MainActivity : AppCompatActivity(), Injectable {
     }
 
     override fun onDestroy() {
+        subscription.unsubscribe()
         super.onDestroy()
         (application as MyApplication).ref.watch(this)
     }
