@@ -12,6 +12,7 @@ import rx.mvvm.chain
 
 class AccountsViewModel(context: Context) : ViewModel(), Injectable {
     override val injectionHierarchy = InjectionHierarchy.of(context)
+
     private val pref by inject(AppPreferences::class)
     val accountsObservable = RxPropertyObservable.chain(pref.accountsObservable)
 }

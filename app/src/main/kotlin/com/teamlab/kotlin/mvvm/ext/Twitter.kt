@@ -32,7 +32,7 @@ private fun <T> asObservable(f: () -> T): Observable<T> {
                     it.onError(e)
                 }
             }
-            .observeOn(Schedulers.io())
+            .subscribeOn(Schedulers.io())
 }
 
 fun Twitter.getOAuthRequestTokenObservable() = asObservable { oAuthRequestToken }
