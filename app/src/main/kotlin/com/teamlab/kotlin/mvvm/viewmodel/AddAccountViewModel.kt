@@ -31,8 +31,8 @@ class AddAccountViewModel(context: Context) : ViewModel() {
             oAuth.stateObservable, pinObservable,
             { state, pin -> state != State.REQUESTING && pin.isNotEmpty() }))
     val submitErrorMessageObservable = RxPropertyObservable.chain(Observable.combineLatest(
-            oAuth.accessTokenObservable, oAuth.errorObservable,
-            { accessToken, error -> if (accessToken == null) error?.message else null }
+            oAuth.requestTokenObservable, oAuth.errorObservable,
+            { requestToken, error -> if (requestToken != null) error?.message else null }
     ))
     val isCompletedObservable = RxPropertyObservable.chain(oAuth.stateObservable.map { it == State.COMPLETED })
 
