@@ -1,7 +1,6 @@
-package com.teamlab.kotlin.mvvm
+package rx.mvvm
 
 import android.os.Bundle
-import rx.Observable
 import rx.subscriptions.CompositeSubscription
 
 abstract class ViewModel {
@@ -20,10 +19,6 @@ abstract class ViewModel {
     }
 
     open protected fun onSaveInstanceState(outState: Bundle) = Unit
-
-    protected fun <T> bind(property: ReadOnlyRxProperty<T>, observable: Observable<out T>) {
-        subscription.add(property.bind(observable))
-    }
 
     fun destroy() {
         subscription.unsubscribe()

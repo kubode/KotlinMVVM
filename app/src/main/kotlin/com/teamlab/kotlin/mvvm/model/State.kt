@@ -1,5 +1,5 @@
 package com.teamlab.kotlin.mvvm.model
 
-enum class Status {
+enum class State {
     NORMAL, REQUESTING, ERROR, COMPLETED
 }

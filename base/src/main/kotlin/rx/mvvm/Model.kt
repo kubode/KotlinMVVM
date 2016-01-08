@@ -1,6 +1,7 @@
-package com.teamlab.kotlin.mvvm
+package rx.mvvm
 
-abstract class Model<K>(val id: K) {
+abstract class Model<K> {
+    abstract val id: K
     final override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other?.javaClass != javaClass) return false

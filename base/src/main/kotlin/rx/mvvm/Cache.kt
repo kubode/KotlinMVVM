@@ -1,4 +1,4 @@
-package com.teamlab.kotlin.mvvm
+package rx.mvvm
 
 import java.lang.ref.WeakReference
 import java.util.*

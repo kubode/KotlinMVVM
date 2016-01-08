@@ -8,15 +8,20 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.TextView
-import com.teamlab.kotlin.mvvm.MvvmFragment
 import com.teamlab.kotlin.mvvm.R
-import com.teamlab.kotlin.mvvm.model.Twitter
+import com.teamlab.kotlin.mvvm.ext.of
+import com.teamlab.kotlin.mvvm.model.Account
+import com.teamlab.kotlin.mvvm.util.Injectable
+import com.teamlab.kotlin.mvvm.util.InjectionHierarchy
 import com.teamlab.kotlin.mvvm.util.bindView
 import com.teamlab.kotlin.mvvm.util.inject
 import com.teamlab.kotlin.mvvm.viewmodel.OAuthViewModel
+import rx.mvvm.MvvmFragment
 
-class OAuthFragment : MvvmFragment() {
-    private val twitter: Twitter by inject(Twitter::class)
+class OAuthFragment : MvvmFragment(), Injectable {
+    override val injectionHierarchy = InjectionHierarchy.of(this)
+
+    private val account: Account by inject(Account::class)
 
     private val progress: ProgressBar by bindView(R.id.progress)
     private val error: TextView by bindView(R.id.error)
@@ -28,7 +33,7 @@ class OAuthFragment : MvvmFragment() {
     override lateinit var vm: OAuthViewModel
 
     override fun onInitializeViewModel() {
-        vm = OAuthViewModel(twitter)
+        vm = OAuthViewModel(account)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup, savedInstanceState: Bundle?): View? {

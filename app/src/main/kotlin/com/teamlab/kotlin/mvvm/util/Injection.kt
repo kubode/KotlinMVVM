@@ -18,7 +18,7 @@ private interface Wrapper<V> {
 }
 
 private class NormalWrapper<V>(private val objectGraph: ObjectGraph,
-                               private val initializer: (ObjectGraph) -> V) : Wrapper<V> {
+                               private val initializer: ObjectGraph.() -> V) : Wrapper<V> {
     override val value: V
         get() = initializer(objectGraph)
 
@@ -28,24 +28,24 @@ private class NormalWrapper<V>(private val objectGraph: ObjectGraph,
 }
 
 private class SingletonWrapper<V>(private val objectGraph: ObjectGraph,
-                                  private val initializer: (ObjectGraph) -> V) : Wrapper<V> {
+                                  private val initializer: ObjectGraph.() -> V) : Wrapper<V> {
     override val value: V by lazy { initializer(objectGraph) }
     override fun toString(): String {
         return "$value(Singleton)"
     }
 }
 
-private enum class Type(private val wrapper: (ObjectGraph, (ObjectGraph) -> Any) -> Wrapper<*>) {
+private enum class Type(private val wrapper: (ObjectGraph, ObjectGraph.() -> Any) -> Wrapper<*>) {
     NORMAL({ objectGraph, initializer -> NormalWrapper(objectGraph, initializer) }),
     SINGLETON({ objectGraph, initializer -> SingletonWrapper(objectGraph, initializer) });
 
-    internal fun wrap(objectGraph: ObjectGraph, initializer: (ObjectGraph) -> Any): Wrapper<*> {
+    internal fun wrap(objectGraph: ObjectGraph, initializer: ObjectGraph.() -> Any): Wrapper<*> {
         return wrapper(objectGraph, initializer)
     }
 }
 
 private class Provider<V : Any>(internal val type: Type,
-                                internal val initializer: (ObjectGraph) -> V)
+                                internal val initializer: ObjectGraph.() -> V)
 
 /**
  * Define module by extend this class like below.
@@ -55,7 +55,7 @@ private class Provider<V : Any>(internal val type: Type,
  *     init {
  *         provide(Double::class, { Math.random() })
  *         provideSingleton(Int::class, { 1 }, "named")
- *         provideSingleton(String::class, { "Dependency: ${it.get(Int::class}" })
+ *         provideSingleton(String::class, { "Dependency: ${get(Int::class}" })
  *     }
  * }
  * ```
@@ -79,14 +79,14 @@ public abstract class Module {
     /**
      * Provide object.
      */
-    protected fun <V : Any> provide(clazz: KClass<V>, initializer: (ObjectGraph) -> V, name: String? = null) {
+    protected fun <V : Any> provide(clazz: KClass<V>, initializer: ObjectGraph.() -> V, name: String? = null) {
         add(clazz, name, Provider(Type.NORMAL, initializer))
     }
 
     /**
      * Provide object as singleton.
      */
-    protected fun <V : Any> provideSingleton(clazz: KClass<V>, initializer: (ObjectGraph) -> V, name: String? = null) {
+    protected fun <V : Any> provideSingleton(clazz: KClass<V>, initializer: ObjectGraph.() -> V, name: String? = null) {
         add(clazz, name, Provider(Type.SINGLETON, initializer))
     }
 }
@@ -130,13 +130,16 @@ public class ObjectGraph(private val parent: ObjectGraph? = null) {
     }
 }
 
-class Hierarchy(internal vararg val searchers: () -> Any?)
+class InjectionHierarchy(internal vararg val searchers: () -> Any?) {
+    companion object {}
+}
+
 interface Injectable {
-    val hierarchy: Hierarchy
+    val injectionHierarchy: InjectionHierarchy
 }
 
 private fun Injectable.findObjectGraph(): ObjectGraph {
-    hierarchy.searchers.forEach {
+    injectionHierarchy.searchers.forEach {
         val obj = it() ?: return@forEach
         if (obj is HasObjectGraph) return obj.objectGraph
     }
