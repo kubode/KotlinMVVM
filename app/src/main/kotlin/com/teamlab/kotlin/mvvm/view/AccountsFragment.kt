@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.jakewharton.rxbinding.view.clicks
+import com.squareup.leakcanary.RefWatcher
 import com.teamlab.kotlin.mvvm.R
 import com.teamlab.kotlin.mvvm.event.AddAccountEvent
 import com.teamlab.kotlin.mvvm.ext.of
@@ -19,6 +20,7 @@ class AccountsFragment : MvvmFragment(), Injectable {
     override val injectionHierarchy = InjectionHierarchy.of(this)
     override lateinit var vm: AccountsViewModel
 
+    private val ref by inject(RefWatcher::class)
     private val bus by inject(EventBus::class)
 
     private val recycler by bindView<RecyclerView>(R.id.recycler)
@@ -44,6 +46,11 @@ class AccountsFragment : MvvmFragment(), Injectable {
     override fun onDestroyView() {
         subscription.unsubscribe()
         super.onDestroyView()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        ref.watch(this)
     }
 
     private class MyAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {

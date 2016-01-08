@@ -8,6 +8,7 @@ import android.widget.EditText
 import android.widget.TextView
 import com.jakewharton.rxbinding.view.clicks
 import com.jakewharton.rxbinding.widget.textChanges
+import com.squareup.leakcanary.RefWatcher
 import com.teamlab.kotlin.mvvm.R
 import com.teamlab.kotlin.mvvm.event.OpenUrlEvent
 import com.teamlab.kotlin.mvvm.ext.of
@@ -23,6 +24,7 @@ class AddAccountDialogFragment : MvvmDialogFragment(), Injectable {
     override val injectionHierarchy = InjectionHierarchy.of(this)
     override lateinit var vm: AddAccountViewModel
 
+    private val ref by inject(RefWatcher::class)
     private val bus by inject(EventBus::class)
 
     private val progress by bindView<View>(R.id.progress)
@@ -48,7 +50,6 @@ class AddAccountDialogFragment : MvvmDialogFragment(), Injectable {
 
     override fun onStart() {
         super.onStart()
-
         subscription = CompositeSubscription(
                 progress.bind(vm.isProgressVisibleObservable) { visibility = if (it) View.VISIBLE else View.GONE },
                 error.bind(vm.isErrorVisibleObservable) { visibility = if (it) View.VISIBLE else View.GONE },
@@ -63,5 +64,15 @@ class AddAccountDialogFragment : MvvmDialogFragment(), Injectable {
                 bind(vm.submitErrorMessageObservable) { if (!it.isNullOrEmpty()) Toaster.show(activity, it) },
                 bind(vm.isCompletedObservable) { if (it) dismiss() }
         )
+    }
+
+    override fun onStop() {
+        subscription.unsubscribe()
+        super.onStop()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        ref.watch(this)
     }
 }

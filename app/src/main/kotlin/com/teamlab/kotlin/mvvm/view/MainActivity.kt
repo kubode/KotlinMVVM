@@ -3,7 +3,7 @@ package com.teamlab.kotlin.mvvm.view
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import com.teamlab.kotlin.mvvm.MyApplication
+import com.squareup.leakcanary.RefWatcher
 import com.teamlab.kotlin.mvvm.R
 import com.teamlab.kotlin.mvvm.event.AddAccountEvent
 import com.teamlab.kotlin.mvvm.event.OpenUrlEvent
@@ -18,6 +18,7 @@ import rx.subscriptions.CompositeSubscription
 class MainActivity : AppCompatActivity(), Injectable {
     override val injectionHierarchy = InjectionHierarchy.of(this)
 
+    private val ref by inject(RefWatcher::class)
     private val bus by inject(EventBus::class)
 
     private lateinit var subscription: Subscription
@@ -43,6 +44,6 @@ class MainActivity : AppCompatActivity(), Injectable {
     override fun onDestroy() {
         subscription.unsubscribe()
         super.onDestroy()
-        (application as MyApplication).ref.watch(this)
+        ref.watch(this)
     }
 }
