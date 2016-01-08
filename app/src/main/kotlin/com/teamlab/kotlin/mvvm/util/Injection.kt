@@ -1,15 +1,12 @@
 package com.teamlab.kotlin.mvvm.util
 
-import android.content.Context
 import java.util.*
-import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KClass
-import kotlin.reflect.KProperty
 
 /**
  * Implements this interface if has [ObjectGraph].
  */
-public interface HasObjectGraph {
+interface HasObjectGraph {
     /**
      * Define [ObjectGraph].
      */
@@ -133,43 +130,21 @@ public class ObjectGraph(private val parent: ObjectGraph? = null) {
     }
 }
 
-/**
- * Find [ObjectGraph].
- * If this [Context] implements [HasObjectGraph] then returns `this.objectGraph`.
- * If applicationContext implements [HasObjectGraph] then returns `applicationContext.objectGraph`.
- * Otherwise throws exception.
- *
- * @return Founded [ObjectGraph].
- * @throws RuntimeException When [ObjectGraph] is not found.
- */
-public fun Context.findObjectGraph(): ObjectGraph {
-    if (this is HasObjectGraph) {
-        return this.objectGraph
-    }
-    val application = this.applicationContext
-    if (application is HasObjectGraph) {
-        return application.objectGraph
-    }
-    throw  RuntimeException("${ObjectGraph::class.java.simpleName} is not found in $this.")
-}
-
+class Hierarchy(internal vararg val searchers: () -> Any?)
 interface Injectable {
-    val context: Context
+    val hierarchy: Hierarchy
 }
 
-fun <V : Any> Injectable.inject(clazz: KClass<V>, name: String? = null) = lazy { context.findObjectGraph().get(clazz, name) }
-
-// Like kotlin lazy delegate but the initializer gets the target and metadata passed to it
-internal class Lazy<T, V>(private val initializer: T.() -> V) : ReadOnlyProperty<T, V> {
-    private object EMPTY
-
-    @Suppress("UNCHECKED_CAST")
-    private var value: V = EMPTY as V
-
-    override fun getValue(thisRef: T, property: KProperty<*>): V {
-        if (value == EMPTY) {
-            value = thisRef.initializer()
-        }
-        return value
+private fun Injectable.findObjectGraph(): ObjectGraph {
+    hierarchy.searchers.forEach {
+        val obj = it() ?: return@forEach
+        if (obj is HasObjectGraph) return obj.objectGraph
     }
+    throw  RuntimeException("ObjectGraph is not found in $this.")
 }
+
+private val objectGraphCache = WeakHashMap<Injectable, ObjectGraph>()
+private val Injectable.injectObjectGraph: ObjectGraph
+    get() = objectGraphCache.getOrPut(this, { findObjectGraph() })
+
+fun <V : Any> Injectable.inject(clazz: KClass<V>, name: String? = null) = lazy { injectObjectGraph.get(clazz, name) }
