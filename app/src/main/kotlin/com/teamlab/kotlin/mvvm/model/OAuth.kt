@@ -1,6 +1,7 @@
 package com.teamlab.kotlin.mvvm.model
 
 import android.content.Context
+import android.os.Bundle
 import com.teamlab.kotlin.mvvm.ext.getOAuthAccessTokenObservable
 import com.teamlab.kotlin.mvvm.ext.getOAuthRequestTokenObservable
 import com.teamlab.kotlin.mvvm.ext.of
@@ -24,6 +25,18 @@ class OAuth(private val context: Context, private val twitter: Twitter) : Inject
     private var error by rxProperty(null, errorObservable)
     val requestTokenObservable = RxPropertyObservable.value<RequestToken?>()
     private var requestToken by rxProperty(null, requestTokenObservable)
+
+    fun restore(savedInstanceState: Bundle) {
+        val token = savedInstanceState.getString("token") ?: return
+        val tokenSecret = savedInstanceState.getString("tokenSecret") ?: return
+        requestToken = RequestToken(token, tokenSecret)
+    }
+
+    fun save(outState: Bundle) {
+        val requestToken = requestToken ?: return
+        outState.putString("token", requestToken.token)
+        outState.putString("tokenSecret", requestToken.tokenSecret)
+    }
 
     fun getRequestTokenIfEnable() {
         if (requestToken != null) return

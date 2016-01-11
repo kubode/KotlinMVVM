@@ -42,6 +42,11 @@ class AddAccountDialogFragment : MvvmDialogFragment(), Injectable {
         vm = AddAccountViewModel(activity)
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        vm.getRequestTokenIfEnable()
+    }
+
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog? {
         return AlertDialog.Builder(activity)
                 .setView(R.layout.add_account)

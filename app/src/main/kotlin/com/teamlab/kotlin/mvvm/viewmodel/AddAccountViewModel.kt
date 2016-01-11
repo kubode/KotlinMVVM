@@ -1,15 +1,13 @@
 package com.teamlab.kotlin.mvvm.viewmodel
 
 import android.content.Context
+import android.os.Bundle
 import com.teamlab.kotlin.mvvm.ext.TwitterFactory
 import com.teamlab.kotlin.mvvm.model.OAuth
 import com.teamlab.kotlin.mvvm.model.State
 import rx.Observable
 import rx.mvvm.*
 
-/**
- * Created by mkubode on 2016/01/08.
- */
 class AddAccountViewModel(context: Context) : ViewModel() {
 
     private val oAuth = OAuth(context, TwitterFactory.create())
@@ -36,10 +34,14 @@ class AddAccountViewModel(context: Context) : ViewModel() {
     ))
     val isCompletedObservable = RxPropertyObservable.chain(oAuth.stateObservable.map { it == State.COMPLETED })
 
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        oAuth.restore(savedInstanceState)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        oAuth.save(outState)
+    }
+
     fun getRequestTokenIfEnable() = oAuth.getRequestTokenIfEnable()
     fun getAccessTokenIfEnable() = oAuth.getAccessTokenIfEnable(pin)
-
-    init {
-        getRequestTokenIfEnable()
-    }
 }
