@@ -26,6 +26,7 @@ class OAuth(private val context: Context, private val twitter: Twitter) : Inject
     private var requestToken by rxProperty(null, requestTokenObservable)
 
     fun getRequestTokenIfEnable() {
+        if (requestToken != null) return
         if (state == State.REQUESTING) return
         state = State.REQUESTING
         error = null
@@ -40,10 +41,11 @@ class OAuth(private val context: Context, private val twitter: Twitter) : Inject
     }
 
     fun getAccessTokenIfEnable(pin: String) {
+        val requestToken = requestToken ?: return
         if (state == State.REQUESTING) return
         state = State.REQUESTING
         error = null
-        twitter.getOAuthAccessTokenObservable(requestToken!!, pin)
+        twitter.getOAuthAccessTokenObservable(requestToken, pin)
                 .subscribe({
                     state = State.COMPLETED
                     pref.accounts += Account(context, twitter, it)
