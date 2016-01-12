@@ -10,6 +10,10 @@ class Cache<M : Model<K>, K> {
         return cache.values.map { it.get() }.filterNotNull()
     }
 
+    fun getAndPut(key: K, creator: (K) -> M): M {
+        return get(key) ?: creator(key).apply { put(this) }
+    }
+
     fun get(key: K): M? {
         return cache[key]?.get()
     }
