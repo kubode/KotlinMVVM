@@ -16,13 +16,13 @@ import rx.subjects.BehaviorSubject
  * var int by rxProperty(0, intObservable)
  * ```
  */
-fun <T> RxPropertyObservable.Companion.value() = RxPropertyObservable(ValueState<T>())
+fun <T> RxPropertyObservable.Companion.value(defaultValue: T) = RxPropertyObservable(ValueState(defaultValue))
 
 /**
  * 読み書き可能な[State]。
  */
-private class ValueState<T> : State<T>() {
-    override val observable = BehaviorSubject.create<T>()
+private class ValueState<T>(defaultValue: T) : State<T>() {
+    override val observable = BehaviorSubject.create<T>(defaultValue)
     override var value: T
         get() = observable.value
         set(value) = observable.onNext(value)

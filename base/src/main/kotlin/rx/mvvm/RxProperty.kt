@@ -6,31 +6,19 @@ import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
 /**
- * このプロパティの変更通知を[observable]で受ける。
+ * [asProperty]を経由することで、プロパティの変更通知を受けられる[Observable]。
+ * [subscribe]することで、プロパティの変更通知を受けられる。
+ *
+ * 用途にそって[State]を実装し、[Companion]に拡張メソッドを定義することで拡張性を持たせる。
  *
  * Usage:
  * ```
- * val intObservable = RxPropertyObservable<Int>()
- * var int by rxProperty(0, intObservable)
+ * val intObservable = RxPropertyObservable.value(0)
+ * var int by intObservable.asProperty()
  *
  * intObservable.subscribe { log(it) } // logged: 0
  * int = 1 // logged: 1
  * ```
- *
- * @param initialValue 初期値。
- * @param observable プロパティの変更通知を受ける[RxPropertyObservable]。
- * バインド時に[initialValue]で初期化される。
- * 書き込みがあるため、他の[RxPropertyObservable]を連結させている場合は例外が発生する。
- */
-fun <T> rxProperty(initialValue: T, observable: RxPropertyObservable<T>): ReadWriteProperty<Any, T> {
-    return RxProperty(initialValue, observable)
-}
-
-/**
- * [rxProperty]と併用するための[Observable]。
- * [subscribe]することで、プロパティの変更通知を受けられる。
- *
- * 用途にそって[State]を実装し、[Companion]に拡張メソッドを定義することで拡張性を持たせる。
  */
 class RxPropertyObservable<T> : Observable<T> {
 
@@ -41,19 +29,28 @@ class RxPropertyObservable<T> : Observable<T> {
     constructor(state: State<T>) : super(state) {
         this.state = state
     }
+
+    /**
+     * この[RxPropertyObservable]をプロパティへ変換する。
+     *
+     * プロパティの変更通知は、この[RxPropertyObservable]へ通知される。
+     * 読み書きがあるため、[state]が読み書きできない場合は例外が発生する。
+     */
+    fun asProperty(): ReadWriteProperty<Any, T> {
+        return RxProperty(this)
+    }
 }
 
 /**
- * [rxProperty]の実体。
+ * [RxPropertyObservable.asProperty]の実体。
  *
  * 読み書きは[state]に対して行う。
  */
 internal class RxProperty<R, T> : ReadWriteProperty<R, T> {
     private val state: State<T>
 
-    internal constructor(initialValue: T, observable: RxPropertyObservable<T>) {
+    internal constructor(observable: RxPropertyObservable<T>) {
         this.state = observable.state
-        this.state.value = initialValue
     }
 
     override fun getValue(thisRef: R, property: KProperty<*>): T {

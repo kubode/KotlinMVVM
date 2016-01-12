@@ -6,7 +6,10 @@ import com.teamlab.kotlin.mvvm.ext.TwitterFactory
 import com.teamlab.kotlin.mvvm.model.OAuth
 import com.teamlab.kotlin.mvvm.model.State
 import rx.Observable
-import rx.mvvm.*
+import rx.mvvm.RxPropertyObservable
+import rx.mvvm.ViewModel
+import rx.mvvm.chain
+import rx.mvvm.value
 
 class AddAccountViewModel(context: Context) : ViewModel() {
 
@@ -23,8 +26,8 @@ class AddAccountViewModel(context: Context) : ViewModel() {
     val messageObservable = RxPropertyObservable.chain(oAuth.errorObservable.map { it?.message })
     val isAuthVisibleObservable = RxPropertyObservable.chain(oAuth.requestTokenObservable.map { it != null })
     val urlObservable = RxPropertyObservable.chain(oAuth.requestTokenObservable.map { it?.authorizationURL })
-    val pinObservable = RxPropertyObservable.value<String>()
-    var pin by rxProperty("", pinObservable)
+    val pinObservable = RxPropertyObservable.value("")
+    var pin by pinObservable.asProperty()
     val isSubmitEnableObservable = RxPropertyObservable.chain(Observable.combineLatest(
             oAuth.stateObservable, pinObservable,
             { state, pin -> state != State.REQUESTING && pin.isNotEmpty() }))

@@ -2,7 +2,10 @@ package com.teamlab.kotlin.mvvm.model
 
 import android.content.Context
 import com.teamlab.kotlin.mvvm.ext.TwitterFactory
-import rx.mvvm.*
+import rx.mvvm.Cache
+import rx.mvvm.Model
+import rx.mvvm.RxPropertyObservable
+import rx.mvvm.strPref
 import twitter4j.Twitter
 import twitter4j.auth.AccessToken
 import kotlin.properties.ReadWriteProperty
@@ -14,7 +17,7 @@ class Account private constructor(val context: Context, val twitter: Twitter, us
     val screenNameObservable = RxPropertyObservable.strPref(pref, "screenName", "")
     private var token by StrPref("token")
     private var tokenSecret by StrPref("tokenSecret")
-    private var screenName by rxProperty("", screenNameObservable)
+    private var screenName by screenNameObservable.asProperty()
 
     fun initialize(token: AccessToken) {
         this.token = token.token

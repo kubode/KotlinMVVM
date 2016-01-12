@@ -9,7 +9,6 @@ import com.teamlab.kotlin.mvvm.util.Injectable
 import com.teamlab.kotlin.mvvm.util.InjectionHierarchy
 import com.teamlab.kotlin.mvvm.util.inject
 import rx.mvvm.RxPropertyObservable
-import rx.mvvm.rxProperty
 import rx.mvvm.value
 import twitter4j.Twitter
 import twitter4j.auth.RequestToken
@@ -19,12 +18,12 @@ class OAuth(private val context: Context, private val twitter: Twitter) : Inject
 
     private val pref by inject(AppPreferences::class)
 
-    val stateObservable = RxPropertyObservable.value<State>()
-    private var state by rxProperty(State.NORMAL, stateObservable)
-    val errorObservable = RxPropertyObservable.value<Throwable?>()
-    private var error by rxProperty(null, errorObservable)
-    val requestTokenObservable = RxPropertyObservable.value<RequestToken?>()
-    private var requestToken by rxProperty(null, requestTokenObservable)
+    val stateObservable = RxPropertyObservable.value(State.NORMAL)
+    private var state by stateObservable.asProperty()
+    val errorObservable = RxPropertyObservable.value(null as Throwable?)
+    private var error by errorObservable.asProperty()
+    val requestTokenObservable = RxPropertyObservable.value(null as RequestToken?)
+    private var requestToken by requestTokenObservable.asProperty()
 
     fun restore(savedInstanceState: Bundle) {
         val token = savedInstanceState.getString("token") ?: return

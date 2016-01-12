@@ -5,7 +5,6 @@ import com.teamlab.kotlin.mvvm.util.logV
 import rx.mvvm.Model
 import rx.mvvm.RxPropertyObservable
 import rx.mvvm.pref
-import rx.mvvm.rxProperty
 import twitter4j.auth.AccessToken
 
 class AppPreferences(private val context: Context) : Model<Unit>() {
@@ -19,7 +18,7 @@ class AppPreferences(private val context: Context) : Model<Unit>() {
             "accounts",
             emptyList(),
             { key, defValue ->
-                logV({"$key, ${getString(key, null)}"})
+                logV({ "$key, ${getString(key, null)}" })
                 getString(key, null).let {
                     if (it.isNullOrEmpty()) null else it
                 }?.let {
@@ -29,7 +28,7 @@ class AppPreferences(private val context: Context) : Model<Unit>() {
             { key, value ->
                 putString(key, value.map { it.id.toString() }.joinToString(SEPARATOR))
             })
-    var accounts by rxProperty(emptyList(), accountsObservable)
+    var accounts by accountsObservable.asProperty()
 
     fun addAccount(token: AccessToken): Account {
         val account = Account.of(context, token.userId)
