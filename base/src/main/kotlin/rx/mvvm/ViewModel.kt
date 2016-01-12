@@ -3,10 +3,10 @@ package rx.mvvm
 import android.os.Bundle
 
 abstract class ViewModel {
-    fun restoreInstanceState(savedInstanceState: Bundle?) = savedInstanceState?.let { onRestoreInstanceState(it) }
+    fun performRestoreInstanceState(savedInstanceState: Bundle?) = savedInstanceState?.let { onRestoreInstanceState(it) }
     open protected fun onRestoreInstanceState(savedInstanceState: Bundle) = Unit
-    fun saveInstanceState(outState: Bundle) = onSaveInstanceState(outState)
+    fun performSaveInstanceState(outState: Bundle) = onSaveInstanceState(outState)
     open protected fun onSaveInstanceState(outState: Bundle) = Unit
-    fun destroy() = onDestroy()
+    fun performDestroy() = onDestroy()
     open protected fun onDestroy() = Unit
 }

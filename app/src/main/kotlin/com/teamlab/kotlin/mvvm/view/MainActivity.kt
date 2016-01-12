@@ -22,6 +22,7 @@ class MainActivity : AppCompatActivity(), Injectable {
     private val bus by inject(EventBus::class)
 
     private lateinit var subscription: Subscription
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main)

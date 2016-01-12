@@ -1,6 +1,7 @@
 package com.teamlab.kotlin.mvvm.view
 
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -13,12 +14,10 @@ import com.teamlab.kotlin.mvvm.ext.of
 import com.teamlab.kotlin.mvvm.util.*
 import com.teamlab.kotlin.mvvm.viewmodel.AccountsViewModel
 import rx.Subscription
-import rx.mvvm.MvvmFragment
 import rx.subscriptions.CompositeSubscription
 
-class AccountsFragment : MvvmFragment(), Injectable {
+class AccountsFragment : Fragment(), Injectable {
     override val injectionHierarchy = InjectionHierarchy.of(this)
-    override lateinit var vm: AccountsViewModel
 
     private val ref by inject(RefWatcher::class)
     private val bus by inject(EventBus::class)
@@ -26,9 +25,11 @@ class AccountsFragment : MvvmFragment(), Injectable {
     private val recycler by bindView<RecyclerView>(R.id.recycler)
     private val add by bindView<View>(R.id.add)
 
+    private lateinit var vm: AccountsViewModel
     private lateinit var subscription: Subscription
 
-    override fun onInitializeViewModel() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         vm = AccountsViewModel(activity)
     }
 
@@ -49,6 +50,7 @@ class AccountsFragment : MvvmFragment(), Injectable {
     }
 
     override fun onDestroy() {
+        vm.performDestroy()
         super.onDestroy()
         ref.watch(this)
     }

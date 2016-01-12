@@ -2,6 +2,7 @@ package com.teamlab.kotlin.mvvm.view
 
 import android.app.Dialog
 import android.os.Bundle
+import android.support.v4.app.DialogFragment
 import android.support.v7.app.AlertDialog
 import android.view.View
 import android.widget.EditText
@@ -15,14 +16,12 @@ import com.teamlab.kotlin.mvvm.ext.of
 import com.teamlab.kotlin.mvvm.util.*
 import com.teamlab.kotlin.mvvm.viewmodel.AddAccountViewModel
 import rx.Subscription
-import rx.mvvm.MvvmDialogFragment
 import rx.mvvm.bind
 import rx.subscriptions.CompositeSubscription
 
-class AddAccountDialogFragment : MvvmDialogFragment(), Injectable {
+class AddAccountDialogFragment : DialogFragment(), Injectable {
 
     override val injectionHierarchy = InjectionHierarchy.of(this)
-    override lateinit var vm: AddAccountViewModel
 
     private val ref by inject(RefWatcher::class)
     private val bus by inject(EventBus::class)
@@ -36,14 +35,13 @@ class AddAccountDialogFragment : MvvmDialogFragment(), Injectable {
     private val pin by bindView<EditText>(R.id.pin)
     private val submit by bindView<View>(R.id.submit)
 
+    private lateinit var vm: AddAccountViewModel
     private lateinit var subscription: Subscription
-
-    override fun onCreateViewModel() {
-        vm = AddAccountViewModel(activity)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        vm = AddAccountViewModel(activity)
+        vm.performRestoreInstanceState(savedInstanceState)
         vm.getRequestTokenIfEnable()
     }
 
@@ -71,12 +69,18 @@ class AddAccountDialogFragment : MvvmDialogFragment(), Injectable {
         )
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        vm.performSaveInstanceState(outState)
+    }
+
     override fun onStop() {
         subscription.unsubscribe()
         super.onStop()
     }
 
     override fun onDestroy() {
+        vm.performDestroy()
         super.onDestroy()
         ref.watch(this)
     }
