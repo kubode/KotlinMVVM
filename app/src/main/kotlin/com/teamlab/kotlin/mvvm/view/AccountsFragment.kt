@@ -2,6 +2,7 @@ package com.teamlab.kotlin.mvvm.view
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -45,6 +46,7 @@ class AccountsFragment : Fragment(), Injectable {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         recycler.adapter = adapter
+        recycler.layoutManager = LinearLayoutManager(activity)
         subscription = CompositeSubscription(
                 bind(vm.accountsObservable) { adapter.accounts = it },
                 add.clicks().subscribe { bus.post(AddAccountEvent()) }
@@ -52,6 +54,7 @@ class AccountsFragment : Fragment(), Injectable {
     }
 
     override fun onDestroyView() {
+        recycler.adapter = null
         subscription.unsubscribe()
         super.onDestroyView()
     }
