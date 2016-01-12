@@ -1,16 +1,14 @@
 package com.teamlab.kotlin.mvvm.model
 
 import android.content.Context
-import rx.mvvm.Model
-import rx.mvvm.RxPropertyObservable
-import rx.mvvm.rxProperty
-import rx.mvvm.strPref
+import com.teamlab.kotlin.mvvm.ext.TwitterFactory
+import rx.mvvm.*
 import twitter4j.Twitter
 import twitter4j.auth.AccessToken
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
-class Account(val context: Context, val twitter: Twitter, userId: Long) : Model<Long>() {
+class Account private constructor(val context: Context, val twitter: Twitter, userId: Long) : Model<Long>() {
     override val id = userId
     private val pref = context.getSharedPreferences("account-$userId", Context.MODE_PRIVATE)
     val screenNameObservable = RxPropertyObservable.strPref(pref, "screenName", "")
@@ -18,7 +16,7 @@ class Account(val context: Context, val twitter: Twitter, userId: Long) : Model<
     private var tokenSecret by StrPref("tokenSecret")
     private var screenName by rxProperty("", screenNameObservable)
 
-    constructor(context: Context, twitter: Twitter, token: AccessToken) : this(context, twitter, token.userId) {
+    fun initialize(token: AccessToken) {
         this.token = token.token
         this.tokenSecret = token.tokenSecret
         this.screenName = token.screenName
@@ -33,6 +31,13 @@ class Account(val context: Context, val twitter: Twitter, userId: Long) : Model<
 
         override fun setValue(thisRef: Any, property: KProperty<*>, value: String) {
             pref.edit().putString(key, value).apply()
+        }
+    }
+
+    companion object {
+        private val cache = Cache<Account, Long>()
+        fun of(context: Context, userId: Long): Account {
+            return cache.getAndPut(userId, { Account(context, TwitterFactory.create(), userId) })
         }
     }
 }

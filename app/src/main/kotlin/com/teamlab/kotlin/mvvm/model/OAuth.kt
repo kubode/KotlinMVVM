@@ -61,7 +61,7 @@ class OAuth(private val context: Context, private val twitter: Twitter) : Inject
         twitter.getOAuthAccessTokenObservable(requestToken, pin)
                 .subscribe({
                     state = State.COMPLETED
-                    pref.accounts += Account(context, twitter, it)
+                    pref.addAccount(it)
                 }, {
                     state = State.ERROR
                     error = it

@@ -3,6 +3,7 @@ package com.teamlab.kotlin.mvvm.util
 import android.app.Activity
 import android.support.v4.app.DialogFragment
 import android.support.v4.app.Fragment
+import android.support.v7.widget.RecyclerView
 import android.view.View
 import java.lang.ref.WeakReference
 import java.util.*
@@ -38,3 +39,6 @@ fun <V : View> Fragment.bindView(id: Int): ReadOnlyProperty<Fragment, V>
 
 fun <V : View> DialogFragment.bindView(id: Int): ReadOnlyProperty<DialogFragment, V>
         = ViewCacheProperty({ dialog }, { findViewById(it) }, id)
+
+@Suppress("UNCHECKED_CAST")
+fun <V : View> RecyclerView.ViewHolder.bindView(id: Int) = lazy { itemView.findViewById(id) as V }

@@ -6,15 +6,20 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import com.jakewharton.rxbinding.view.clicks
 import com.squareup.leakcanary.RefWatcher
 import com.teamlab.kotlin.mvvm.R
 import com.teamlab.kotlin.mvvm.event.AddAccountEvent
 import com.teamlab.kotlin.mvvm.ext.of
+import com.teamlab.kotlin.mvvm.model.Account
 import com.teamlab.kotlin.mvvm.util.*
 import com.teamlab.kotlin.mvvm.viewmodel.AccountsViewModel
 import rx.Subscription
+import rx.mvvm.bind
 import rx.subscriptions.CompositeSubscription
+import kotlin.properties.Delegates
 
 class AccountsFragment : Fragment(), Injectable {
     override val injectionHierarchy = InjectionHierarchy.of(this)
@@ -39,7 +44,9 @@ class AccountsFragment : Fragment(), Injectable {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        recycler.adapter = adapter
         subscription = CompositeSubscription(
+                bind(vm.accountsObservable) { adapter.accounts = it },
                 add.clicks().subscribe { bus.post(AddAccountEvent()) }
         )
     }
@@ -55,17 +62,22 @@ class AccountsFragment : Fragment(), Injectable {
         ref.watch(this)
     }
 
-    private class MyAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder? {
-            throw UnsupportedOperationException()
-        }
+    private val adapter = object : RecyclerView.Adapter<ViewHolder>() {
+        var accounts: List<Account> by Delegates.observable(emptyList(), { property, old, new -> logV({ "$old -> $new" }).run { notifyDataSetChanged() } })
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = logV({ "onCreateViewHolder" }).run { ViewHolder(parent) }
+        override fun getItemCount() = accounts.size.apply { logV({ "getItemCount() = $this" }) }
+        override fun onBindViewHolder(holder: ViewHolder, position: Int) = logV({ "onBindViewHolder" }).run { holder.performBind(accounts[position]) }
+        override fun onViewAttachedToWindow(holder: ViewHolder) = logV({ "onViewAttachedToWindow" })
+        override fun onViewDetachedFromWindow(holder: ViewHolder) = logV({ "onViewDetachedFromWindow" })
+    }
 
-        override fun getItemCount(): Int {
-            throw UnsupportedOperationException()
-        }
-
-        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-            throw UnsupportedOperationException()
+    private class ViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.account, parent, false)) {
+        private val thumbnail by bindView<ImageView>(R.id.thumbnail)
+        private val userId by bindView<TextView>(R.id.user_id)
+        private val screenName by bindView<TextView>(R.id.screen_name)
+        fun performBind(account: Account) {
+            userId.text = "${account.id}"
+            screenName.text = "${account.screenNameObservable}"
         }
     }
 }
