@@ -10,13 +10,13 @@ import com.teamlab.kotlin.mvvm.event.OpenUrlEvent
 import com.teamlab.kotlin.mvvm.ext.of
 import com.teamlab.kotlin.mvvm.util.EventBus
 import com.teamlab.kotlin.mvvm.util.Injectable
-import com.teamlab.kotlin.mvvm.util.InjectionHierarchy
+import com.teamlab.kotlin.mvvm.util.HasObjectGraphFinder
 import com.teamlab.kotlin.mvvm.util.inject
 import rx.Subscription
 import rx.subscriptions.CompositeSubscription
 
 class MainActivity : AppCompatActivity(), Injectable {
-    override val injectionHierarchy = InjectionHierarchy.of(this)
+    override val hasObjectGraphFinder = HasObjectGraphFinder.of(this)
 
     private val ref by inject(RefWatcher::class)
     private val bus by inject(EventBus::class)

@@ -21,7 +21,7 @@ import rx.subscriptions.CompositeSubscription
 
 class AddAccountDialogFragment : DialogFragment(), Injectable {
 
-    override val injectionHierarchy = InjectionHierarchy.of(this)
+    override val hasObjectGraphFinder = HasObjectGraphFinder.of(this)
 
     private val ref by inject(RefWatcher::class)
     private val bus by inject(EventBus::class)

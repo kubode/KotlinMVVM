@@ -6,7 +6,7 @@ import com.teamlab.kotlin.mvvm.ext.getOAuthAccessTokenObservable
 import com.teamlab.kotlin.mvvm.ext.getOAuthRequestTokenObservable
 import com.teamlab.kotlin.mvvm.ext.of
 import com.teamlab.kotlin.mvvm.util.Injectable
-import com.teamlab.kotlin.mvvm.util.InjectionHierarchy
+import com.teamlab.kotlin.mvvm.util.HasObjectGraphFinder
 import com.teamlab.kotlin.mvvm.util.inject
 import rx.mvvm.RxPropertyObservable
 import rx.mvvm.value
@@ -14,7 +14,7 @@ import twitter4j.Twitter
 import twitter4j.auth.RequestToken
 
 class OAuth(private val context: Context, private val twitter: Twitter) : Injectable {
-    override val injectionHierarchy = InjectionHierarchy.of(context)
+    override val hasObjectGraphFinder = HasObjectGraphFinder.of(context)
 
     private val pref by inject(AppPreferences::class)
 

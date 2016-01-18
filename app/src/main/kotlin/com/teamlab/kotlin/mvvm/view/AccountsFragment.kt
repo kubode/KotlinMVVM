@@ -23,7 +23,7 @@ import rx.subscriptions.CompositeSubscription
 import kotlin.properties.Delegates
 
 class AccountsFragment : Fragment(), Injectable {
-    override val injectionHierarchy = InjectionHierarchy.of(this)
+    override val hasObjectGraphFinder = HasObjectGraphFinder.of(this)
 
     private val ref by inject(RefWatcher::class)
     private val bus by inject(EventBus::class)

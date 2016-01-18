@@ -130,16 +130,16 @@ public class ObjectGraph(private val parent: ObjectGraph? = null) {
     }
 }
 
-class InjectionHierarchy(internal vararg val searchers: () -> Any?) {
+class HasObjectGraphFinder(internal vararg val finders: () -> Any?) {
     companion object {}
 }
 
 interface Injectable {
-    val injectionHierarchy: InjectionHierarchy
+    val hasObjectGraphFinder: HasObjectGraphFinder
 }
 
 private fun Injectable.findObjectGraph(): ObjectGraph {
-    injectionHierarchy.searchers.forEach {
+    hasObjectGraphFinder.finders.forEach {
         val obj = it() ?: return@forEach
         if (obj is HasObjectGraph) return obj.objectGraph
     }
@@ -147,7 +147,7 @@ private fun Injectable.findObjectGraph(): ObjectGraph {
 }
 
 private val objectGraphCache = WeakHashMap<Injectable, ObjectGraph>()
-private val Injectable.injectObjectGraph: ObjectGraph
+val Injectable.parentObjectGraph: ObjectGraph
     get() = objectGraphCache.getOrPut(this, { findObjectGraph() })
 
-fun <V : Any> Injectable.inject(clazz: KClass<V>, name: String? = null) = lazy { injectObjectGraph.get(clazz, name) }
+fun <V : Any> Injectable.inject(clazz: KClass<V>, name: String? = null) = lazy { parentObjectGraph.get(clazz, name) }
