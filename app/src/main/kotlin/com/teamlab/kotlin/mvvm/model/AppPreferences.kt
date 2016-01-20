@@ -1,7 +1,6 @@
 package com.teamlab.kotlin.mvvm.model
 
 import android.content.Context
-import com.teamlab.kotlin.mvvm.util.logV
 import rx.mvvm.Model
 import rx.mvvm.RxPropertyObservable
 import rx.mvvm.pref
@@ -18,10 +17,7 @@ class AppPreferences(private val context: Context) : Model<Unit>() {
             "accounts",
             emptyList(),
             { key, defValue ->
-                logV({ "$key, ${getString(key, null)}" })
-                getString(key, null).let {
-                    if (it.isNullOrEmpty()) null else it
-                }?.let {
+                getString(key, null)?.let {
                     it.split(SEPARATOR).map { Account.of(context, it.toLong()) }
                 } ?: defValue
             },
