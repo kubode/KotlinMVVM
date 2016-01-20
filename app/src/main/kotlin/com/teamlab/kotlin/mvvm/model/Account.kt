@@ -2,6 +2,8 @@ package com.teamlab.kotlin.mvvm.model
 
 import android.content.Context
 import com.teamlab.kotlin.mvvm.ext.TwitterFactory
+import com.teamlab.kotlin.mvvm.ext.of
+import com.teamlab.kotlin.mvvm.util.*
 import rx.mvvm.Cache
 import rx.mvvm.Model
 import rx.mvvm.RxPropertyObservable
@@ -11,7 +13,9 @@ import twitter4j.auth.AccessToken
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
-class Account private constructor(val context: Context, val twitter: Twitter, userId: Long) : Model<Long>() {
+class Account private constructor(val context: Context, val twitter: Twitter, userId: Long) : Model<Long>(), Injectable, HasObjectGraph {
+    override val hasObjectGraphFinder = HasObjectGraphFinder.of(context)
+    override val objectGraph = ObjectGraph(parentObjectGraph).add(AccountModule())
     override val id = userId
     private val pref = context.getSharedPreferences("account-$userId", Context.MODE_PRIVATE)
     val screenNameObservable = RxPropertyObservable.strPref(pref, "screenName", "")
@@ -41,6 +45,12 @@ class Account private constructor(val context: Context, val twitter: Twitter, us
         private val cache = Cache<Account, Long>()
         fun of(context: Context, userId: Long): Account {
             return cache.getAndPut(userId, { Account(context, TwitterFactory.create(), userId) })
+        }
+    }
+
+    private inner class AccountModule : Module() {
+        init {
+            provideSingleton(Twitter::class, { twitter })
         }
     }
 }
