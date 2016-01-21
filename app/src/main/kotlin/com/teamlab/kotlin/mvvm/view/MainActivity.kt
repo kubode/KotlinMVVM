@@ -8,7 +8,7 @@ import com.teamlab.kotlin.mvvm.R
 import com.teamlab.kotlin.mvvm.event.AddAccountEvent
 import com.teamlab.kotlin.mvvm.event.OpenUrlEvent
 import com.teamlab.kotlin.mvvm.ext.of
-import com.teamlab.kotlin.mvvm.util.EventBus
+import com.teamlab.kotlin.mvvm.util.RxEventBus
 import com.teamlab.kotlin.mvvm.util.Injectable
 import com.teamlab.kotlin.mvvm.util.HasObjectGraphFinder
 import com.teamlab.kotlin.mvvm.util.inject
@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity(), Injectable {
     override val hasObjectGraphFinder = HasObjectGraphFinder.of(this)
 
     private val ref by inject(RefWatcher::class)
-    private val bus by inject(EventBus::class)
+    private val bus by inject(RxEventBus::class)
 
     private lateinit var subscription: Subscription
 

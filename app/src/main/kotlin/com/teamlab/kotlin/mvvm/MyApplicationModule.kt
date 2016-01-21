@@ -3,7 +3,7 @@ package com.teamlab.kotlin.mvvm
 import android.content.Context
 import com.squareup.leakcanary.RefWatcher
 import com.teamlab.kotlin.mvvm.model.AppPreferences
-import com.teamlab.kotlin.mvvm.util.EventBus
+import com.teamlab.kotlin.mvvm.util.RxEventBus
 import com.teamlab.kotlin.mvvm.util.Module
 
 class MyApplicationModule(application: MyApplication) : Module() {
@@ -12,6 +12,6 @@ class MyApplicationModule(application: MyApplication) : Module() {
         provideSingleton(Context::class, { application })
         provideSingleton(RefWatcher::class, { application.ref })
         provideSingleton(AppPreferences::class, { AppPreferences(get(Context::class)) })
-        provideSingleton(EventBus::class, { EventBus() })
+        provideSingleton(RxEventBus::class, { RxEventBus() })
     }
 }

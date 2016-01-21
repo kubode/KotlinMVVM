@@ -24,7 +24,7 @@ class AddAccountDialogFragment : DialogFragment(), Injectable {
     override val hasObjectGraphFinder = HasObjectGraphFinder.of(this)
 
     private val ref by inject(RefWatcher::class)
-    private val bus by inject(EventBus::class)
+    private val bus by inject(RxEventBus::class)
 
     private val progress by bindView<View>(R.id.progress)
     private val error by bindView<View>(R.id.error)

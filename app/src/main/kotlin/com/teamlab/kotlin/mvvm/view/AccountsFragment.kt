@@ -26,7 +26,7 @@ class AccountsFragment : Fragment(), Injectable {
     override val hasObjectGraphFinder = HasObjectGraphFinder.of(this)
 
     private val ref by inject(RefWatcher::class)
-    private val bus by inject(EventBus::class)
+    private val bus by inject(RxEventBus::class)
 
     private val recycler by bindView<RecyclerView>(R.id.recycler)
     private val add by bindView<View>(R.id.add)
