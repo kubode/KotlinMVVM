@@ -22,7 +22,7 @@ enum class LogLevel(val priority: Int) {
     E(Log.ERROR),
 }
 
-private fun Any.log(level: LogLevel, msgCreator: () -> String, e: Throwable? = null) {
+inline fun Any.log(level: LogLevel, msgCreator: () -> String, e: Throwable? = null) {
     if (level.ordinal >= Logger.level.ordinal) {
         val msg = msgCreator() + (e?.let { "\n" + Log.getStackTraceString(it) } ?: "")
         val tag = javaClass.name.substringAfterLast('.').substringBefore('$')
@@ -30,8 +30,8 @@ private fun Any.log(level: LogLevel, msgCreator: () -> String, e: Throwable? = n
     }
 }
 
-fun Any.logV(msgCreator: () -> String, e: Throwable? = null) = log(LogLevel.V, msgCreator, e)
-fun Any.logD(msgCreator: () -> String, e: Throwable? = null) = log(LogLevel.D, msgCreator, e)
-fun Any.logI(msgCreator: () -> String, e: Throwable? = null) = log(LogLevel.I, msgCreator, e)
-fun Any.logW(msgCreator: () -> String, e: Throwable? = null) = log(LogLevel.W, msgCreator, e)
-fun Any.logE(msgCreator: () -> String, e: Throwable? = null) = log(LogLevel.E, msgCreator, e)
+inline fun Any.logV(msgCreator: () -> String, e: Throwable? = null) = log(LogLevel.V, msgCreator, e)
+inline fun Any.logD(msgCreator: () -> String, e: Throwable? = null) = log(LogLevel.D, msgCreator, e)
+inline fun Any.logI(msgCreator: () -> String, e: Throwable? = null) = log(LogLevel.I, msgCreator, e)
+inline fun Any.logW(msgCreator: () -> String, e: Throwable? = null) = log(LogLevel.W, msgCreator, e)
+inline fun Any.logE(msgCreator: () -> String, e: Throwable? = null) = log(LogLevel.E, msgCreator, e)
