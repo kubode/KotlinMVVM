@@ -9,7 +9,7 @@ import kotlin.reflect.KClass
  * [rx]を使ったイベントバス
  */
 class EventBus {
-    private val publishSubject: PublishSubject<Event> = PublishSubject.create()
+    private val publishSubject = PublishSubject.create<Event>().toSerialized()
 
     /**
      * イベントを投げる。ハンドリングされなかった場合は新たに[DeadEvent]を投げる。
