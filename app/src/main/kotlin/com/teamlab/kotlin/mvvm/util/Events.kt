@@ -25,7 +25,7 @@ class EventBus {
      * イベントのハンドリング登録。
      * 必ず戻り値に対して[Subscription.unsubscribe]をすること。
      */
-    fun <E : Event> subscribe(clazz: KClass<E>, onNext: E.() -> Unit, scheduler: Scheduler? = null): Subscription {
+    fun <E : Event> subscribe(clazz: KClass<E>, onNext: (E) -> Unit, scheduler: Scheduler? = null): Subscription {
         return publishSubject
                 .ofType(clazz.java)
                 .doOnNext { it.handledCount++ }

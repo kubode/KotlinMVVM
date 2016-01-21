@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity(), Injectable {
                     AddAccountDialogFragment().show(supportFragmentManager, null)
                 }),
                 bus.subscribe(OpenUrlEvent::class, {
-                    startActivity(Intent.parseUri(url, 0))
+                    startActivity(Intent.parseUri(it.url, 0))
                 })
         )
         if (savedInstanceState == null) {
