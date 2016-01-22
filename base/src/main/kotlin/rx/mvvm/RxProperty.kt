@@ -6,7 +6,7 @@ import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
 /**
- * [asProperty]を経由することで、プロパティの変更通知を受けられる[Observable]。
+ * [toProperty]を経由することで、プロパティの変更通知を受けられる[Observable]。
  * [subscribe]することで、プロパティの変更通知を受けられる。
  *
  * 用途にそって[State]を実装し、[Companion]に拡張メソッドを定義することで拡張性を持たせる。
@@ -36,13 +36,13 @@ class RxPropertyObservable<T> : Observable<T> {
      * プロパティの変更通知は、この[RxPropertyObservable]へ通知される。
      * 読み書きがあるため、[state]が読み書きできない場合は例外が発生する。
      */
-    fun asProperty(): ReadWriteProperty<Any, T> {
+    fun toProperty(): ReadWriteProperty<Any, T> {
         return RxProperty(this)
     }
 }
 
 /**
- * [RxPropertyObservable.asProperty]の実体。
+ * [RxPropertyObservable.toProperty]の実体。
  *
  * 読み書きは[state]に対して行う。
  */

@@ -24,7 +24,7 @@ class AppPreferences(private val context: Context) : Model<Unit>() {
             { key, value ->
                 putString(key, value.map { it.id.toString() }.joinToString(SEPARATOR))
             })
-    var accounts by accountsObservable.asProperty()
+    var accounts by accountsObservable.toProperty()
 
     fun addAccount(token: AccessToken): Account {
         val account = Account.of(context, token.userId)

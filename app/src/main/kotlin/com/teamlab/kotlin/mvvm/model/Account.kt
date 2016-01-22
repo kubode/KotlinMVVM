@@ -21,7 +21,7 @@ class Account private constructor(val context: Context, val twitter: Twitter, us
     val screenNameObservable = RxPropertyObservable.strPref(pref, "screenName", "")
     private var token by StrPref("token")
     private var tokenSecret by StrPref("tokenSecret")
-    private var screenName by screenNameObservable.asProperty()
+    private var screenName by screenNameObservable.toProperty()
 
     fun initialize(token: AccessToken) {
         this.token = token.token

@@ -27,7 +27,7 @@ class AddAccountViewModel(context: Context) : ViewModel() {
     val isAuthVisibleObservable = RxPropertyObservable.chain(oAuth.requestTokenObservable.map { it != null })
     val urlObservable = RxPropertyObservable.chain(oAuth.requestTokenObservable.map { it?.authorizationURL })
     val pinObservable = RxPropertyObservable.value("")
-    var pin by pinObservable.asProperty()
+    var pin by pinObservable.toProperty()
     val isSubmitEnableObservable = RxPropertyObservable.chain(Observable.combineLatest(
             oAuth.stateObservable, pinObservable,
             { state, pin -> state != State.REQUESTING && pin.isNotEmpty() }))

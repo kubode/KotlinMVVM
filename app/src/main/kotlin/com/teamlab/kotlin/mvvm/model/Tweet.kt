@@ -21,11 +21,11 @@ class Tweet(private val account: Account, status: Status) : Model<Pair<Account, 
     val text = status.text
     val createdAt = status.createdAt
     val favoriteCountObservable = RxPropertyObservable.value(status.favoriteCount)
-    private var favoriteCount by favoriteCountObservable.asProperty()
+    private var favoriteCount by favoriteCountObservable.toProperty()
     val isFavoritedObservable = RxPropertyObservable.value(status.isFavorited)
-    private var isFavorited by isFavoritedObservable.asProperty()
+    private var isFavorited by isFavoritedObservable.toProperty()
     val isFavoriteRequestingObservable = RxPropertyObservable.value(false)
-    private var isFavoriteRequesting by isFavoriteRequestingObservable.asProperty()
+    private var isFavoriteRequesting by isFavoriteRequestingObservable.toProperty()
 
     fun merge(status: Status) {
         favoriteCount = status.favoriteCount

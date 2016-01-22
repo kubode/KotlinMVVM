@@ -19,11 +19,11 @@ class OAuth(private val context: Context, private val twitter: Twitter) : Inject
     private val pref by inject(AppPreferences::class)
 
     val stateObservable = RxPropertyObservable.value(State.NORMAL)
-    private var state by stateObservable.asProperty()
+    private var state by stateObservable.toProperty()
     val errorObservable = RxPropertyObservable.value(null as Throwable?)
-    private var error by errorObservable.asProperty()
+    private var error by errorObservable.toProperty()
     val requestTokenObservable = RxPropertyObservable.value(null as RequestToken?)
-    private var requestToken by requestTokenObservable.asProperty()
+    private var requestToken by requestTokenObservable.toProperty()
 
     fun restore(savedInstanceState: Bundle) {
         val token = savedInstanceState.getString("token") ?: return

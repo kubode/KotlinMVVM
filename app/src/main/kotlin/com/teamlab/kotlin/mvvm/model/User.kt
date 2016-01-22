@@ -8,7 +8,7 @@ import rx.mvvm.value
 class User(account: Account, id: Long) : Model<Pair<Account, Long>>() {
     override val id = Pair(account, id)
     val nameObservable = RxPropertyObservable.value("")
-    var name by nameObservable.asProperty()
+    var name by nameObservable.toProperty()
 
     val Manager = object {
         private val cache = Cache<User, Pair<Account, Long>>()
