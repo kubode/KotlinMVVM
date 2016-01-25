@@ -1,9 +1,9 @@
 package com.teamlab.kotlin.mvvm
 
 import android.content.Context
+import com.github.kubode.rxeventbus.RxEventBus
 import com.squareup.leakcanary.RefWatcher
 import com.teamlab.kotlin.mvvm.model.AppPreferences
-import com.teamlab.kotlin.mvvm.util.RxEventBus
 import com.teamlab.kotlin.mvvm.util.Module
 
 class MyApplicationModule(application: MyApplication) : Module() {

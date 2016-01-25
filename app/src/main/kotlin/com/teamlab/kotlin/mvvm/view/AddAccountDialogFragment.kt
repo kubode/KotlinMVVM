@@ -7,6 +7,7 @@ import android.support.v7.app.AlertDialog
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
+import com.github.kubode.rxeventbus.RxEventBus
 import com.jakewharton.rxbinding.view.clicks
 import com.jakewharton.rxbinding.widget.textChanges
 import com.squareup.leakcanary.RefWatcher

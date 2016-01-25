@@ -47,4 +47,6 @@ dependencies {
     compile 'com.jakewharton.rxbinding:rxbinding-appcompat-v7-kotlin:0.3.0'
     // Twitter4J
     compile 'org.twitter4j:twitter4j-core:4.0.4'
+    // Other
+    compile 'com.github.kubode:rxeventbus:1.0.0'
 }

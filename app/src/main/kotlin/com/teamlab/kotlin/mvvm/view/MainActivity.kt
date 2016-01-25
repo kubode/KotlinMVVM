@@ -3,14 +3,14 @@ package com.teamlab.kotlin.mvvm.view
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import com.github.kubode.rxeventbus.RxEventBus
 import com.squareup.leakcanary.RefWatcher
 import com.teamlab.kotlin.mvvm.R
 import com.teamlab.kotlin.mvvm.event.AddAccountEvent
 import com.teamlab.kotlin.mvvm.event.OpenUrlEvent
 import com.teamlab.kotlin.mvvm.ext.of
-import com.teamlab.kotlin.mvvm.util.RxEventBus
-import com.teamlab.kotlin.mvvm.util.Injectable
 import com.teamlab.kotlin.mvvm.util.HasObjectGraphFinder
+import com.teamlab.kotlin.mvvm.util.Injectable
 import com.teamlab.kotlin.mvvm.util.inject
 import rx.Subscription
 import rx.subscriptions.CompositeSubscription
@@ -28,10 +28,10 @@ class MainActivity : AppCompatActivity(), Injectable {
         setContentView(R.layout.main)
 
         subscription = CompositeSubscription(
-                bus.subscribe(AddAccountEvent::class, {
+                bus.subscribe(AddAccountEvent::class.java, {
                     AddAccountDialogFragment().show(supportFragmentManager, null)
                 }),
-                bus.subscribe(OpenUrlEvent::class, {
+                bus.subscribe(OpenUrlEvent::class.java, {
                     startActivity(Intent.parseUri(it.url, 0))
                 })
         )
