@@ -22,8 +22,8 @@ fun <T> RxPropertyObservable.Companion.value(defaultValue: T) = RxPropertyObserv
  * 読み書き可能な[State]。
  */
 private class ValueState<T>(defaultValue: T) : State<T>() {
-    override val observable = BehaviorSubject.create<T>(defaultValue).toSerialized()
+    override val observable = BehaviorSubject.create(defaultValue)
     override var value: T
         get() = observable.value
-        set(value) = observable.onNext(value)
+        set(value) = synchronized(observable) { observable.onNext(value) }
 }
