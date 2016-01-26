@@ -48,5 +48,5 @@ dependencies {
     // Twitter4J
     compile 'org.twitter4j:twitter4j-core:4.0.4'
     // Other
-    compile 'com.github.kubode:rxeventbus:1.0.0'
+    compile 'com.github.kubode:rxeventbus:1.0.1'
 }
