@@ -5,10 +5,13 @@ import rx.schedulers.Schedulers
 import twitter4j.Twitter
 import twitter4j.TwitterFactory
 import twitter4j.auth.RequestToken
+import javax.inject.Inject
+import javax.inject.Singleton
 
-object TwitterFactory {
-    private const val CONSUMER_KEY = "hZOuxdz51CludNkjEyMuiR6JB"
-    private const val CONSUMER_SECRET = "2gtKvKETxmDlj0P9VNrzUQgm3JY6m8To1Trd5lqU8sOsPsyRMh"
+@Singleton
+class MyTwitterFactory @Inject constructor() {
+    private val CONSUMER_KEY = "hZOuxdz51CludNkjEyMuiR6JB"
+    private val CONSUMER_SECRET = "2gtKvKETxmDlj0P9VNrzUQgm3JY6m8To1Trd5lqU8sOsPsyRMh"
 
     fun create(): Twitter {
         return TwitterFactory().instance.apply {

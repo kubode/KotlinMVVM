@@ -3,16 +3,17 @@ package com.teamlab.kotlin.mvvm
 import android.app.Application
 import com.squareup.leakcanary.LeakCanary
 import com.squareup.leakcanary.RefWatcher
-import com.teamlab.kotlin.mvvm.util.HasObjectGraph
-import com.teamlab.kotlin.mvvm.util.ObjectGraph
 
-class MyApplication : Application(), HasObjectGraph {
-    override lateinit var objectGraph: ObjectGraph
+class MyApplication : Application() {
+
     lateinit var ref: RefWatcher
+    lateinit var component: MyApplicationComponent
+
     override fun onCreate() {
         super.onCreate()
-        objectGraph = ObjectGraph()
-                .add(MyApplicationModule(this))
         ref = LeakCanary.install(this)
+        component = DaggerMyApplicationComponent.builder()
+                .myApplicationModule(MyApplicationModule(this))
+                .build()
     }
 }

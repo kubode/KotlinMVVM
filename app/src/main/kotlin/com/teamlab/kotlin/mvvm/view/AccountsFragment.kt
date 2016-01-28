@@ -12,32 +12,33 @@ import android.widget.TextView
 import com.github.kubode.rxeventbus.RxEventBus
 import com.jakewharton.rxbinding.view.clicks
 import com.squareup.leakcanary.RefWatcher
+import com.teamlab.kotlin.mvvm.MyApplicationComponent
 import com.teamlab.kotlin.mvvm.R
 import com.teamlab.kotlin.mvvm.event.AddAccountEvent
-import com.teamlab.kotlin.mvvm.ext.of
 import com.teamlab.kotlin.mvvm.model.Account
-import com.teamlab.kotlin.mvvm.util.*
+import com.teamlab.kotlin.mvvm.util.bindView
+import com.teamlab.kotlin.mvvm.util.logV
 import com.teamlab.kotlin.mvvm.viewmodel.AccountsViewModel
 import rx.Subscription
 import rx.mvvm.bind
 import rx.subscriptions.CompositeSubscription
+import javax.inject.Inject
 import kotlin.properties.Delegates
 
-class AccountsFragment : Fragment(), Injectable {
-    override val hasObjectGraphFinder = HasObjectGraphFinder.of(this)
+class AccountsFragment : Fragment() {
 
-    private val ref by inject(RefWatcher::class)
-    private val bus by inject(RxEventBus::class)
+    @Inject lateinit var ref: RefWatcher
+    @Inject lateinit var bus: RxEventBus
+    @Inject lateinit var vm: AccountsViewModel
 
     private val recycler by bindView<RecyclerView>(R.id.recycler)
     private val add by bindView<View>(R.id.add)
 
-    private lateinit var vm: AccountsViewModel
     private lateinit var subscription: Subscription
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        vm = AccountsViewModel(activity)
+        MyApplicationComponent.from(this).inject(this)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

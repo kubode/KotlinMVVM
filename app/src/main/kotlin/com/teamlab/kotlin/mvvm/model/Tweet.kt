@@ -2,21 +2,18 @@ package com.teamlab.kotlin.mvvm.model
 
 import com.teamlab.kotlin.mvvm.ext.createFavoriteObservable
 import com.teamlab.kotlin.mvvm.ext.destroyFavoriteObservable
-import com.teamlab.kotlin.mvvm.util.HasObjectGraphFinder
-import com.teamlab.kotlin.mvvm.util.Injectable
 import com.teamlab.kotlin.mvvm.util.Toaster
-import com.teamlab.kotlin.mvvm.util.inject
 import rx.mvvm.Model
 import rx.mvvm.RxPropertyObservable
 import rx.mvvm.value
 import twitter4j.Status
 import twitter4j.Twitter
+import javax.inject.Inject
 
-class Tweet(private val account: Account, status: Status) : Model<Pair<Account, Long>>(), Injectable {
-    override val hasObjectGraphFinder = HasObjectGraphFinder({ account })
+class Tweet(private val account: Account, status: Status) : Model<Pair<Account, Long>>() {
     override val id = Pair(account, status.id)
 
-    private val twitter by inject(Twitter::class)
+    @Inject lateinit var twitter: Twitter
 
     val text = status.text
     val createdAt = status.createdAt

@@ -5,26 +5,24 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.github.kubode.rxeventbus.RxEventBus
 import com.squareup.leakcanary.RefWatcher
+import com.teamlab.kotlin.mvvm.MyApplicationComponent
 import com.teamlab.kotlin.mvvm.R
 import com.teamlab.kotlin.mvvm.event.AddAccountEvent
 import com.teamlab.kotlin.mvvm.event.OpenUrlEvent
-import com.teamlab.kotlin.mvvm.ext.of
-import com.teamlab.kotlin.mvvm.util.HasObjectGraphFinder
-import com.teamlab.kotlin.mvvm.util.Injectable
-import com.teamlab.kotlin.mvvm.util.inject
 import rx.Subscription
 import rx.subscriptions.CompositeSubscription
+import javax.inject.Inject
 
-class MainActivity : AppCompatActivity(), Injectable {
-    override val hasObjectGraphFinder = HasObjectGraphFinder.of(this)
+class MainActivity : AppCompatActivity() {
 
-    private val ref by inject(RefWatcher::class)
-    private val bus by inject(RxEventBus::class)
+    @Inject lateinit var ref: RefWatcher
+    @Inject lateinit var bus: RxEventBus
 
     private lateinit var subscription: Subscription
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        MyApplicationComponent.from(this).inject(this)
         setContentView(R.layout.main)
 
         subscription = CompositeSubscription(

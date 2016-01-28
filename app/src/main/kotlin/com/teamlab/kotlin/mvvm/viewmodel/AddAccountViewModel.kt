@@ -1,8 +1,6 @@
 package com.teamlab.kotlin.mvvm.viewmodel
 
-import android.content.Context
 import android.os.Bundle
-import com.teamlab.kotlin.mvvm.ext.TwitterFactory
 import com.teamlab.kotlin.mvvm.model.OAuth
 import com.teamlab.kotlin.mvvm.model.State
 import rx.Observable
@@ -10,10 +8,9 @@ import rx.mvvm.RxPropertyObservable
 import rx.mvvm.ViewModel
 import rx.mvvm.chain
 import rx.mvvm.value
+import javax.inject.Inject
 
-class AddAccountViewModel(context: Context) : ViewModel() {
-
-    private val oAuth = OAuth(context, TwitterFactory.create())
+class AddAccountViewModel @Inject constructor(private val oAuth: OAuth) : ViewModel() {
 
     val isProgressVisibleObservable = RxPropertyObservable.chain(Observable.combineLatest(
             oAuth.stateObservable, oAuth.requestTokenObservable,

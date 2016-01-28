@@ -1,18 +1,11 @@
 package com.teamlab.kotlin.mvvm.viewmodel
 
-import android.content.Context
-import com.teamlab.kotlin.mvvm.ext.of
 import com.teamlab.kotlin.mvvm.model.AppPreferences
-import com.teamlab.kotlin.mvvm.util.Injectable
-import com.teamlab.kotlin.mvvm.util.HasObjectGraphFinder
-import com.teamlab.kotlin.mvvm.util.inject
 import rx.mvvm.RxPropertyObservable
 import rx.mvvm.ViewModel
 import rx.mvvm.chain
+import javax.inject.Inject
 
-class AccountsViewModel(context: Context) : ViewModel(), Injectable {
-    override val hasObjectGraphFinder = HasObjectGraphFinder.of(context)
-
-    private val pref by inject(AppPreferences::class)
+class AccountsViewModel @Inject constructor(pref: AppPreferences) : ViewModel() {
     val accountsObservable = RxPropertyObservable.chain(pref.accountsObservable)
 }

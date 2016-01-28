@@ -5,8 +5,11 @@ import rx.mvvm.Model
 import rx.mvvm.RxPropertyObservable
 import rx.mvvm.pref
 import twitter4j.auth.AccessToken
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class AppPreferences(private val context: Context) : Model<Unit>() {
+@Singleton
+class AppPreferences @Inject constructor(private val context: Context, private val accountRepository: AccountRepository) : Model<Unit>() {
     private val SEPARATOR = ","
 
     override val id = Unit
@@ -18,7 +21,7 @@ class AppPreferences(private val context: Context) : Model<Unit>() {
             emptyList(),
             { key, defValue ->
                 getString(key, null)?.let {
-                    it.split(SEPARATOR).map { Account.of(context, it.toLong()) }
+                    it.split(SEPARATOR).map { accountRepository.of(it.toLong()) }
                 } ?: defValue
             },
             { key, value ->
@@ -27,7 +30,7 @@ class AppPreferences(private val context: Context) : Model<Unit>() {
     var accounts by accountsObservable.toProperty()
 
     fun addAccount(token: AccessToken): Account {
-        val account = Account.of(context, token.userId)
+        val account = accountRepository.of(token.userId)
         if (account in accounts) throw RuntimeException("$account は登録済みのアカウントです。")
         account.initialize(token)
         accounts += account

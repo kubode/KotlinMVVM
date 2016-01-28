@@ -11,21 +11,22 @@ import com.github.kubode.rxeventbus.RxEventBus
 import com.jakewharton.rxbinding.view.clicks
 import com.jakewharton.rxbinding.widget.textChanges
 import com.squareup.leakcanary.RefWatcher
+import com.teamlab.kotlin.mvvm.MyApplicationComponent
 import com.teamlab.kotlin.mvvm.R
 import com.teamlab.kotlin.mvvm.event.OpenUrlEvent
-import com.teamlab.kotlin.mvvm.ext.of
-import com.teamlab.kotlin.mvvm.util.*
+import com.teamlab.kotlin.mvvm.util.Toaster
+import com.teamlab.kotlin.mvvm.util.bindView
 import com.teamlab.kotlin.mvvm.viewmodel.AddAccountViewModel
 import rx.Subscription
 import rx.mvvm.bind
 import rx.subscriptions.CompositeSubscription
+import javax.inject.Inject
 
-class AddAccountDialogFragment : DialogFragment(), Injectable {
+class AddAccountDialogFragment : DialogFragment() {
 
-    override val hasObjectGraphFinder = HasObjectGraphFinder.of(this)
-
-    private val ref by inject(RefWatcher::class)
-    private val bus by inject(RxEventBus::class)
+    @Inject lateinit var ref: RefWatcher
+    @Inject lateinit var bus: RxEventBus
+    @Inject lateinit var vm: AddAccountViewModel
 
     private val progress by bindView<View>(R.id.progress)
     private val error by bindView<View>(R.id.error)
@@ -36,12 +37,11 @@ class AddAccountDialogFragment : DialogFragment(), Injectable {
     private val pin by bindView<EditText>(R.id.pin)
     private val submit by bindView<View>(R.id.submit)
 
-    private lateinit var vm: AddAccountViewModel
     private lateinit var subscription: Subscription
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        vm = AddAccountViewModel(activity)
+        MyApplicationComponent.from(this).inject(this)
         vm.performRestoreInstanceState(savedInstanceState)
         vm.getRequestTokenIfEnable()
     }

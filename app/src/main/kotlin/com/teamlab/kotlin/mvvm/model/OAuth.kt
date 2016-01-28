@@ -1,22 +1,15 @@
 package com.teamlab.kotlin.mvvm.model
 
-import android.content.Context
 import android.os.Bundle
 import com.teamlab.kotlin.mvvm.ext.getOAuthAccessTokenObservable
 import com.teamlab.kotlin.mvvm.ext.getOAuthRequestTokenObservable
-import com.teamlab.kotlin.mvvm.ext.of
-import com.teamlab.kotlin.mvvm.util.Injectable
-import com.teamlab.kotlin.mvvm.util.HasObjectGraphFinder
-import com.teamlab.kotlin.mvvm.util.inject
 import rx.mvvm.RxPropertyObservable
 import rx.mvvm.value
 import twitter4j.Twitter
 import twitter4j.auth.RequestToken
+import javax.inject.Inject
 
-class OAuth(private val context: Context, private val twitter: Twitter) : Injectable {
-    override val hasObjectGraphFinder = HasObjectGraphFinder.of(context)
-
-    private val pref by inject(AppPreferences::class)
+class OAuth @Inject constructor(private val twitter: Twitter, private val pref: AppPreferences) {
 
     val stateObservable = RxPropertyObservable.value(State.NORMAL)
     private var state by stateObservable.toProperty()

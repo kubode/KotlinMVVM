@@ -1,21 +1,19 @@
 package com.teamlab.kotlin.mvvm.model
 
 import android.content.Context
-import com.teamlab.kotlin.mvvm.ext.TwitterFactory
-import com.teamlab.kotlin.mvvm.ext.of
-import com.teamlab.kotlin.mvvm.util.*
+import com.teamlab.kotlin.mvvm.ext.MyTwitterFactory
 import rx.mvvm.Cache
 import rx.mvvm.Model
 import rx.mvvm.RxPropertyObservable
 import rx.mvvm.strPref
 import twitter4j.Twitter
 import twitter4j.auth.AccessToken
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
-class Account private constructor(val context: Context, val twitter: Twitter, userId: Long) : Model<Long>(), Injectable, HasObjectGraph {
-    override val hasObjectGraphFinder = HasObjectGraphFinder.of(context)
-    override val objectGraph = ObjectGraph(parentObjectGraph).add(AccountModule())
+class Account(val context: Context, val twitter: Twitter, userId: Long) : Model<Long>() {
     override val id = userId
     private val pref = context.getSharedPreferences("account-$userId", Context.MODE_PRIVATE)
     val screenNameObservable = RxPropertyObservable.strPref(pref, "screenName", "")
@@ -40,17 +38,12 @@ class Account private constructor(val context: Context, val twitter: Twitter, us
             pref.edit().putString(key, value).apply()
         }
     }
+}
 
-    companion object {
-        private val cache = Cache<Account, Long>()
-        fun of(context: Context, userId: Long): Account {
-            return cache.getAndPut(userId, { Account(context, TwitterFactory.create(), userId) })
-        }
-    }
-
-    private inner class AccountModule : Module() {
-        init {
-            provideSingleton(Twitter::class, { twitter })
-        }
+@Singleton
+class AccountRepository @Inject constructor(private val context: Context, private val twitterFactory: MyTwitterFactory) {
+    private val cache = Cache<Account, Long>()
+    fun of(userId: Long): Account {
+        return cache.getAndPut(userId, { Account(context, twitterFactory.create(), userId) })
     }
 }
