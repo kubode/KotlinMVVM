@@ -5,8 +5,8 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.github.kubode.rxeventbus.RxEventBus
 import com.squareup.leakcanary.RefWatcher
-import com.teamlab.kotlin.mvvm.MyApplicationComponent
 import com.teamlab.kotlin.mvvm.R
+import com.teamlab.kotlin.mvvm.di.MyApplicationComponent
 import com.teamlab.kotlin.mvvm.event.AddAccountEvent
 import com.teamlab.kotlin.mvvm.event.OpenUrlEvent
 import rx.Subscription

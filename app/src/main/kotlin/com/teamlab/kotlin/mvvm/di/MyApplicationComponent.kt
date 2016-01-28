@@ -1,8 +1,9 @@
-package com.teamlab.kotlin.mvvm
+package com.teamlab.kotlin.mvvm.di
 
 import android.app.Activity
 import android.content.Context
 import android.support.v4.app.Fragment
+import com.teamlab.kotlin.mvvm.MyApplication
 import com.teamlab.kotlin.mvvm.view.AccountsFragment
 import com.teamlab.kotlin.mvvm.view.AddAccountDialogFragment
 import com.teamlab.kotlin.mvvm.view.MainActivity

@@ -11,8 +11,8 @@ import com.github.kubode.rxeventbus.RxEventBus
 import com.jakewharton.rxbinding.view.clicks
 import com.jakewharton.rxbinding.widget.textChanges
 import com.squareup.leakcanary.RefWatcher
-import com.teamlab.kotlin.mvvm.MyApplicationComponent
 import com.teamlab.kotlin.mvvm.R
+import com.teamlab.kotlin.mvvm.di.MyApplicationComponent
 import com.teamlab.kotlin.mvvm.event.OpenUrlEvent
 import com.teamlab.kotlin.mvvm.util.Toaster
 import com.teamlab.kotlin.mvvm.util.bindView

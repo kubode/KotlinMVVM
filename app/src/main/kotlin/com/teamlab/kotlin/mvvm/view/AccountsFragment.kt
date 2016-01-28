@@ -12,8 +12,8 @@ import android.widget.TextView
 import com.github.kubode.rxeventbus.RxEventBus
 import com.jakewharton.rxbinding.view.clicks
 import com.squareup.leakcanary.RefWatcher
-import com.teamlab.kotlin.mvvm.MyApplicationComponent
 import com.teamlab.kotlin.mvvm.R
+import com.teamlab.kotlin.mvvm.di.MyApplicationComponent
 import com.teamlab.kotlin.mvvm.event.AddAccountEvent
 import com.teamlab.kotlin.mvvm.model.Account
 import com.teamlab.kotlin.mvvm.util.bindView

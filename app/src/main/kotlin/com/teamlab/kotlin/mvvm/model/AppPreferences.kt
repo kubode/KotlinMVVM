@@ -1,6 +1,7 @@
 package com.teamlab.kotlin.mvvm.model
 
 import android.content.Context
+import com.teamlab.kotlin.mvvm.repository.AccountRepository
 import rx.mvvm.Model
 import rx.mvvm.RxPropertyObservable
 import rx.mvvm.pref

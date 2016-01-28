@@ -1,15 +1,13 @@
 package com.teamlab.kotlin.mvvm.model
 
 import android.content.Context
-import com.teamlab.kotlin.mvvm.ext.MyTwitterFactory
-import rx.mvvm.Cache
+import com.teamlab.kotlin.mvvm.di.DaggerAccountComponent
+import com.teamlab.kotlin.mvvm.di.MyApplicationComponent
 import rx.mvvm.Model
 import rx.mvvm.RxPropertyObservable
 import rx.mvvm.strPref
 import twitter4j.Twitter
 import twitter4j.auth.AccessToken
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
@@ -20,6 +18,10 @@ class Account(val context: Context, val twitter: Twitter, userId: Long) : Model<
     private var token by StrPref("token")
     private var tokenSecret by StrPref("tokenSecret")
     private var screenName by screenNameObservable.toProperty()
+
+    val component = DaggerAccountComponent.builder()
+            .myApplicationComponent(MyApplicationComponent.from(context))
+            .build()
 
     fun initialize(token: AccessToken) {
         this.token = token.token
@@ -37,13 +39,5 @@ class Account(val context: Context, val twitter: Twitter, userId: Long) : Model<
         override fun setValue(thisRef: Any, property: KProperty<*>, value: String) {
             pref.edit().putString(key, value).apply()
         }
-    }
-}
-
-@Singleton
-class AccountRepository @Inject constructor(private val context: Context, private val twitterFactory: MyTwitterFactory) {
-    private val cache = Cache<Account, Long>()
-    fun of(userId: Long): Account {
-        return cache.getAndPut(userId, { Account(context, twitterFactory.create(), userId) })
     }
 }
