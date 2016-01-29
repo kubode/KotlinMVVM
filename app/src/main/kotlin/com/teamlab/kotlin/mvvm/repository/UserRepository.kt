@@ -12,6 +12,6 @@ class UserRepository @Inject constructor(private val account: Account) {
     private val cache = Cache<User, Long>()
 
     fun of(user: twitter4j.User): User {
-        return cache.getAndPut(user.id, { User(account, user) })
+        return cache.getOrPut(user.id, { User(account, user) })
     }
 }

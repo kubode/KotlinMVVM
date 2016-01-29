@@ -10,7 +10,7 @@ class Cache<M : Model<K>, K> {
         return cache.values.map { it.get() }.filterNotNull()
     }
 
-    fun getAndPut(key: K, creator: (K) -> M): M {
+    fun getOrPut(key: K, creator: (K) -> M): M {
         return get(key) ?: creator(key).apply { put(this) }
     }
 

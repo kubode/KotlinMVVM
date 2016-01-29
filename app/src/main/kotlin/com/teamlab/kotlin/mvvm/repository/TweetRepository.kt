@@ -13,6 +13,7 @@ class TweetRepository @Inject constructor(private val account: Account) {
     private val cache = Cache<Tweet, Long>()
 
     fun of(status: Status): Tweet {
-        return cache.getAndPut(status.id, { Tweet(account, status) })
+        return cache.getOrPut(status.id, { Tweet(account, status) })
+                .apply { merge(status) }
     }
 }
