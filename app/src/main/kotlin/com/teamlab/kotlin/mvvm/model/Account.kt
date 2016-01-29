@@ -1,8 +1,9 @@
 package com.teamlab.kotlin.mvvm.model
 
 import android.content.Context
-import com.teamlab.kotlin.mvvm.di.DaggerAccountComponent
+import com.teamlab.kotlin.mvvm.di.AccountModule
 import com.teamlab.kotlin.mvvm.di.ApplicationComponent
+import com.teamlab.kotlin.mvvm.di.DaggerAccountComponent
 import rx.mvvm.Model
 import rx.mvvm.RxPropertyObservable
 import rx.mvvm.strPref
@@ -21,6 +22,7 @@ class Account(val context: Context, val twitter: Twitter, userId: Long) : Model<
 
     val component = DaggerAccountComponent.builder()
             .applicationComponent(ApplicationComponent.from(context))
+            .accountModule(AccountModule(this))
             .build()
 
     fun initialize(token: AccessToken) {

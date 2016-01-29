@@ -7,6 +7,7 @@ import com.github.kubode.rxeventbus.RxEventBus
 import com.squareup.leakcanary.RefWatcher
 import com.teamlab.kotlin.mvvm.R
 import com.teamlab.kotlin.mvvm.di.ApplicationComponent
+import com.teamlab.kotlin.mvvm.event.AccountClickEvent
 import com.teamlab.kotlin.mvvm.event.AddAccountEvent
 import com.teamlab.kotlin.mvvm.event.OpenUrlEvent
 import rx.Subscription
@@ -31,6 +32,9 @@ class MainActivity : AppCompatActivity() {
                 }),
                 bus.subscribe(OpenUrlEvent::class.java, {
                     startActivity(Intent.parseUri(it.url, 0))
+                }),
+                bus.subscribe(AccountClickEvent::class.java, {
+                    startActivity(AccountActivity.createIntent(this, it.account.id))
                 })
         )
         if (savedInstanceState == null) {
