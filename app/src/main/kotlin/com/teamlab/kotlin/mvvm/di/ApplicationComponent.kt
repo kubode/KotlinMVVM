@@ -8,11 +8,10 @@ import com.teamlab.kotlin.mvvm.view.AccountsFragment
 import com.teamlab.kotlin.mvvm.view.AddAccountDialogFragment
 import com.teamlab.kotlin.mvvm.view.MainActivity
 import dagger.Component
-import javax.inject.Singleton
 
-@Singleton
-@Component(modules = arrayOf(MyApplicationModule::class))
-interface MyApplicationComponent {
+@Component(modules = arrayOf(ApplicationModule::class))
+@ApplicationScope
+interface ApplicationComponent {
 
     fun inject(mainActivity: MainActivity)
     fun inject(accountsFragment: AccountsFragment)

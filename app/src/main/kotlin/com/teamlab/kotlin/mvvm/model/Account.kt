@@ -2,7 +2,7 @@ package com.teamlab.kotlin.mvvm.model
 
 import android.content.Context
 import com.teamlab.kotlin.mvvm.di.DaggerAccountComponent
-import com.teamlab.kotlin.mvvm.di.MyApplicationComponent
+import com.teamlab.kotlin.mvvm.di.ApplicationComponent
 import rx.mvvm.Model
 import rx.mvvm.RxPropertyObservable
 import rx.mvvm.strPref
@@ -20,7 +20,7 @@ class Account(val context: Context, val twitter: Twitter, userId: Long) : Model<
     private var screenName by screenNameObservable.toProperty()
 
     val component = DaggerAccountComponent.builder()
-            .myApplicationComponent(MyApplicationComponent.from(context))
+            .applicationComponent(ApplicationComponent.from(context))
             .build()
 
     fun initialize(token: AccessToken) {

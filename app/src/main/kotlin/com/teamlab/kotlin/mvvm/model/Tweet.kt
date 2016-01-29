@@ -10,8 +10,8 @@ import twitter4j.Status
 import twitter4j.Twitter
 import javax.inject.Inject
 
-class Tweet(private val account: Account, status: Status) : Model<Pair<Account, Long>>() {
-    override val id = Pair(account, status.id)
+class Tweet(private val account: Account, status: Status) : Model<Long>() {
+    override val id = status.id
 
     @Inject lateinit var twitter: Twitter
 
@@ -24,6 +24,10 @@ class Tweet(private val account: Account, status: Status) : Model<Pair<Account, 
     val isFavoriteRequestingObservable = RxPropertyObservable.value(false)
     private var isFavoriteRequesting by isFavoriteRequestingObservable.toProperty()
 
+    init {
+        account.component.inject(this)
+    }
+
     fun merge(status: Status) {
         favoriteCount = status.favoriteCount
         isFavorited = status.isFavorited
@@ -33,9 +37,9 @@ class Tweet(private val account: Account, status: Status) : Model<Pair<Account, 
         if (isFavoriteRequesting) return
         isFavoriteRequesting = true
         val observable = if (isFavorited) {
-            twitter.destroyFavoriteObservable(id.second)
+            twitter.destroyFavoriteObservable(id)
         } else {
-            twitter.createFavoriteObservable(id.second)
+            twitter.createFavoriteObservable(id)
         }
         observable
                 .finallyDo { isFavoriteRequesting = false }

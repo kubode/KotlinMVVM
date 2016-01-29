@@ -1,15 +1,15 @@
 package com.teamlab.kotlin.mvvm.model
 
 import android.content.Context
+import com.teamlab.kotlin.mvvm.di.ApplicationScope
 import com.teamlab.kotlin.mvvm.repository.AccountRepository
 import rx.mvvm.Model
 import rx.mvvm.RxPropertyObservable
 import rx.mvvm.pref
 import twitter4j.auth.AccessToken
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
+@ApplicationScope
 class AppPreferences @Inject constructor(private val context: Context, private val accountRepository: AccountRepository) : Model<Unit>() {
     private val SEPARATOR = ","
 
