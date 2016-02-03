@@ -3,6 +3,7 @@ package com.teamlab.kotlin.mvvm.di
 import android.app.Activity
 import android.content.Context
 import android.support.v4.app.Fragment
+import com.github.kubode.rxeventbus.RxEventBus
 import com.teamlab.kotlin.mvvm.MyApplication
 import com.teamlab.kotlin.mvvm.view.AccountActivity
 import com.teamlab.kotlin.mvvm.view.AccountsFragment
@@ -18,6 +19,8 @@ interface ApplicationComponent {
     fun inject(accountActivity: AccountActivity)
     fun inject(accountsFragment: AccountsFragment)
     fun inject(addAccountDialogFragment: AddAccountDialogFragment)
+
+    val rxEventBus: RxEventBus
 
     companion object {
         fun from(context: Context) = (context.applicationContext as MyApplication).component

@@ -14,6 +14,6 @@ class AccountRepository @Inject constructor(private val context: Context,
     private val cache = Cache<Account, Long>()
 
     fun of(userId: Long): Account {
-        return cache.getOrPut(userId, { Account(context, twitterFactory.create(), userId) })
+        return cache.getOrPut(userId, { Account(context, twitterFactory, userId) })
     }
 }

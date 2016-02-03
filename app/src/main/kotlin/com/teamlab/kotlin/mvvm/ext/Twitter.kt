@@ -3,6 +3,7 @@ package com.teamlab.kotlin.mvvm.ext
 import com.teamlab.kotlin.mvvm.di.ApplicationScope
 import rx.Observable
 import rx.schedulers.Schedulers
+import twitter4j.Paging
 import twitter4j.Twitter
 import twitter4j.TwitterFactory
 import twitter4j.auth.RequestToken
@@ -42,3 +43,4 @@ fun Twitter.getOAuthRequestTokenObservable() = asObservable { oAuthRequestToken 
 fun Twitter.getOAuthAccessTokenObservable(requestToken: RequestToken, pin: String) = asObservable { getOAuthAccessToken(requestToken, pin) }
 fun Twitter.createFavoriteObservable(id: Long) = asObservable { createFavorite(id) }
 fun Twitter.destroyFavoriteObservable(id: Long) = asObservable { destroyFavorite(id) }
+fun Twitter.getHomeTimelineObservable(paging: Paging) = asObservable { getHomeTimeline(paging) }
