@@ -39,8 +39,9 @@ class TimelineFragment : Fragment() {
     private lateinit var subscription: Subscription
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         AccountComponent.from(activity).inject(this)
+
+        super.onCreate(savedInstanceState)
         vm.getInitTweetsIfEnable()
     }
 

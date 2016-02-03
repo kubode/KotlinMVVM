@@ -22,10 +22,10 @@ class AccountActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         ApplicationComponent.from(this).inject(this)
         account = accountRepository.of(intent.getLongExtra(EXTRA_ACCOUNT_ID, -1))
 
+        super.onCreate(savedInstanceState)
         setContentView(R.layout.main)
 
         if (savedInstanceState == null) {

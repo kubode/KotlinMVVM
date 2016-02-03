@@ -29,8 +29,12 @@ class Account(val context: Context, private val twitterFactory: MyTwitterFactory
 
     init {
         if (isInitialized) {
-            twitter.oAuthAccessToken = AccessToken(token, tokenSecret)
+            setupAccessToken()
         }
+    }
+
+    private fun setupAccessToken() {
+        twitter.oAuthAccessToken = AccessToken(token, tokenSecret)
     }
 
     fun initialize(token: AccessToken) {
@@ -38,6 +42,7 @@ class Account(val context: Context, private val twitterFactory: MyTwitterFactory
         this.token = token.token
         this.tokenSecret = token.tokenSecret
         this.screenName = token.screenName
+        setupAccessToken()
     }
 
     fun delete() = pref.edit().clear().commit()
