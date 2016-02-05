@@ -3,9 +3,9 @@ package com.teamlab.kotlin.mvvm
 import android.app.Application
 import com.squareup.leakcanary.LeakCanary
 import com.squareup.leakcanary.RefWatcher
-import com.teamlab.kotlin.mvvm.di.DaggerApplicationComponent
 import com.teamlab.kotlin.mvvm.di.ApplicationComponent
 import com.teamlab.kotlin.mvvm.di.ApplicationModule
+import com.teamlab.kotlin.mvvm.di.DaggerApplicationComponent
 
 class MyApplication : Application() {
 

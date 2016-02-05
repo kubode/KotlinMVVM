@@ -1,9 +1,9 @@
 package com.teamlab.kotlin.mvvm.data.model
 
-import com.teamlab.kotlin.mvvm.util.createFavoriteObservable
-import com.teamlab.kotlin.mvvm.util.destroyFavoriteObservable
 import com.teamlab.kotlin.mvvm.data.repository.UserRepository
 import com.teamlab.kotlin.mvvm.util.Toaster
+import com.teamlab.kotlin.mvvm.util.createFavoriteObservable
+import com.teamlab.kotlin.mvvm.util.destroyFavoriteObservable
 import rx.mvvm.Model
 import rx.mvvm.RxPropertyObservable
 import rx.mvvm.value

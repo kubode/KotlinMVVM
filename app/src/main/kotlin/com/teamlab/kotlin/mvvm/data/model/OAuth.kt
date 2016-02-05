@@ -1,16 +1,17 @@
 package com.teamlab.kotlin.mvvm.data.model
 
 import android.os.Bundle
+import com.teamlab.kotlin.mvvm.data.factory.MyTwitterFactory
 import com.teamlab.kotlin.mvvm.util.getOAuthAccessTokenObservable
 import com.teamlab.kotlin.mvvm.util.getOAuthRequestTokenObservable
 import rx.mvvm.RxPropertyObservable
 import rx.mvvm.value
-import twitter4j.Twitter
 import twitter4j.auth.RequestToken
 import javax.inject.Inject
 
-class OAuth @Inject constructor(private val twitter: Twitter, private val pref: AppPreferences) {
+class OAuth @Inject constructor(twitterFactory: MyTwitterFactory, private val pref: AppPreferences) {
 
+    private val twitter = twitterFactory.create()
     val stateObservable = RxPropertyObservable.value(State.NORMAL)
     private var state by stateObservable.toProperty()
     val errorObservable = RxPropertyObservable.value(null as Throwable?)

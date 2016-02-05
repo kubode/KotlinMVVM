@@ -14,7 +14,7 @@ class TimelineViewModel @Inject constructor(private val timelineRepository: Time
     val isInitProgressVisibleObservable = timeline.initStateObservable.map { it == State.REQUESTING }
     val isInitErrorVisibleObservable = timeline.initStateObservable.map { it == State.ERROR }
     val initErrorMessageObservable = timeline.initErrorObservable.map { it?.message }
-    val isRefreshingObservable = timeline.newStateObservable.map {it== State.REQUESTING}
+    val isRefreshingObservable = timeline.newStateObservable.map { it == State.REQUESTING }
 
     fun getInitTweetsIfEnable() = timeline.getInitTweetsIfEnable()
     fun getNewTweetsIfEnable() = timeline.getNewTweetsIfEnable()
