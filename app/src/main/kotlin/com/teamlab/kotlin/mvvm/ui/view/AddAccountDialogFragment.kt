@@ -1,4 +1,4 @@
-package com.teamlab.kotlin.mvvm.view
+package com.teamlab.kotlin.mvvm.ui.view
 
 import android.app.Dialog
 import android.os.Bundle

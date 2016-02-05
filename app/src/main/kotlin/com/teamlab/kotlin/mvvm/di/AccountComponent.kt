@@ -1,10 +1,9 @@
 package com.teamlab.kotlin.mvvm.di
 
 import android.app.Activity
-import com.teamlab.kotlin.mvvm.model.Timeline
-import com.teamlab.kotlin.mvvm.model.Tweet
-import com.teamlab.kotlin.mvvm.view.AccountActivity
-import com.teamlab.kotlin.mvvm.view.TimelineFragment
+import com.teamlab.kotlin.mvvm.data.model.Timeline
+import com.teamlab.kotlin.mvvm.data.model.Tweet
+import com.teamlab.kotlin.mvvm.ui.view.TimelineFragment
 import dagger.Component
 
 @Component(dependencies = arrayOf(ApplicationComponent::class), modules = arrayOf(AccountModule::class))
@@ -16,7 +15,7 @@ interface AccountComponent {
 
     companion object {
         fun from(activity: Activity): AccountComponent {
-            return (activity as AccountActivity).account.component
+            return (activity as com.teamlab.kotlin.mvvm.ui.view.AccountActivity).account.component
         }
     }
 }

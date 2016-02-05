@@ -1,6 +1,6 @@
 package com.teamlab.kotlin.mvvm.di
 
-import com.teamlab.kotlin.mvvm.model.Account
+import com.teamlab.kotlin.mvvm.data.model.Account
 import dagger.Module
 import dagger.Provides
 

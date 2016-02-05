@@ -1,4 +1,4 @@
-package com.teamlab.kotlin.mvvm.view
+package com.teamlab.kotlin.mvvm.ui.view
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -13,8 +13,8 @@ import com.squareup.leakcanary.RefWatcher
 import com.teamlab.kotlin.mvvm.R
 import com.teamlab.kotlin.mvvm.di.ApplicationComponent
 import com.teamlab.kotlin.mvvm.event.AddAccountEvent
+import com.teamlab.kotlin.mvvm.ui.viewmodel.AccountsViewModel
 import com.teamlab.kotlin.mvvm.util.bindView
-import com.teamlab.kotlin.mvvm.viewmodel.AccountsViewModel
 import rx.Subscription
 import rx.subscriptions.CompositeSubscription
 import javax.inject.Inject

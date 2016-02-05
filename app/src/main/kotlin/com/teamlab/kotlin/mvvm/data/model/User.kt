@@ -1,4 +1,4 @@
-package com.teamlab.kotlin.mvvm.model
+package com.teamlab.kotlin.mvvm.data.model
 
 import rx.mvvm.Model
 import rx.mvvm.RxPropertyObservable

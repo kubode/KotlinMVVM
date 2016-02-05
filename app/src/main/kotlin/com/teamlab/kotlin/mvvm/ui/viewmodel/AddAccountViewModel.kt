@@ -1,8 +1,8 @@
-package com.teamlab.kotlin.mvvm.viewmodel
+package com.teamlab.kotlin.mvvm.ui.viewmodel
 
 import android.os.Bundle
-import com.teamlab.kotlin.mvvm.model.OAuth
-import com.teamlab.kotlin.mvvm.model.State
+import com.teamlab.kotlin.mvvm.data.model.OAuth
+import com.teamlab.kotlin.mvvm.data.model.State
 import rx.Observable
 import rx.mvvm.RxPropertyObservable
 import rx.mvvm.ViewModel

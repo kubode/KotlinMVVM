@@ -1,7 +1,7 @@
 package com.teamlab.kotlin.mvvm.event
 
 import com.github.kubode.rxeventbus.Event
-import com.teamlab.kotlin.mvvm.model.Account
+import com.teamlab.kotlin.mvvm.data.model.Account
 
 class AddAccountEvent : Event()
 class OpenUrlEvent(val url: String) : Event()

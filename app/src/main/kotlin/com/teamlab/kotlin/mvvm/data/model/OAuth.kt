@@ -1,8 +1,8 @@
-package com.teamlab.kotlin.mvvm.model
+package com.teamlab.kotlin.mvvm.data.model
 
 import android.os.Bundle
-import com.teamlab.kotlin.mvvm.ext.getOAuthAccessTokenObservable
-import com.teamlab.kotlin.mvvm.ext.getOAuthRequestTokenObservable
+import com.teamlab.kotlin.mvvm.util.getOAuthAccessTokenObservable
+import com.teamlab.kotlin.mvvm.util.getOAuthRequestTokenObservable
 import rx.mvvm.RxPropertyObservable
 import rx.mvvm.value
 import twitter4j.Twitter

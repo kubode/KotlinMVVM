@@ -1,4 +1,4 @@
-package com.teamlab.kotlin.mvvm.view
+package com.teamlab.kotlin.mvvm.ui.view
 
 import android.content.Intent
 import android.os.Bundle
@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
                     startActivity(Intent.parseUri(it.url, 0))
                 }),
                 bus.subscribe(AccountClickEvent::class.java, {
-                    startActivity(AccountActivity.createIntent(this, it.account.id))
+                    startActivity(com.teamlab.kotlin.mvvm.ui.view.AccountActivity.createIntent(this, it.account.id))
                 })
         )
         if (savedInstanceState == null) {

@@ -1,4 +1,4 @@
-package com.teamlab.kotlin.mvvm.view
+package com.teamlab.kotlin.mvvm.ui.view
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -8,7 +8,7 @@ import android.widget.TextView
 import com.github.kubode.rxeventbus.RxEventBus
 import com.teamlab.kotlin.mvvm.R
 import com.teamlab.kotlin.mvvm.event.AccountClickEvent
-import com.teamlab.kotlin.mvvm.model.Account
+import com.teamlab.kotlin.mvvm.data.model.Account
 import com.teamlab.kotlin.mvvm.util.bindView
 
 class AccountViewHolder(parent: ViewGroup, private val bus: RxEventBus) : RecyclerView.ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.account, parent, false)) {

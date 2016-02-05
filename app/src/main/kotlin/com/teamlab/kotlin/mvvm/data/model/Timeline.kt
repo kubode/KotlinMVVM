@@ -1,7 +1,7 @@
-package com.teamlab.kotlin.mvvm.model
+package com.teamlab.kotlin.mvvm.data.model
 
-import com.teamlab.kotlin.mvvm.ext.getHomeTimelineObservable
-import com.teamlab.kotlin.mvvm.repository.TweetRepository
+import com.teamlab.kotlin.mvvm.data.repository.TweetRepository
+import com.teamlab.kotlin.mvvm.util.getHomeTimelineObservable
 import rx.mvvm.Model
 import rx.mvvm.ObservableArrayList
 import rx.mvvm.RxPropertyObservable
@@ -11,15 +11,15 @@ import twitter4j.Twitter
 import java.util.*
 import javax.inject.Inject
 
-class Timeline(private val account: Account, override val id: Identifier) : Model<Timeline.Identifier>() {
+class Timeline(private val account: Account, override val id: Timeline.Identifier) : Model<Timeline.Identifier>() {
 
-    data class Identifier private constructor(val type: Type) {
+    data class Identifier private constructor(val type: Timeline.Identifier.Type) {
         enum class Type {
             HOME
         }
 
         companion object {
-            fun home() = Identifier(Type.HOME)
+            fun home() = Timeline.Identifier(Type.HOME)
         }
     }
 

@@ -1,8 +1,8 @@
-package com.teamlab.kotlin.mvvm.repository
+package com.teamlab.kotlin.mvvm.data.repository
 
 import com.teamlab.kotlin.mvvm.di.AccountScope
-import com.teamlab.kotlin.mvvm.model.Account
-import com.teamlab.kotlin.mvvm.model.User
+import com.teamlab.kotlin.mvvm.data.model.Account
+import com.teamlab.kotlin.mvvm.data.model.User
 import rx.mvvm.Cache
 import javax.inject.Inject
 

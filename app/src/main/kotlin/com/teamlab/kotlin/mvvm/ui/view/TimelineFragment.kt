@@ -1,4 +1,4 @@
-package com.teamlab.kotlin.mvvm.view
+package com.teamlab.kotlin.mvvm.ui.view
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -16,8 +16,8 @@ import com.jakewharton.rxbinding.view.clicks
 import com.teamlab.kotlin.mvvm.R
 import com.teamlab.kotlin.mvvm.di.AccountComponent
 import com.teamlab.kotlin.mvvm.event.TweetEvent
+import com.teamlab.kotlin.mvvm.ui.viewmodel.TimelineViewModel
 import com.teamlab.kotlin.mvvm.util.bindView
-import com.teamlab.kotlin.mvvm.viewmodel.TimelineViewModel
 import rx.Subscription
 import rx.mvvm.bind
 import rx.subscriptions.CompositeSubscription

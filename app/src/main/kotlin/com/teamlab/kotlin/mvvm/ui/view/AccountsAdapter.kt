@@ -1,10 +1,10 @@
-package com.teamlab.kotlin.mvvm.view
+package com.teamlab.kotlin.mvvm.ui.view
 
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
 import com.github.kubode.rxeventbus.RxEventBus
-import com.teamlab.kotlin.mvvm.model.Account
-import com.teamlab.kotlin.mvvm.model.AppPreferences
+import com.teamlab.kotlin.mvvm.data.model.Account
+import com.teamlab.kotlin.mvvm.data.model.AppPreferences
 import javax.inject.Inject
 import kotlin.properties.Delegates
 

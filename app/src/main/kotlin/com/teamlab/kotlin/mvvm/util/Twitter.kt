@@ -1,25 +1,10 @@
-package com.teamlab.kotlin.mvvm.ext
+package com.teamlab.kotlin.mvvm.util
 
-import com.teamlab.kotlin.mvvm.di.ApplicationScope
 import rx.Observable
 import rx.schedulers.Schedulers
 import twitter4j.Paging
 import twitter4j.Twitter
-import twitter4j.TwitterFactory
 import twitter4j.auth.RequestToken
-import javax.inject.Inject
-
-@ApplicationScope
-class MyTwitterFactory @Inject constructor() {
-    private val CONSUMER_KEY = "hZOuxdz51CludNkjEyMuiR6JB"
-    private val CONSUMER_SECRET = "2gtKvKETxmDlj0P9VNrzUQgm3JY6m8To1Trd5lqU8sOsPsyRMh"
-
-    fun create(): Twitter {
-        return TwitterFactory().instance.apply {
-            setOAuthConsumer(CONSUMER_KEY, CONSUMER_SECRET)
-        }
-    }
-}
 
 private fun <T> asObservable(f: () -> T): Observable<T> {
     return Observable

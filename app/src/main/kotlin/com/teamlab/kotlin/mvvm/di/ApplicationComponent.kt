@@ -5,10 +5,9 @@ import android.content.Context
 import android.support.v4.app.Fragment
 import com.github.kubode.rxeventbus.RxEventBus
 import com.teamlab.kotlin.mvvm.MyApplication
-import com.teamlab.kotlin.mvvm.view.AccountActivity
-import com.teamlab.kotlin.mvvm.view.AccountsFragment
-import com.teamlab.kotlin.mvvm.view.AddAccountDialogFragment
-import com.teamlab.kotlin.mvvm.view.MainActivity
+import com.teamlab.kotlin.mvvm.ui.view.AccountsFragment
+import com.teamlab.kotlin.mvvm.ui.view.AddAccountDialogFragment
+import com.teamlab.kotlin.mvvm.ui.view.MainActivity
 import dagger.Component
 
 @Component(modules = arrayOf(ApplicationModule::class))
@@ -16,7 +15,7 @@ import dagger.Component
 interface ApplicationComponent {
 
     fun inject(mainActivity: MainActivity)
-    fun inject(accountActivity: AccountActivity)
+    fun inject(accountActivity: com.teamlab.kotlin.mvvm.ui.view.AccountActivity)
     fun inject(accountsFragment: AccountsFragment)
     fun inject(addAccountDialogFragment: AddAccountDialogFragment)
 

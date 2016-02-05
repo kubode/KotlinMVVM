@@ -1,11 +1,11 @@
-package com.teamlab.kotlin.mvvm.view
+package com.teamlab.kotlin.mvvm.ui.view
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import com.teamlab.kotlin.mvvm.R
-import com.teamlab.kotlin.mvvm.model.Tweet
+import com.teamlab.kotlin.mvvm.data.model.Tweet
 import com.teamlab.kotlin.mvvm.util.bindView
 
 class TweetViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.tweet, parent, false)) {
