@@ -15,6 +15,8 @@ interface AccountComponent {
     fun inject(timelineFragment: TimelineFragment)
 
     companion object {
-        fun from(activity: Activity) = (activity as AccountActivity).account.component
+        fun from(activity: Activity): AccountComponent {
+            return (activity as AccountActivity).account.component
+        }
     }
 }

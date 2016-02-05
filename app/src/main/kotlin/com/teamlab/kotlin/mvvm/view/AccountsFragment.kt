@@ -7,23 +7,17 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import com.github.kubode.rxeventbus.RxEventBus
 import com.jakewharton.rxbinding.view.clicks
 import com.squareup.leakcanary.RefWatcher
 import com.teamlab.kotlin.mvvm.R
 import com.teamlab.kotlin.mvvm.di.ApplicationComponent
 import com.teamlab.kotlin.mvvm.event.AddAccountEvent
-import com.teamlab.kotlin.mvvm.model.Account
 import com.teamlab.kotlin.mvvm.util.bindView
-import com.teamlab.kotlin.mvvm.util.logV
 import com.teamlab.kotlin.mvvm.viewmodel.AccountsViewModel
 import rx.Subscription
-import rx.mvvm.bind
 import rx.subscriptions.CompositeSubscription
 import javax.inject.Inject
-import kotlin.properties.Delegates
 
 class AccountsFragment : Fragment() {
 
@@ -38,8 +32,8 @@ class AccountsFragment : Fragment() {
     private lateinit var subscription: Subscription
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         ApplicationComponent.from(this).inject(this)
+        super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -63,6 +57,7 @@ class AccountsFragment : Fragment() {
 
     override fun onDestroy() {
         vm.performDestroy()
+        adapter.performDestroy()
         super.onDestroy()
         ref.watch(this)
     }

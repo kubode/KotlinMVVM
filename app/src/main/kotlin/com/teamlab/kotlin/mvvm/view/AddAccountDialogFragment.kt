@@ -40,13 +40,13 @@ class AddAccountDialogFragment : DialogFragment() {
     private lateinit var subscription: Subscription
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         ApplicationComponent.from(this).inject(this)
+        super.onCreate(savedInstanceState)
         vm.performRestoreInstanceState(savedInstanceState)
         vm.getRequestTokenIfEnable()
     }
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog? {
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return AlertDialog.Builder(activity)
                 .setView(R.layout.add_account)
                 .create()
