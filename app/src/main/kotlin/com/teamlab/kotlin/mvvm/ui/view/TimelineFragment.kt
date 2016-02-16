@@ -12,6 +12,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import com.github.kubode.rxeventbus.RxEventBus
 import com.jakewharton.rxbinding.support.v4.widget.refreshes
+import com.jakewharton.rxbinding.support.v7.widget.scrollEvents
 import com.jakewharton.rxbinding.view.clicks
 import com.teamlab.kotlin.mvvm.R
 import com.teamlab.kotlin.mvvm.di.AccountComponent
@@ -61,6 +62,13 @@ class TimelineFragment : Fragment() {
                 progress.bind(vm.isInitProgressVisibleObservable) { visibility = if (it) View.VISIBLE else View.GONE },
                 error.bind(vm.isInitErrorVisibleObservable) { visibility = if (it) View.VISIBLE else View.GONE },
                 message.bind(vm.initErrorMessageObservable) { text = it },
+                recycler.scrollEvents().subscribe {
+                    val lastChild = recycler.getChildAt(recycler.childCount - 1)
+                    val lastChildAdapterPosition = recycler.getChildAdapterPosition(lastChild)
+                    if (lastChildAdapterPosition >= adapter.itemCount - 1) {
+                        vm.getMoreTweetsIfEnable()
+                    }
+                },
                 retry.clicks().subscribe { vm.getInitTweetsIfEnable() },
                 add.clicks().subscribe { bus.post(TweetEvent()) }
         )
