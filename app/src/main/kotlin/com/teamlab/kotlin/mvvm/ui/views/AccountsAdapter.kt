@@ -1,4 +1,4 @@
-package com.teamlab.kotlin.mvvm.ui.view
+package com.teamlab.kotlin.mvvm.ui.views
 
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup

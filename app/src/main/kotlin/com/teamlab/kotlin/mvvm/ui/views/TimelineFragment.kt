@@ -1,4 +1,4 @@
-package com.teamlab.kotlin.mvvm.ui.view
+package com.teamlab.kotlin.mvvm.ui.views
 
 import android.os.Bundle
 import android.support.v4.app.Fragment

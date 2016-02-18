@@ -1,4 +1,4 @@
-package com.teamlab.kotlin.mvvm.ui.view
+package com.teamlab.kotlin.mvvm.ui.views
 
 class AccountActivity : android.support.v7.app.AppCompatActivity() {
 
@@ -20,7 +20,7 @@ class AccountActivity : android.support.v7.app.AppCompatActivity() {
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                    .add(com.teamlab.kotlin.mvvm.R.id.container, com.teamlab.kotlin.mvvm.ui.view.TimelineFragment())
+                    .add(com.teamlab.kotlin.mvvm.R.id.container, com.teamlab.kotlin.mvvm.ui.views.TimelineFragment())
                     .commit()
         }
     }
