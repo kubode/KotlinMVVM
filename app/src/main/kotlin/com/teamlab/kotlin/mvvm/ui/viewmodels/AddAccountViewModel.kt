@@ -1,4 +1,4 @@
-package com.teamlab.kotlin.mvvm.ui.viewmodel
+package com.teamlab.kotlin.mvvm.ui.viewmodels
 
 import android.os.Bundle
 import com.teamlab.kotlin.mvvm.data.model.OAuth

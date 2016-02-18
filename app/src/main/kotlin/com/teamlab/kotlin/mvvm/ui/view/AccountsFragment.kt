@@ -13,7 +13,7 @@ import com.squareup.leakcanary.RefWatcher
 import com.teamlab.kotlin.mvvm.R
 import com.teamlab.kotlin.mvvm.di.ApplicationComponent
 import com.teamlab.kotlin.mvvm.event.AddAccountEvent
-import com.teamlab.kotlin.mvvm.ui.viewmodel.AccountsViewModel
+import com.teamlab.kotlin.mvvm.ui.viewmodels.AccountsViewModel
 import com.teamlab.kotlin.mvvm.util.bindView
 import rx.Subscription
 import rx.subscriptions.CompositeSubscription

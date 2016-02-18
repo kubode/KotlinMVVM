@@ -17,7 +17,7 @@ import com.jakewharton.rxbinding.view.clicks
 import com.teamlab.kotlin.mvvm.R
 import com.teamlab.kotlin.mvvm.di.AccountComponent
 import com.teamlab.kotlin.mvvm.event.TweetEvent
-import com.teamlab.kotlin.mvvm.ui.viewmodel.TimelineViewModel
+import com.teamlab.kotlin.mvvm.ui.viewmodels.TimelineViewModel
 import com.teamlab.kotlin.mvvm.util.bindView
 import rx.Subscription
 import rx.mvvm.bind

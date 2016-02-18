@@ -1,4 +1,4 @@
-package com.teamlab.kotlin.mvvm.ui.viewmodel
+package com.teamlab.kotlin.mvvm.ui.viewmodels
 
 import com.teamlab.kotlin.mvvm.data.model.AppPreferences
 import rx.mvvm.RxPropertyObservable
