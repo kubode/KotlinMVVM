@@ -5,6 +5,7 @@ import android.content.Context
 import android.support.v4.app.Fragment
 import com.github.kubode.rxeventbus.RxEventBus
 import com.teamlab.kotlin.mvvm.MyApplication
+import com.teamlab.kotlin.mvvm.ui.views.AccountActivity
 import com.teamlab.kotlin.mvvm.ui.views.AccountsFragment
 import com.teamlab.kotlin.mvvm.ui.views.AddAccountDialogFragment
 import com.teamlab.kotlin.mvvm.ui.views.MainActivity
@@ -15,7 +16,7 @@ import dagger.Component
 interface ApplicationComponent {
 
     fun inject(mainActivity: MainActivity)
-    fun inject(accountActivity: com.teamlab.kotlin.mvvm.ui.views.AccountActivity)
+    fun inject(accountActivity: AccountActivity)
     fun inject(accountsFragment: AccountsFragment)
     fun inject(addAccountDialogFragment: AddAccountDialogFragment)
 

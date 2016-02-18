@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
                     startActivity(Intent.parseUri(it.url, 0))
                 }),
                 bus.subscribe(AccountClickEvent::class.java, {
-                    startActivity(com.teamlab.kotlin.mvvm.ui.views.AccountActivity.createIntent(this, it.account.id))
+                    startActivity(AccountActivity.createIntent(this, it.account.id))
                 })
         )
         if (savedInstanceState == null) {

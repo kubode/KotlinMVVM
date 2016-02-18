@@ -1,26 +1,35 @@
 package com.teamlab.kotlin.mvvm.ui.views
 
-class AccountActivity : android.support.v7.app.AppCompatActivity() {
+import android.content.Context
+import android.content.Intent
+import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
+import com.teamlab.kotlin.mvvm.R
+import com.teamlab.kotlin.mvvm.data.model.Account
+import com.teamlab.kotlin.mvvm.data.repository.AccountRepository
+import com.teamlab.kotlin.mvvm.di.ApplicationComponent
 
-    @javax.inject.Inject lateinit var accountRepository: com.teamlab.kotlin.mvvm.data.repository.AccountRepository
-    lateinit var account: com.teamlab.kotlin.mvvm.data.model.Account
+class AccountActivity : AppCompatActivity() {
+
+    @javax.inject.Inject lateinit var accountRepository: AccountRepository
+    lateinit var account: Account
 
     companion object {
         private const val EXTRA_ACCOUNT_ID = "accountId"
-        fun createIntent(context: android.content.Context, accountId: Long) = android.content.Intent(context, AccountActivity::class.java)
-                .putExtra(AccountActivity.Companion.EXTRA_ACCOUNT_ID, accountId)
+        fun createIntent(context: Context, accountId: Long) = Intent(context, AccountActivity::class.java)
+                .putExtra(AccountActivity.EXTRA_ACCOUNT_ID, accountId)
     }
 
-    override fun onCreate(savedInstanceState: android.os.Bundle?) {
-        com.teamlab.kotlin.mvvm.di.ApplicationComponent.Companion.from(this).inject(this)
-        account = accountRepository.of(intent.getLongExtra(AccountActivity.Companion.EXTRA_ACCOUNT_ID, -1))
+    override fun onCreate(savedInstanceState: Bundle?) {
+        ApplicationComponent.from(this).inject(this)
+        account = accountRepository.of(intent.getLongExtra(AccountActivity.EXTRA_ACCOUNT_ID, -1))
 
         super.onCreate(savedInstanceState)
-        setContentView(com.teamlab.kotlin.mvvm.R.layout.main)
+        setContentView(R.layout.main)
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                    .add(com.teamlab.kotlin.mvvm.R.id.container, com.teamlab.kotlin.mvvm.ui.views.TimelineFragment())
+                    .add(R.id.container, TimelineFragment())
                     .commit()
         }
     }
