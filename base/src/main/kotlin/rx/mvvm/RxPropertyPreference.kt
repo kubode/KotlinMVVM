@@ -20,7 +20,7 @@ private class PrefState<T>(private val sharedPreferences: SharedPreferences,
                            private val key: String,
                            private val defValue: T,
                            private val get: SharedPreferences.(String, T) -> T,
-                           private val put: SharedPreferences.Editor.(String, T) -> SharedPreferences.Editor) : State<T>() {
+                           private val put: SharedPreferences.Editor.(String, T) -> SharedPreferences.Editor) : RxPropertyState<T>() {
     override val observable = Observable.create<T> {
         val listener = SharedPreferences.OnSharedPreferenceChangeListener { sharedPreferences, key ->
             if (key == this.key) {

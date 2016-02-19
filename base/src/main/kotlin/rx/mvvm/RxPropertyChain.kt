@@ -10,11 +10,11 @@ import rx.Observable
 fun <T> RxPropertyObservable.Companion.chain(observable: Observable<T>) = RxPropertyObservable(ChainState(observable))
 
 /**
- * [Observable]を連結するための[State]。
+ * [Observable]を連結するための[RxPropertyState]。
  *
  * 値の読み書きは、例外が発生する。
  */
-private class ChainState<T>(observable: Observable<T>) : State<T>() {
+private class ChainState<T>(observable: Observable<T>) : RxPropertyState<T>() {
     override val observable = observable
     override var value: T
         get() = throw UnsupportedOperationException("Can't get value because it's chained.")
