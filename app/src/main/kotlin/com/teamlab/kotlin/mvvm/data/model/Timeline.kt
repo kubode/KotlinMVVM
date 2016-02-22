@@ -3,8 +3,9 @@ package com.teamlab.kotlin.mvvm.data.model
 import com.teamlab.kotlin.mvvm.data.repository.TweetRepository
 import com.teamlab.kotlin.mvvm.util.getHomeTimelineObservable
 import rx.mvvm.Model
-import rx.property.ObservableArrayList
 import rx.property.RxPropertyObservable
+import rx.property.collection.ObservableArrayList
+import rx.property.collection.insertedObservable
 import rx.property.value
 import twitter4j.Paging
 import twitter4j.Twitter
@@ -45,7 +46,7 @@ class Timeline(private val account: Account, override val id: Timeline.Identifie
 
     private val tweetsInternal = ObservableArrayList<Tweet>()
     val tweets: List<Tweet> = Collections.unmodifiableList(tweetsInternal)
-    val tweetsAddObservable = tweetsInternal.addObservable
+    val tweetsAddObservable = tweetsInternal.insertedObservable
 
     fun getInitTweetsIfEnable() {
         if (initState in arrayOf(State.REQUESTING, State.COMPLETED)) return
