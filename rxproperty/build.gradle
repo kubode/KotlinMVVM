@@ -1,0 +1,14 @@
+apply plugin: 'kotlin'
+
+project.sourceSets.all {
+    java.srcDirs += "src/${name}/kotlin"
+}
+
+dependencies {
+    testCompile "junit:junit:${versions.junit}"
+    // Kotlin
+    compile "org.jetbrains.kotlin:kotlin-stdlib:${versions.kotlin}"
+    testCompile "org.jetbrains.kotlin:kotlin-test:${versions.kotlin}"
+    // Rx
+    compile "io.reactivex:rxjava:${versions.rxjava}"
+}

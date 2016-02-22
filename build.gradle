@@ -8,6 +8,7 @@ buildscript {
                 support   : '23.1.1',
                 rxbinding : '0.4.0',
                 leakcanary: '1.4-beta1',
+                rxjava    : '1.1.1',
                 rxandroid : '1.1.0',
                 dagger    : '2.0.2',
         ]

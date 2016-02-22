@@ -21,7 +21,7 @@ android.sourceSets.all {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile project(':rxproperty')
     testCompile "junit:junit:${versions.junit}"
     compile "com.android.support:appcompat-v7:${versions.support}"
     // Kotlin
