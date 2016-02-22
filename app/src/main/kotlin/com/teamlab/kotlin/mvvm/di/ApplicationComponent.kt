@@ -5,6 +5,7 @@ import android.content.Context
 import android.support.v4.app.Fragment
 import com.github.kubode.rxeventbus.RxEventBus
 import com.teamlab.kotlin.mvvm.MyApplication
+import com.teamlab.kotlin.mvvm.data.repository.ModelCache
 import com.teamlab.kotlin.mvvm.ui.views.AccountActivity
 import com.teamlab.kotlin.mvvm.ui.views.AccountsFragment
 import com.teamlab.kotlin.mvvm.ui.views.AddAccountDialogFragment
@@ -21,6 +22,7 @@ interface ApplicationComponent {
     fun inject(addAccountDialogFragment: AddAccountDialogFragment)
 
     val rxEventBus: RxEventBus
+    val modelCache: ModelCache
 
     companion object {
         fun from(context: Context) = (context.applicationContext as MyApplication).component
