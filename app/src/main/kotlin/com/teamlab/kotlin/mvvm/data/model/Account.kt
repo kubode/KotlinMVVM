@@ -8,8 +8,8 @@ import com.teamlab.kotlin.mvvm.di.ApplicationComponent
 import com.teamlab.kotlin.mvvm.di.DaggerAccountComponent
 import com.teamlab.kotlin.mvvm.util.SharedPreferencesProperty
 import rx.mvvm.Model
-import rx.mvvm.RxPropertyObservable
 import rx.mvvm.strPref
+import rx.property.RxPropertyObservable
 import twitter4j.auth.AccessToken
 
 class Account(val context: Context, twitterFactory: MyTwitterFactory, userId: Long) : Model<Long>() {

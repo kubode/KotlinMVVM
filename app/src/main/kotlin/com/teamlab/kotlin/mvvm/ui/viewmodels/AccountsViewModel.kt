@@ -1,9 +1,9 @@
 package com.teamlab.kotlin.mvvm.ui.viewmodels
 
 import com.teamlab.kotlin.mvvm.data.model.AppPreferences
-import rx.mvvm.RxPropertyObservable
 import rx.mvvm.ViewModel
-import rx.mvvm.chain
+import rx.property.RxPropertyObservable
+import rx.property.chain
 import javax.inject.Inject
 
 class AccountsViewModel @Inject constructor(pref: AppPreferences) : ViewModel() {

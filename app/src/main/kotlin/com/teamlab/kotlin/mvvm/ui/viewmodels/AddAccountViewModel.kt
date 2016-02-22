@@ -4,10 +4,10 @@ import android.os.Bundle
 import com.teamlab.kotlin.mvvm.data.model.OAuth
 import com.teamlab.kotlin.mvvm.data.model.State
 import rx.Observable
-import rx.mvvm.RxPropertyObservable
 import rx.mvvm.ViewModel
-import rx.mvvm.chain
-import rx.mvvm.value
+import rx.property.RxPropertyObservable
+import rx.property.chain
+import rx.property.value
 import javax.inject.Inject
 
 class AddAccountViewModel @Inject constructor(private val oAuth: OAuth) : ViewModel() {

@@ -3,9 +3,9 @@ package com.teamlab.kotlin.mvvm.data.model
 import com.teamlab.kotlin.mvvm.data.repository.TweetRepository
 import com.teamlab.kotlin.mvvm.util.getHomeTimelineObservable
 import rx.mvvm.Model
-import rx.mvvm.ObservableArrayList
-import rx.mvvm.RxPropertyObservable
-import rx.mvvm.value
+import rx.property.ObservableArrayList
+import rx.property.RxPropertyObservable
+import rx.property.value
 import twitter4j.Paging
 import twitter4j.Twitter
 import java.util.*

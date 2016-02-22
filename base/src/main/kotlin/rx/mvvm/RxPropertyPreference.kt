@@ -2,6 +2,8 @@ package rx.mvvm
 
 import android.content.SharedPreferences
 import rx.Observable
+import rx.property.RxPropertyObservable
+import rx.property.RxPropertyState
 import rx.subscriptions.Subscriptions
 
 fun <T> RxPropertyObservable.Companion.pref(sharedPreferences: SharedPreferences,

@@ -5,8 +5,8 @@ import com.teamlab.kotlin.mvvm.util.Toaster
 import com.teamlab.kotlin.mvvm.util.createFavoriteObservable
 import com.teamlab.kotlin.mvvm.util.destroyFavoriteObservable
 import rx.mvvm.Model
-import rx.mvvm.RxPropertyObservable
-import rx.mvvm.value
+import rx.property.RxPropertyObservable
+import rx.property.value
 import twitter4j.Status
 import twitter4j.Twitter
 import java.util.*

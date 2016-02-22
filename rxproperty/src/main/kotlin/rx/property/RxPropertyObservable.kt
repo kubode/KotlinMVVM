@@ -1,7 +1,6 @@
-package rx.mvvm
+package rx.property
 
 import rx.Observable
-import rx.Subscriber
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 

@@ -4,8 +4,8 @@ import android.content.Context
 import com.teamlab.kotlin.mvvm.data.repository.AccountRepository
 import com.teamlab.kotlin.mvvm.di.ApplicationScope
 import rx.mvvm.Model
-import rx.mvvm.RxPropertyObservable
 import rx.mvvm.pref
+import rx.property.RxPropertyObservable
 import twitter4j.auth.AccessToken
 import javax.inject.Inject
 

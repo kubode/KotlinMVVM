@@ -4,8 +4,8 @@ import android.os.Bundle
 import com.teamlab.kotlin.mvvm.data.factory.MyTwitterFactory
 import com.teamlab.kotlin.mvvm.util.getOAuthAccessTokenObservable
 import com.teamlab.kotlin.mvvm.util.getOAuthRequestTokenObservable
-import rx.mvvm.RxPropertyObservable
-import rx.mvvm.value
+import rx.property.RxPropertyObservable
+import rx.property.value
 import twitter4j.auth.RequestToken
 import javax.inject.Inject
 

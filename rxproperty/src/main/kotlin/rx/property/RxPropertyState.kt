@@ -1,4 +1,4 @@
-package rx.mvvm
+package rx.property
 
 import rx.Observable
 import rx.Subscriber
