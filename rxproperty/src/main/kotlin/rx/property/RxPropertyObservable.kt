@@ -5,10 +5,10 @@ import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
 /**
- * [toProperty]を経由することで、プロパティの変更通知を受けられる[Observable]。
- * [subscribe]することで、プロパティの変更通知を受けられる。
+ * [toProperty]を使い移譲プロパティを定義することで、変更通知を受けられる[Observable]。
+ * 用途にそって[RxPropertyState]を実装し、コンストラクタの[state]へ渡すことで挙動を変更できる。
  *
- * 用途にそって[RxPropertyState]を実装し、[Companion]に拡張メソッドを定義することで拡張性を持たせる。
+ * [Companion]に拡張メソッドを定義することで拡張性を持たせる。
  *
  * Usage:
  * ```
