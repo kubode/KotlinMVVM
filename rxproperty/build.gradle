@@ -6,6 +6,7 @@ project.sourceSets.all {
 
 dependencies {
     testCompile "junit:junit:${versions.junit}"
+    testCompile "org.mockito:mockito-core:${versions.mockito}"
     // Kotlin
     compile "org.jetbrains.kotlin:kotlin-stdlib:${versions.kotlin}"
     testCompile "org.jetbrains.kotlin:kotlin-test:${versions.kotlin}"
