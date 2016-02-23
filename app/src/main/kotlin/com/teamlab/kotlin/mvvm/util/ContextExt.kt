@@ -1,4 +1,4 @@
-package com.teamlab.kotlin.mvvm.extensions
+package com.teamlab.kotlin.mvvm.util
 
 import android.content.Context
 import android.os.Handler

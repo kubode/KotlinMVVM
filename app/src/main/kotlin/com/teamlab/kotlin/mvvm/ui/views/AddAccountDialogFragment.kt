@@ -14,9 +14,9 @@ import com.squareup.leakcanary.RefWatcher
 import com.teamlab.kotlin.mvvm.R
 import com.teamlab.kotlin.mvvm.di.ApplicationComponent
 import com.teamlab.kotlin.mvvm.event.OpenUrlEvent
-import com.teamlab.kotlin.mvvm.extensions.showToast
 import com.teamlab.kotlin.mvvm.ui.viewmodels.AddAccountViewModel
 import com.teamlab.kotlin.mvvm.util.bindView
+import com.teamlab.kotlin.mvvm.util.showToast
 import rx.Subscription
 import rx.subscriptions.CompositeSubscription
 import javax.inject.Inject
