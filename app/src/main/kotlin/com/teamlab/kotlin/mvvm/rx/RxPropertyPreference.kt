@@ -1,4 +1,4 @@
-package rx.mvvm
+package com.teamlab.kotlin.mvvm.rx
 
 import android.content.SharedPreferences
 import rx.Observable

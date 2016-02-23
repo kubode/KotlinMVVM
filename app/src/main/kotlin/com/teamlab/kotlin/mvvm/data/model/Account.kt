@@ -6,9 +6,9 @@ import com.teamlab.kotlin.mvvm.data.factory.MyTwitterFactory
 import com.teamlab.kotlin.mvvm.di.AccountModule
 import com.teamlab.kotlin.mvvm.di.ApplicationComponent
 import com.teamlab.kotlin.mvvm.di.DaggerAccountComponent
+import com.teamlab.kotlin.mvvm.rx.strPref
 import com.teamlab.kotlin.mvvm.util.SharedPreferencesProperty
 import rx.mvvm.Model
-import rx.mvvm.strPref
 import rx.property.RxPropertyObservable
 import twitter4j.auth.AccessToken
 
