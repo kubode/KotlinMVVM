@@ -53,7 +53,7 @@ class Tweet(private val account: Account, status: Status) : Model<Long>() {
             twitter.createFavoriteObservable(id)
         }
         observable
-                .finallyDo { isFavoriteRequesting = false }
+                .doAfterTerminate { isFavoriteRequesting = false }
                 .subscribe({
                     merge(it)
                 }, {
