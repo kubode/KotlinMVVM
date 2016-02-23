@@ -20,7 +20,6 @@ import com.teamlab.kotlin.mvvm.event.TweetEvent
 import com.teamlab.kotlin.mvvm.ui.viewmodels.TimelineViewModel
 import com.teamlab.kotlin.mvvm.util.bindView
 import rx.Subscription
-import rx.mvvm.bind
 import rx.subscriptions.CompositeSubscription
 import javax.inject.Inject
 
