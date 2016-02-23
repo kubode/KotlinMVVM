@@ -19,15 +19,9 @@ import kotlin.reflect.KProperty
  * int = 1 // logged: 1
  * ```
  */
-class RxPropertyObservable<T> : Observable<T> {
+class RxPropertyObservable<T>(private val state: RxPropertyState<T>) : Observable<T>(state) {
 
     companion object {}
-
-    private val state: RxPropertyState<T>
-
-    constructor(state: RxPropertyState<T>) : super(state) {
-        this.state = state
-    }
 
     /**
      * この[RxPropertyObservable]をプロパティへ変換する。
