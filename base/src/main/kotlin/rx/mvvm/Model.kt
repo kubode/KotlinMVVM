@@ -2,6 +2,7 @@ package rx.mvvm
 
 abstract class Model<K : Any> {
 
+    // Do NOT implements as var property
     abstract val id: K
 
     final override fun equals(other: Any?): Boolean {
