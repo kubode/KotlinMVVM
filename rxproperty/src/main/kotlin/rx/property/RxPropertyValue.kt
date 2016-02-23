@@ -16,7 +16,7 @@ fun <T> RxPropertyObservable.Companion.value(defaultValue: T) = RxPropertyObserv
 /**
  * 読み書き可能な[RxPropertyState]。
  */
-private class ValueState<T>(defaultValue: T) : RxPropertyState<T>() {
+private class ValueState<T>(defaultValue: T) : RxPropertyState<T> {
     override val observable = BehaviorSubject.create(defaultValue)
     override var value: T
         get() = observable.value

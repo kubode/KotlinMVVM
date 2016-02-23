@@ -14,8 +14,7 @@ fun <T> RxPropertyObservable.Companion.chain(observable: Observable<T>) = RxProp
  *
  * 値の読み書きは、例外が発生する。
  */
-private class ChainState<T>(observable: Observable<T>) : RxPropertyState<T>() {
-    override val observable = observable
+private class ChainState<T>(override val observable: Observable<T>) : RxPropertyState<T> {
     override var value: T
         get() = throw UnsupportedOperationException("Not support property access.")
         set(value) = throw UnsupportedOperationException("Not support property access.")

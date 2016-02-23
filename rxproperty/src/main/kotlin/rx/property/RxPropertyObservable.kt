@@ -19,7 +19,9 @@ import kotlin.reflect.KProperty
  * int = 1 // logged: 1
  * ```
  */
-class RxPropertyObservable<T>(private val state: RxPropertyState<T>) : Observable<T>(state) {
+class RxPropertyObservable<T>(private val state: RxPropertyState<T>) : Observable<T>(OnSubscribe<T> { child ->
+    child.add(state.observable.subscribe { child.onNext(it) })
+}) {
 
     companion object {}
 
