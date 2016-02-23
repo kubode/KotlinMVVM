@@ -14,8 +14,8 @@ import com.squareup.leakcanary.RefWatcher
 import com.teamlab.kotlin.mvvm.R
 import com.teamlab.kotlin.mvvm.di.ApplicationComponent
 import com.teamlab.kotlin.mvvm.event.OpenUrlEvent
+import com.teamlab.kotlin.mvvm.extensions.showToast
 import com.teamlab.kotlin.mvvm.ui.viewmodels.AddAccountViewModel
-import com.teamlab.kotlin.mvvm.util.Toaster
 import com.teamlab.kotlin.mvvm.util.bindView
 import rx.Subscription
 import rx.subscriptions.CompositeSubscription
@@ -64,7 +64,7 @@ class AddAccountDialogFragment : DialogFragment() {
                 pin.textChanges().subscribe { vm.pin = it.toString() },
                 submit.bind(vm.isSubmitEnableObservable) { isEnabled = it },
                 submit.clicks().subscribe { vm.getAccessTokenIfEnable() },
-                bind(vm.submitErrorMessageObservable) { if (!it.isNullOrEmpty()) Toaster.show(activity, it) },
+                bind(vm.submitErrorMessageObservable) { if (!it.isNullOrEmpty()) activity.showToast(it) },
                 bind(vm.isCompletedObservable) { if (it) dismiss() }
         )
     }

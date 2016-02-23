@@ -1,7 +1,7 @@
 package com.teamlab.kotlin.mvvm.data.model
 
 import com.teamlab.kotlin.mvvm.data.repository.UserRepository
-import com.teamlab.kotlin.mvvm.util.Toaster
+import com.teamlab.kotlin.mvvm.extensions.showToast
 import com.teamlab.kotlin.mvvm.util.createFavoriteObservable
 import com.teamlab.kotlin.mvvm.util.destroyFavoriteObservable
 import rx.mvvm.Model
@@ -57,7 +57,7 @@ class Tweet(private val account: Account, status: Status) : Model<Long>() {
                 .subscribe({
                     merge(it)
                 }, {
-                    Toaster.show(account.context, it.message)
+                    account.context.showToast(it.message)
                 })
     }
 }
