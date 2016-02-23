@@ -3,17 +3,12 @@ package rx.property
 import rx.subjects.BehaviorSubject
 
 /**
- * 書き込み可能で、変更の通知を受けるタイプの[RxPropertyObservable]を生成する。
- *
- * 実体は[BehaviorSubject]になっているため、[Observable.subscribe]すると即`onNext`が呼ばれる。
- *
- * [rxProperty]と同時に定義すること。
- * でなければ、初期値が`null`になり、[NullPointerException]を引き起こす可能性がある。
+ * 値の読み書き可能な[RxPropertyObservable]を生成する。
  *
  * Usage:
  * ```
- * val intObservable = RxPropertyObservable<Int>()
- * var int by rxProperty(0, intObservable)
+ * val intObservable = RxPropertyObservable.value(1)
+ * var int by intObservable.toProperty()
  * ```
  */
 fun <T> RxPropertyObservable.Companion.value(defaultValue: T) = RxPropertyObservable(ValueState(defaultValue))
