@@ -1,5 +1,6 @@
 package com.teamlab.kotlin.mvvm.data.model
 
+import com.teamlab.kotlin.mvvm.data.repository.ModelCache
 import com.teamlab.kotlin.mvvm.data.repository.TweetRepository
 import com.teamlab.kotlin.mvvm.util.getHomeTimelineObservable
 import rx.mvvm.Model
@@ -26,6 +27,7 @@ class Timeline(private val account: Account, override val id: Timeline.Identifie
 
     @Inject lateinit var twitter: Twitter
     @Inject lateinit var tweetRepository: TweetRepository
+    @Inject lateinit var cache: ModelCache
 
     init {
         account.component.inject(this)
@@ -48,7 +50,12 @@ class Timeline(private val account: Account, override val id: Timeline.Identifie
     val tweets: List<Tweet> = Collections.unmodifiableList(tweetsInternal)
     val tweetsAddObservable = tweetsInternal.insertedObservable
 
+    private fun touch() {
+        cache.touch(this)
+    }
+
     fun getInitTweetsIfEnable() {
+        touch()
         if (initState in arrayOf(State.REQUESTING, State.COMPLETED)) return
         initState = State.REQUESTING
         initError = null
@@ -63,6 +70,7 @@ class Timeline(private val account: Account, override val id: Timeline.Identifie
     }
 
     fun getNewTweetsIfEnable() {
+        touch()
         if (newState == State.REQUESTING) return
         newState = State.REQUESTING
         newError = null
@@ -82,6 +90,7 @@ class Timeline(private val account: Account, override val id: Timeline.Identifie
     }
 
     fun getMoreTweetsIfEnable() {
+        touch()
         if (moreState == State.REQUESTING) return
         moreState = State.REQUESTING
         moreError = null
