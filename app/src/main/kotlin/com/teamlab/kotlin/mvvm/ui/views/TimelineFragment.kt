@@ -19,6 +19,7 @@ import com.teamlab.kotlin.mvvm.di.AccountComponent
 import com.teamlab.kotlin.mvvm.event.TweetEvent
 import com.teamlab.kotlin.mvvm.ui.viewmodels.TimelineViewModel
 import com.teamlab.kotlin.mvvm.util.bindView
+import com.teamlab.kotlin.mvvm.util.unbindViews
 import rx.Subscription
 import rx.subscriptions.CompositeSubscription
 import javax.inject.Inject
@@ -75,6 +76,7 @@ class TimelineFragment : Fragment() {
 
     override fun onDestroyView() {
         subscription.unsubscribe()
+        unbindViews()
         super.onDestroyView()
     }
 }

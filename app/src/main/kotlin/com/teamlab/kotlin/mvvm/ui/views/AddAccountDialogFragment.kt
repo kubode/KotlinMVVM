@@ -17,6 +17,7 @@ import com.teamlab.kotlin.mvvm.event.OpenUrlEvent
 import com.teamlab.kotlin.mvvm.ui.viewmodels.AddAccountViewModel
 import com.teamlab.kotlin.mvvm.util.bindView
 import com.teamlab.kotlin.mvvm.util.showToast
+import com.teamlab.kotlin.mvvm.util.unbindViews
 import rx.Subscription
 import rx.subscriptions.CompositeSubscription
 import javax.inject.Inject
@@ -77,6 +78,11 @@ class AddAccountDialogFragment : DialogFragment() {
     override fun onStop() {
         subscription.unsubscribe()
         super.onStop()
+    }
+
+    override fun onDestroyView() {
+        unbindViews()
+        super.onDestroyView()
     }
 
     override fun onDestroy() {

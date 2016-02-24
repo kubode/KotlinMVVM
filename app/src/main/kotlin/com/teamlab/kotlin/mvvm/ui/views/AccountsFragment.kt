@@ -15,6 +15,7 @@ import com.teamlab.kotlin.mvvm.di.ApplicationComponent
 import com.teamlab.kotlin.mvvm.event.AddAccountEvent
 import com.teamlab.kotlin.mvvm.ui.viewmodels.AccountsViewModel
 import com.teamlab.kotlin.mvvm.util.bindView
+import com.teamlab.kotlin.mvvm.util.unbindViews
 import rx.Subscription
 import rx.subscriptions.CompositeSubscription
 import javax.inject.Inject
@@ -52,6 +53,7 @@ class AccountsFragment : Fragment() {
     override fun onDestroyView() {
         recycler.adapter = null
         subscription.unsubscribe()
+        unbindViews()
         super.onDestroyView()
     }
 
