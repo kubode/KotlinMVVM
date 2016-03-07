@@ -61,5 +61,8 @@ dependencies {
     // Twitter4J
     compile 'org.twitter4j:twitter4j-core:4.0.4'
     // Other
+    compile 'com.squareup.okhttp3:okhttp:3.2.0'
+    compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.0.2'
     compile 'com.github.kubode:rxeventbus:1.0.1'
 }
