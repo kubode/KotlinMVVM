@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.support.v4.app.Fragment
 import com.github.kubode.rxeventbus.RxEventBus
+import com.squareup.picasso.Picasso
 import com.teamlab.kotlin.mvvm.MyApplication
 import com.teamlab.kotlin.mvvm.data.repository.ModelCache
 import com.teamlab.kotlin.mvvm.ui.views.AccountActivity
@@ -23,6 +24,7 @@ interface ApplicationComponent {
 
     val rxEventBus: RxEventBus
     val modelCache: ModelCache
+    val picasso: Picasso
 
     companion object {
         fun from(context: Context) = (context.applicationContext as MyApplication).component

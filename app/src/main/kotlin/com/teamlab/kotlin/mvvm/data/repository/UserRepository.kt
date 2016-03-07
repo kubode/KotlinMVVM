@@ -11,5 +11,6 @@ class UserRepository @Inject constructor(private val account: Account,
 
     fun of(user: twitter4j.User): User {
         return cache.getOrPut(User::class, user.id, { User(account, user) })
+                .apply { merge(user) }
     }
 }

@@ -14,6 +14,7 @@ import com.github.kubode.rxeventbus.RxEventBus
 import com.jakewharton.rxbinding.support.v4.widget.refreshes
 import com.jakewharton.rxbinding.support.v7.widget.scrollEvents
 import com.jakewharton.rxbinding.view.clicks
+import com.squareup.picasso.Picasso
 import com.teamlab.kotlin.mvvm.R
 import com.teamlab.kotlin.mvvm.di.AccountComponent
 import com.teamlab.kotlin.mvvm.event.TweetEvent
@@ -28,6 +29,7 @@ class TimelineFragment : Fragment() {
 
     @Inject lateinit var vm: TimelineViewModel
     @Inject lateinit var bus: RxEventBus
+    @Inject lateinit var picasso: Picasso
 
     private val swipe by bindView<SwipeRefreshLayout>(R.id.swipe)
     private val recycler by bindView<RecyclerView>(R.id.recycler)
@@ -52,7 +54,7 @@ class TimelineFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val adapter = TimelineAdapter(vm.tweets)
+        val adapter = TimelineAdapter(vm.tweets, picasso)
         recycler.adapter = adapter
         recycler.layoutManager = LinearLayoutManager(activity)
         subscription = CompositeSubscription(
@@ -76,6 +78,8 @@ class TimelineFragment : Fragment() {
 
     override fun onDestroyView() {
         subscription.unsubscribe()
+        // Run adapter's lifecycle methods on detached by setting null to adapter.
+        recycler.adapter = null
         unbindViews()
         super.onDestroyView()
     }

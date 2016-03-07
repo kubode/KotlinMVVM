@@ -28,9 +28,15 @@ class Tweet(private val account: Account, status: Status) : Model<Long>() {
     private var favoriteCount by favoriteCountObservable.toProperty()
     val isFavoritedObservable = RxPropertyObservable.value(false)
     private var isFavorited by isFavoritedObservable.toProperty()
-
     val isFavoriteRequestingObservable = RxPropertyObservable.value(false)
     private var isFavoriteRequesting by isFavoriteRequestingObservable.toProperty()
+
+    val retweetCountObservable = RxPropertyObservable.value(0)
+    private var retweetCount by retweetCountObservable.toProperty()
+    val isRetweetedObservable = RxPropertyObservable.value(false)
+    private var isRetweeted by isRetweetedObservable.toProperty()
+    val isRetweetRequestingObservable = RxPropertyObservable.value(false)
+    private var isRetweetRequesting by isRetweetRequestingObservable.toProperty()
 
     init {
         account.component.inject(this)
@@ -42,6 +48,8 @@ class Tweet(private val account: Account, status: Status) : Model<Long>() {
     fun merge(status: Status) {
         favoriteCount = status.favoriteCount
         isFavorited = status.isFavorited
+        retweetCount = status.retweetCount
+        isRetweeted = status.isRetweeted
     }
 
     fun toggleFavoriteIfEnable() {
